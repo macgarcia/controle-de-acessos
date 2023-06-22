@@ -19,6 +19,11 @@
                 <Property name="text" type="java.lang.String" value="Todas as anota&#xe7;&#xf5;es"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemHistorico">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Historico de atualiza&#xe7;&#xf5;es de nota"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuSair">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Sair"/>

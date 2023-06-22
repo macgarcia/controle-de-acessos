@@ -24,4 +24,7 @@ public class FactoryMensagem {
         JOptionPane.showMessageDialog(null, msg, ERRO, JOptionPane.ERROR_MESSAGE);
     }
     
+    public static int mensagemConfirmacao() {
+        return JOptionPane.showConfirmDialog(null, "Deseja apagar o registro selecionado", INFORMACAO, JOptionPane.YES_NO_OPTION);
+    }
 }

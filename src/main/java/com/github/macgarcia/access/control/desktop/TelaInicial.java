@@ -3,6 +3,7 @@ package com.github.macgarcia.access.control.desktop;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.view.TelaCadastroNota;
+import com.github.macgarcia.access.control.desktop.view.TelaDeHistoricoNota;
 import com.github.macgarcia.access.control.desktop.view.TelaTodasAnotacoes;
 
 /**
@@ -10,6 +11,8 @@ import com.github.macgarcia.access.control.desktop.view.TelaTodasAnotacoes;
  * @author macgarcia
  */
 public class TelaInicial extends javax.swing.JFrame {
+    
+    private final String MENSAGEM_DE_TELA_ABERTA = "A tela já esta aberta em sua area de trabalho.";
 
     /**
      * Creates new form TelaInicial
@@ -35,6 +38,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnMenuAnotacoes = new javax.swing.JMenu();
         btnItemMenuNovaAnotacao = new javax.swing.JMenuItem();
         btnItemMenuTodasAnotacoes = new javax.swing.JMenuItem();
+        btnItemHistorico = new javax.swing.JMenuItem();
         btnItemMenuSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -57,6 +61,9 @@ public class TelaInicial extends javax.swing.JFrame {
 
         btnItemMenuTodasAnotacoes.setText("Todas as anotações");
         btnMenuAnotacoes.add(btnItemMenuTodasAnotacoes);
+
+        btnItemHistorico.setText("Historico de atualizações de nota");
+        btnMenuAnotacoes.add(btnItemHistorico);
 
         btnItemMenuSair.setText("Sair");
         btnMenuAnotacoes.add(btnItemMenuSair);
@@ -115,6 +122,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem btnItemHistorico;
     private javax.swing.JMenuItem btnItemMenuNovaAnotacao;
     private javax.swing.JMenuItem btnItemMenuSair;
     private javax.swing.JMenuItem btnItemMenuTodasAnotacoes;
@@ -132,7 +140,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         this.btnItemMenuNovaAnotacao.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaCadastroNota.class)) {
-                FactoryMensagem.mensagemAlerta("A tela já esta aberta em sua area de trabalho.");
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
                 TelaCadastroNota tela = new TelaCadastroNota();
                 tela.setAtualizacaoDeNota(false);
@@ -144,9 +152,20 @@ public class TelaInicial extends javax.swing.JFrame {
 
         this.btnItemMenuTodasAnotacoes.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaTodasAnotacoes.class)) {
-                FactoryMensagem.mensagemAlerta("A tela já esta aberta em sua area de trabalho.");
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
                 TelaTodasAnotacoes tela = new TelaTodasAnotacoes(desktopPanel);
+                this.desktopPanel.add(tela);
+                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
+                tela.setVisible(true);
+            }
+        });
+        
+        this.btnItemHistorico.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(desktopPanel, TelaDeHistoricoNota.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                TelaDeHistoricoNota tela = new TelaDeHistoricoNota();
                 this.desktopPanel.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
                 tela.setVisible(true);

@@ -63,7 +63,7 @@ public class Configuracao {
                 Method method = classe.getMethod(dados[1]);
                 if (method.invoke(obj) == null || method.invoke(obj).toString().isEmpty()) {
                     valido = false;
-                    FactoryMensagem.mensagemAlerta("Informe o campo " + dados[0]);
+                    FactoryMensagem.mensagemAlerta("Informe o campo '" + dados[0] + "'");
                 }
                 index++;
             }

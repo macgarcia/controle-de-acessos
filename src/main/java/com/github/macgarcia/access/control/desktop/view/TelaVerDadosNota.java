@@ -170,10 +170,11 @@ public class TelaVerDadosNota extends javax.swing.JInternalFrame {
     public void mostrarDados(final Nota nota) {
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         this.lblTitulo.setText(nota.getTitulo());
-        this.lblDescricao.setText(nota.getDescricao());
+        this.lblDescricao.setText(nota.getDescricao() == null ? "--" : nota.getDescricao());
         this.lblCriacao.setText(dtf.format(nota.getDataCriacao()));
         this.lblUsuario.setText(nota.getUsuario());
         this.lblSenha.setText(nota.getSenha());
+        this.lblUrl.setText(nota.getUrlSite() == null ? "--" : nota.getUrlSite());
         this.lblDataAtualizacao.setText(nota.getDataAtualizacao() == null ? "--" : dtf.format(nota.getDataAtualizacao()));
     }
 

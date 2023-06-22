@@ -13,15 +13,14 @@ import javax.swing.table.AbstractTableModel;
 public class ModeloTabelaNota extends AbstractTableModel {
     
     private final int NUMERO_COLUNAS = 7;
-    private NotaRepository NotaRepository;
+    private NotaRepository notaRepository;
     private List<Nota> notas;
     
     public ModeloTabelaNota() {
-        this.NotaRepository = new NotaRepository();
-        this.notas = NotaRepository.getTodasNotas();
+        this.notaRepository = new NotaRepository();
+        this.notas = notaRepository.getTodasNotas();
     }
     
-
     @Override
     public int getRowCount() {
         return this.notas.size();
@@ -37,12 +36,12 @@ public class ModeloTabelaNota extends AbstractTableModel {
         final Nota nota = notas.get(rowIndex);
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         return switch (columnIndex) {
-            case 0 -> nota.getDescricao();
+            case 0 -> nota.getDescricao() == null ? "--": nota.getDescricao();
             case 1 -> nota.getTitulo();
             case 2 -> dtf.format(nota.getDataCriacao());
             case 3 -> nota.getUsuario();
             case 4 -> nota.getSenha();
-            case 5 -> nota.getSenha();
+            case 5 -> nota.getUrlSite() == null ? "--" : nota.getUrlSite();
             case 6 -> nota.getDataAtualizacao() == null ? "--" : dtf.format(nota.getDataAtualizacao());
             default -> throw new IllegalArgumentException("Erro interno na construção da tabela");
         };

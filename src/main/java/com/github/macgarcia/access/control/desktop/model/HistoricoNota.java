@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.model;
 
+import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "historico_nota")
-public class HistoricoNota implements Serializable {
+public class HistoricoNota implements Serializable, EntidadeBase {
     
     @Id
     private Integer id;
@@ -45,6 +46,7 @@ public class HistoricoNota implements Serializable {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
+    @Override
     public Integer getId() {
         return id;
     }

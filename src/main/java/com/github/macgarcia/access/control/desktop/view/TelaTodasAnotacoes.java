@@ -4,6 +4,7 @@ import com.github.macgarcia.access.control.desktop.component.ModeloTabelaNota;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JDesktopPane;
@@ -17,6 +18,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     private ModeloTabelaNota model;
     private Nota notaSelecionada;
     private JDesktopPane desktop;
+    private final int ZERO = 0;
 
     /**
      * Creates new form TelaTodasAnotacoes
@@ -44,6 +46,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         jTableNotas = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnVer = new javax.swing.JButton();
+        btnApagar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -68,6 +71,9 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
         btnVer.setText("Ver");
 
+        btnApagar.setForeground(new java.awt.Color(255, 0, 0));
+        btnApagar.setText("Apagar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,7 +86,8 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnApagar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVer)
                         .addGap(18, 18, 18)
                         .addComponent(btnEditar)))
@@ -96,7 +103,8 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
-                    .addComponent(btnVer))
+                    .addComponent(btnVer)
+                    .addComponent(btnApagar))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -105,6 +113,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnApagar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnVer;
     private javax.swing.JLabel jLabel1;
@@ -154,6 +163,18 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 this.desktop.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktop, tela);
                 tela.setVisible(true);
+            }
+        });
+
+        this.btnApagar.addActionListener(ev -> {
+            if (notaSelecionada == null) {
+                FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
+            } else {
+                final int resposta = FactoryMensagem.mensagemConfirmacao();
+                if (resposta == ZERO) {
+                    new NotaService().apagar(notaSelecionada.getId());
+                    construirTabela();
+                }
             }
         });
     }

@@ -23,5 +23,10 @@ public class NotaService {
         } else {
             FactoryMensagem.mensagemErro("Erro ao salvar a nota.");
         }
-    }    
+    }
+    
+    public void apagar(final Integer id) {
+        this.repository.apagarEntidade(Nota.class, id);
+        FactoryMensagem.mensagemOk("Registro apagado com sucesso.");
+    }
 }

@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.view;
 
+import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
     private final NotaService service;
     private boolean atualizacaoDeNota;
     private Nota notaParaAtualizar;
+    private final String[] metodos = {"Título-getTitulo", "Usuário-getUsuario", "Senha-getSenha"};
 
     /**
      * Creates new form TelaCadastroNota
@@ -155,27 +157,37 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
             if (this.atualizacaoDeNota) {
                 this.preencherDadosNovosDaNota();
                 // Validar dados da nota
-                this.service.salvarNota(notaParaAtualizar);
-                this.notaParaAtualizar = null;
-                this.dispose();
+                final boolean validou = validar(notaParaAtualizar);
+                if (validou) {
+                    this.service.salvarNota(notaParaAtualizar);
+                    this.notaParaAtualizar = null;
+                    this.dispose();
+                }
             } else {
                 final Nota novaNota = capturarInformacoesDaTela();
                 // Validar dados da nota
-                this.service.salvarNota(novaNota);
-                this.dispose();
+                final boolean validou = validar(novaNota);
+                if (validou) {
+                    this.service.salvarNota(novaNota);
+                    this.dispose();
+                }
             }
         });
     }
 
+    private boolean validar(final Nota nota) {
+        return Configuracao.validar(metodos, nota, Nota.class);
+    }
+
     private Nota capturarInformacoesDaTela() {
         final String titulo = txtTitulo.getText();
-        final String descricao = txtDescricao.getText();
+        final String descricao = txtDescricao.getText().trim();
         final String usuario = txtUsuario.getText();
         final String senha = txtSenha.getText();
-        final String urlSite = txtUrlSite.getText();
+        final String urlSite = txtUrlSite.getText().trim();
         return new Nota(titulo, descricao, usuario, senha, urlSite);
     }
-    
+
     private void preencherDadosNovosDaNota() {
         final Nota dadosNovosDaNota = capturarInformacoesDaTela();
         this.notaParaAtualizar.setTitulo(dadosNovosDaNota.getTitulo());
@@ -185,7 +197,7 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
         this.notaParaAtualizar.setUrlSite(dadosNovosDaNota.getUrlSite());
         this.notaParaAtualizar.setDataAtualizacao(LocalDateTime.now());
     }
-    
+
     /* Iniciar a tela com os dados da nota selecionada para atualização */
     public void setDadosNaTelaDeAtualização(final Nota nota) {
         this.txtTitulo.setText(nota.getTitulo());

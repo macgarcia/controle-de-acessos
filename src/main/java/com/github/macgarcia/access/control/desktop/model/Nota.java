@@ -54,9 +54,9 @@ public class Nota implements Serializable, EntidadeBase {
         
     }
 
-    public Nota(String descricao, String titulo, String usuario, String senha, String urlSite) {
-        this.descricao = descricao;
+    public Nota(String titulo, String descricao, String usuario, String senha, String urlSite) {
         this.titulo = titulo;
+        this.descricao = descricao;
         this.usuario = usuario;
         this.senha = senha;
         this.urlSite = urlSite;
