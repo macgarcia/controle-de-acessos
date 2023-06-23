@@ -47,6 +47,9 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         btnVer = new javax.swing.JButton();
         btnApagar = new javax.swing.JButton();
+        txtPesquisar = new javax.swing.JTextField();
+        btnPesquisar = new javax.swing.JButton();
+        btnLimparPesquisa = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -74,6 +77,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         btnApagar.setForeground(new java.awt.Color(255, 0, 0));
         btnApagar.setText("Apagar");
 
+        btnPesquisar.setForeground(new java.awt.Color(51, 153, 0));
+        btnPesquisar.setText("Pesquisar");
+
+        btnLimparPesquisa.setForeground(new java.awt.Color(51, 51, 255));
+        btnLimparPesquisa.setText("Limpar pesquisa");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,6 +96,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnApagar)
+                        .addGap(149, 149, 149)
+                        .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPesquisar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLimparPesquisa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVer)
                         .addGap(18, 18, 18)
@@ -104,7 +119,10 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnVer)
-                    .addComponent(btnApagar))
+                    .addComponent(btnApagar)
+                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisar)
+                    .addComponent(btnLimparPesquisa))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -115,10 +133,13 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApagar;
     private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnLimparPesquisa;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableNotas;
+    private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
 
     private void configurarJanela() {
@@ -158,7 +179,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
                 FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
             } else {
-                final TelaVerDadosNota tela = new TelaVerDadosNota(this.desktop);
+                final TelaVerDadosNota tela = new TelaVerDadosNota();
                 tela.mostrarDados(notaSelecionada);
                 this.desktop.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktop, tela);
@@ -176,6 +197,19 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                     construirTabela();
                 }
             }
+        });
+        
+        this.btnPesquisar.addActionListener(ev -> {
+            final String chave = this.txtPesquisar.getText().trim();
+            if (!chave.isEmpty()) {
+                this.model.pesquisar(chave);
+                this.jTableNotas.updateUI();
+            }
+        });
+        
+        this.btnLimparPesquisa.addActionListener(ev ->{
+            this.txtPesquisar.setText(null);
+            construirTabela();;
         });
     }
 

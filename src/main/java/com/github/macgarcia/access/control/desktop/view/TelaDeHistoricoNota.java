@@ -3,11 +3,8 @@ package com.github.macgarcia.access.control.desktop.view;
 import com.github.macgarcia.access.control.desktop.component.ModeloTabelaHistoricoNota;
 import com.github.macgarcia.access.control.desktop.component.ModeloTabelaNota;
 import com.github.macgarcia.access.control.desktop.model.Nota;
-import com.github.macgarcia.access.control.desktop.repository.HistoricoNotaRepository;
-import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 /**
  *

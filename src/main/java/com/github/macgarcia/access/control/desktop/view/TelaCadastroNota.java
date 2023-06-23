@@ -72,9 +72,9 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSalvar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +99,7 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(txtUrlSite))))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,10 +180,10 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
     }
 
     private Nota capturarInformacoesDaTela() {
-        final String titulo = txtTitulo.getText();
+        final String titulo = txtTitulo.getText().trim();
         final String descricao = txtDescricao.getText().trim();
-        final String usuario = txtUsuario.getText();
-        final String senha = txtSenha.getText();
+        final String usuario = txtUsuario.getText().trim();
+        final String senha = txtSenha.getText().trim();
         final String urlSite = txtUrlSite.getText().trim();
         return new Nota(titulo, descricao, usuario, senha, urlSite);
     }

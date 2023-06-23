@@ -46,7 +46,7 @@ public class ModeloTabelaHistoricoNota extends AbstractTableModel {
             case 6 -> historicoNota.getUsuario();
             case 7 -> historicoNota.getSenha();
             case 8 -> historicoNota.getUrlSite() == null ? "--" : historicoNota.getUrlSite();
-            case 9 -> dtf.format(historicoNota.getDataAtualizacao());
+            case 9 -> historicoNota.getDataAtualizacao() == null ? "--" : dtf.format(historicoNota.getDataAtualizacao());
             default -> throw new IllegalArgumentException("Erro interno na construção da tabela");
         };
     }

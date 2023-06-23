@@ -12,7 +12,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTabelaNota extends AbstractTableModel {
     
-    private final int NUMERO_COLUNAS = 7;
+    private final int NUMERO_COLUNAS = 6;
     private NotaRepository notaRepository;
     private List<Nota> notas;
     
@@ -40,9 +40,8 @@ public class ModeloTabelaNota extends AbstractTableModel {
             case 1 -> nota.getTitulo();
             case 2 -> dtf.format(nota.getDataCriacao());
             case 3 -> nota.getUsuario();
-            case 4 -> nota.getSenha();
-            case 5 -> nota.getUrlSite() == null ? "--" : nota.getUrlSite();
-            case 6 -> nota.getDataAtualizacao() == null ? "--" : dtf.format(nota.getDataAtualizacao());
+            case 4 -> nota.getUrlSite() == null ? "--" : nota.getUrlSite();
+            case 5 -> nota.getDataAtualizacao() == null ? "--" : dtf.format(nota.getDataAtualizacao());
             default -> throw new IllegalArgumentException("Erro interno na construção da tabela");
         };
     }
@@ -54,9 +53,8 @@ public class ModeloTabelaNota extends AbstractTableModel {
             case 1 -> "Titulo";
             case 2 -> "Data da cricação";
             case 3 -> "Usuário";
-            case 4 -> "Senha";
-            case 5 -> "Url";
-            case 6 -> "Data de atualização";
+            case 4 -> "Url";
+            case 5 -> "Data de atualização";
             default -> throw new IllegalArgumentException("Erro interno na construção da tabela");
         };
     }
@@ -64,5 +62,9 @@ public class ModeloTabelaNota extends AbstractTableModel {
     /* Recuperar a nota selecionada na tabela */
     public Nota getNota(final int linha) {
         return notas.get(linha);
+    }
+    
+    public void pesquisar(final String chave) {
+        this.notas = notaRepository.getNotasPorPesquisa(chave);
     }
 }

@@ -15,9 +15,8 @@ public class TelaVerDadosNota extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaVerDadosNota
      */
-    public TelaVerDadosNota(final JDesktopPane desktopPane) {
+    public TelaVerDadosNota() {
         initComponents();
-        this.desktop = desktopPane;
         configurarJanela();
     }
 
