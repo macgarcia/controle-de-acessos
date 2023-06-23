@@ -51,7 +51,7 @@ begin
 				 , old.usuario
 				 , old.senha
 				 , old.url_site
-				 , old.data_atualizacao
+				 , current_timestamp()
 				 );
       --
    end if;
