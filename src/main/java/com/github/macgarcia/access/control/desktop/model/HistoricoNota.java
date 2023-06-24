@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,14 +19,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "historico_nota")
 public class HistoricoNota implements Serializable, EntidadeBase {
-    
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_nota")
     private Nota nota;
-    
+
     @Column(name = "data_validade_inicial")
     private LocalDateTime dataValidadeInicial;
     @Column(name = "data_validade_final")
@@ -46,6 +49,23 @@ public class HistoricoNota implements Serializable, EntidadeBase {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
+    public HistoricoNota() {
+    }
+
+    public HistoricoNota(LocalDateTime dataValidadeInicial, LocalDateTime dataValidadeFinal,
+            Integer numeroAtualizacao, String descricao, String titulo, String usuario, String senha, String urlSite, LocalDateTime dataAtualizacao) {
+        this.dataValidadeInicial = dataValidadeInicial;
+        this.dataValidadeFinal = dataValidadeFinal;
+        this.numeroAtualizacao = numeroAtualizacao;
+        this.descricao = descricao;
+        this.titulo = titulo;
+        this.usuario = usuario;
+        this.senha = senha;
+        this.urlSite = urlSite;
+        this.dataAtualizacao = dataAtualizacao;
+        this.dataCriacao = LocalDateTime.now();
+    }
+
     @Override
     public Integer getId() {
         return id;
@@ -62,7 +82,6 @@ public class HistoricoNota implements Serializable, EntidadeBase {
     public void setNota(Nota nota) {
         this.nota = nota;
     }
-
 
     public LocalDateTime getDataValidadeInicial() {
         return dataValidadeInicial;

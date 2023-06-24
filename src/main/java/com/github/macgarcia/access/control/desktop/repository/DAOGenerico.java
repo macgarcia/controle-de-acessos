@@ -32,7 +32,6 @@ public class DAOGenerico<T extends EntidadeBase> {
             }
             manager.getTransaction().commit();
             return true;
-
         } catch (Exception e) {
             return false;
         } finally {

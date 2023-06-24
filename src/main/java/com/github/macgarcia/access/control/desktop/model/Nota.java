@@ -4,6 +4,7 @@ import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,7 +48,7 @@ public class Nota implements Serializable, EntidadeBase {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = CascadeType.PERSIST)
     private List<HistoricoNota> historico;
     
     public Nota(){

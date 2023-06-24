@@ -1,4 +1,4 @@
-package com.github.macgarcia.access.control.desktop.view;
+package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
 import com.github.macgarcia.access.control.desktop.component.ModeloTabelaNota;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
@@ -17,11 +17,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
     private ModeloTabelaNota model;
     private Nota notaSelecionada;
-    private JDesktopPane desktop;
+    private final JDesktopPane desktop;
     private final int ZERO = 0;
 
     /**
      * Creates new form TelaTodasAnotacoes
+     * @param desktopPane
      */
     public TelaTodasAnotacoes(final JDesktopPane desktopPane) {
         initComponents();
@@ -209,7 +210,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         
         this.btnLimparPesquisa.addActionListener(ev ->{
             this.txtPesquisar.setText(null);
-            construirTabela();;
+            construirTabela();
         });
     }
 

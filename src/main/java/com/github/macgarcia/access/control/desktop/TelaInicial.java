@@ -2,18 +2,17 @@ package com.github.macgarcia.access.control.desktop;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
-import com.github.macgarcia.access.control.desktop.repository.DAOGenerico;
-import com.github.macgarcia.access.control.desktop.view.TelaCadastroNota;
-import com.github.macgarcia.access.control.desktop.view.TelaDeHistoricoNota;
-import com.github.macgarcia.access.control.desktop.view.TelaTodasAnotacoes;
-import javax.persistence.EntityManager;
+import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaCadastroNota;
+import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaDeHistoricoNota;
+import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaTodasAnotacoes;
+import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaInicial extends javax.swing.JFrame {
-    
+
     private final String MENSAGEM_DE_TELA_ABERTA = "A tela já esta aberta em sua area de trabalho.";
 
     /**
@@ -24,6 +23,7 @@ public class TelaInicial extends javax.swing.JFrame {
         setExtendedState(TelaInicial.MAXIMIZED_BOTH);
         configurarJanela();
         acoesDoMenuAnotacoes();
+        acoesDoMenuIntegracao();
     }
 
     /**
@@ -42,6 +42,8 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuTodasNotas = new javax.swing.JMenuItem();
         btnItemHistoricoDeNotas = new javax.swing.JMenuItem();
         btnItemMenuSair = new javax.swing.JMenuItem();
+        btnMenuIntegracao = new javax.swing.JMenu();
+        btnItemMenuImportarDocumento = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,6 +73,13 @@ public class TelaInicial extends javax.swing.JFrame {
         btnMenuAnotacoes.add(btnItemMenuSair);
 
         jMenuBar1.add(btnMenuAnotacoes);
+
+        btnMenuIntegracao.setText("Integração");
+
+        btnItemMenuImportarDocumento.setText("Importar documento");
+        btnMenuIntegracao.add(btnItemMenuImportarDocumento);
+
+        jMenuBar1.add(btnMenuIntegracao);
 
         setJMenuBar(jMenuBar1);
 
@@ -125,10 +134,12 @@ public class TelaInicial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnItemHistoricoDeNotas;
+    private javax.swing.JMenuItem btnItemMenuImportarDocumento;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
     private javax.swing.JMenuItem btnItemMenuSair;
     private javax.swing.JMenuItem btnItemMenuTodasNotas;
     private javax.swing.JMenu btnMenuAnotacoes;
+    private javax.swing.JMenu btnMenuIntegracao;
     private javax.swing.JDesktopPane desktopPanel;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
@@ -162,7 +173,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 tela.setVisible(true);
             }
         });
-        
+
         this.btnItemHistoricoDeNotas.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaDeHistoricoNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
@@ -176,6 +187,19 @@ public class TelaInicial extends javax.swing.JFrame {
 
         this.btnItemMenuSair.addActionListener(ev -> {
             System.exit(0);
+        });
+    }
+
+    private void acoesDoMenuIntegracao() {
+        this.btnItemMenuImportarDocumento.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaIntegracaoTxt.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                TelaIntegracaoTxt tela = new TelaIntegracaoTxt();
+                this.desktopPanel.add(tela);
+                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
+                tela.setVisible(true);
+            }
         });
     }
 }

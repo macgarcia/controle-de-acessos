@@ -1,4 +1,4 @@
-package com.github.macgarcia.access.control.desktop.view;
+package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
