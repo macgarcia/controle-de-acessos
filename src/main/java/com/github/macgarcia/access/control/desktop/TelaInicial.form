@@ -9,19 +9,19 @@
             <Property name="text" type="java.lang.String" value="Anota&#xe7;&#xf5;es"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuNovaAnotacao">
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuNovaNota">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Nova anota&#xe7;&#xe3;o"/>
+                <Property name="text" type="java.lang.String" value="Cadastrar nova nota"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuTodasAnotacoes">
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuTodasNotas">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Todas as anota&#xe7;&#xf5;es"/>
+                <Property name="text" type="java.lang.String" value="Todas as notas"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="btnItemHistorico">
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemHistoricoDeNotas">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Historico de atualiza&#xe7;&#xf5;es de nota"/>
+                <Property name="text" type="java.lang.String" value="Hist&#xf3;rico de atualiza&#xe7;&#xf5;es das notas"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuSair">

@@ -42,7 +42,6 @@ public class TelaDeHistoricoNota extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableHistorico = new javax.swing.JTable();
-        btnLimparHistorico = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -78,27 +77,20 @@ public class TelaDeHistoricoNota extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(jTableHistorico);
 
-        btnLimparHistorico.setText("Limpar historico");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLimparHistorico))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1276, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1276, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -112,9 +104,7 @@ public class TelaDeHistoricoNota extends javax.swing.JInternalFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLimparHistorico)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,7 +112,6 @@ public class TelaDeHistoricoNota extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLimparHistorico;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -143,6 +132,7 @@ public class TelaDeHistoricoNota extends javax.swing.JInternalFrame {
     private void configurarTabelas() {
         this.jTableNotas.setModel(this.modeloTabelaNota);
         this.jTableNotas.getTableHeader().setReorderingAllowed(false);
+        montarTabelaDeHistorico(0);
     }
 
     private void acaoDeClickDeSelecaoNaTabela() {
@@ -150,10 +140,14 @@ public class TelaDeHistoricoNota extends javax.swing.JInternalFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 final Nota nota = modeloTabelaNota.getNota(jTableNotas.getSelectedRow());
-                modeloTabelaHistoricoNota = new ModeloTabelaHistoricoNota(nota.getId());
-                jTableHistorico.setModel(modeloTabelaHistoricoNota);
-                jTableHistorico.getTableHeader().setReorderingAllowed(false);
+                montarTabelaDeHistorico(nota.getId());
             }
         });
+    }
+
+    private void montarTabelaDeHistorico(final Integer id) {
+        modeloTabelaHistoricoNota = new ModeloTabelaHistoricoNota(id);
+        jTableHistorico.setModel(modeloTabelaHistoricoNota);
+        jTableHistorico.getTableHeader().setReorderingAllowed(false);
     }
 }

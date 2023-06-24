@@ -2,15 +2,12 @@ package com.github.macgarcia.access.control.desktop.view;
 
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JDesktopPane;
-
 /**
  *
  * @author macgarcia
  */
 public class TelaVerDadosNota extends javax.swing.JInternalFrame {
 
-    private JDesktopPane desktop;
 
     /**
      * Creates new form TelaVerDadosNota

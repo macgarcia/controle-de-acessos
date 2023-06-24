@@ -3,6 +3,7 @@ package com.github.macgarcia.access.control.desktop.component;
 import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
 import com.github.macgarcia.access.control.desktop.repository.HistoricoNotaRepository;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -19,7 +20,11 @@ public class ModeloTabelaHistoricoNota extends AbstractTableModel {
     
     public ModeloTabelaHistoricoNota(final Integer id) {
         this.repository = new HistoricoNotaRepository();
-        this.historicos = repository.getTodohistoricoDaNota(id);
+        if (id != 0) {
+            this.historicos = repository.getTodohistoricoDaNota(id);
+        } else {
+            this.historicos = new ArrayList<>();
+        }
     }
 
     @Override

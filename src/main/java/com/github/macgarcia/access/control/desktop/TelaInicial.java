@@ -2,9 +2,11 @@ package com.github.macgarcia.access.control.desktop;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.repository.DAOGenerico;
 import com.github.macgarcia.access.control.desktop.view.TelaCadastroNota;
 import com.github.macgarcia.access.control.desktop.view.TelaDeHistoricoNota;
 import com.github.macgarcia.access.control.desktop.view.TelaTodasAnotacoes;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -21,7 +23,7 @@ public class TelaInicial extends javax.swing.JFrame {
         initComponents();
         setExtendedState(TelaInicial.MAXIMIZED_BOTH);
         configurarJanela();
-        acoesDoMenu();
+        acoesDoMenuAnotacoes();
     }
 
     /**
@@ -36,9 +38,9 @@ public class TelaInicial extends javax.swing.JFrame {
         desktopPanel = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnMenuAnotacoes = new javax.swing.JMenu();
-        btnItemMenuNovaAnotacao = new javax.swing.JMenuItem();
-        btnItemMenuTodasAnotacoes = new javax.swing.JMenuItem();
-        btnItemHistorico = new javax.swing.JMenuItem();
+        btnItemMenuNovaNota = new javax.swing.JMenuItem();
+        btnItemMenuTodasNotas = new javax.swing.JMenuItem();
+        btnItemHistoricoDeNotas = new javax.swing.JMenuItem();
         btnItemMenuSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,14 +58,14 @@ public class TelaInicial extends javax.swing.JFrame {
 
         btnMenuAnotacoes.setText("Anotações");
 
-        btnItemMenuNovaAnotacao.setText("Nova anotação");
-        btnMenuAnotacoes.add(btnItemMenuNovaAnotacao);
+        btnItemMenuNovaNota.setText("Cadastrar nova nota");
+        btnMenuAnotacoes.add(btnItemMenuNovaNota);
 
-        btnItemMenuTodasAnotacoes.setText("Todas as anotações");
-        btnMenuAnotacoes.add(btnItemMenuTodasAnotacoes);
+        btnItemMenuTodasNotas.setText("Todas as notas");
+        btnMenuAnotacoes.add(btnItemMenuTodasNotas);
 
-        btnItemHistorico.setText("Historico de atualizações de nota");
-        btnMenuAnotacoes.add(btnItemHistorico);
+        btnItemHistoricoDeNotas.setText("Histórico de atualizações das notas");
+        btnMenuAnotacoes.add(btnItemHistoricoDeNotas);
 
         btnItemMenuSair.setText("Sair");
         btnMenuAnotacoes.add(btnItemMenuSair);
@@ -122,10 +124,10 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem btnItemHistorico;
-    private javax.swing.JMenuItem btnItemMenuNovaAnotacao;
+    private javax.swing.JMenuItem btnItemHistoricoDeNotas;
+    private javax.swing.JMenuItem btnItemMenuNovaNota;
     private javax.swing.JMenuItem btnItemMenuSair;
-    private javax.swing.JMenuItem btnItemMenuTodasAnotacoes;
+    private javax.swing.JMenuItem btnItemMenuTodasNotas;
     private javax.swing.JMenu btnMenuAnotacoes;
     private javax.swing.JDesktopPane desktopPanel;
     private javax.swing.JMenuBar jMenuBar1;
@@ -136,9 +138,9 @@ public class TelaInicial extends javax.swing.JFrame {
         setResizable(false);
     }
 
-    private void acoesDoMenu() {
+    private void acoesDoMenuAnotacoes() {
 
-        this.btnItemMenuNovaAnotacao.addActionListener(ev -> {
+        this.btnItemMenuNovaNota.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaCadastroNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
@@ -150,7 +152,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
-        this.btnItemMenuTodasAnotacoes.addActionListener(ev -> {
+        this.btnItemMenuTodasNotas.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaTodasAnotacoes.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
@@ -161,7 +163,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
         
-        this.btnItemHistorico.addActionListener(ev -> {
+        this.btnItemHistoricoDeNotas.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaDeHistoricoNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
