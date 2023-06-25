@@ -23,6 +23,9 @@ public class TelaIntegracaoTxtService {
     private Nota nota = null;
     private HistoricoNota historicoNota = null;
     private ArrayList<HistoricoNota> historicos;
+    private int qtdeHistoricosPorNota;
+
+    private List<Nota> notas;
 
     private final NotaRepository notaRepository;
 
@@ -30,23 +33,32 @@ public class TelaIntegracaoTxtService {
         this.notaRepository = new NotaRepository();
     }
 
-    public void processarDadosDoArquivo(List<String> linhasDoArquivo) {
+    public void processarDadosDoArquivo(List<String> linhasDoArquivo) throws Exception {
         for (String linha : linhasDoArquivo) {
             final String[] dadosLinha = linha.split("\\|");
             montarNota(dadosLinha);
             montarHistorico(dadosLinha);
+            if (qtdeHistoricosPorNota == getHistoricos().size()) {
+                this.nota.setHistorico(historicos);
+                getNotas().add(nota);
+                this.historicos = null;
+            }
         }
-        this.nota.setHistorico(historicos);
-        final boolean salvou = this.notaRepository.salvarEntidade(nota);
-        if (salvou) {
-            FactoryMensagem.mensagemOk("Integração realizada com sucesso.");
-        }
+    }
+
+    public void salvarNotas() {
+        getNotas().forEach(notaRepository::salvarEntidade);
+        FactoryMensagem.mensagemOk("Integração realizada com sucesso.");
     }
 
     private void montarNota(final String[] dadosLinha) {
         if (TOKEN_NOTA.equals(dadosLinha[0])) {
-            this.nota = new Nota(dadosLinha[1], dadosLinha[2],
-                    dadosLinha[3], dadosLinha[4],dadosLinha[5]);
+
+            /* Quantidade de historicos que a nota possui */
+            this.qtdeHistoricosPorNota = Integer.parseInt(dadosLinha[1]);
+
+            this.nota = new Nota(dadosLinha[2], dadosLinha[3],
+                    dadosLinha[4], dadosLinha[5], dadosLinha[6]);
         }
     }
 
@@ -74,5 +86,12 @@ public class TelaIntegracaoTxtService {
             this.historicos = new ArrayList<>();
         }
         return historicos;
+    }
+
+    public List<Nota> getNotas() {
+        if (this.notas == null) {
+            this.notas = new ArrayList<>();
+        }
+        return notas;
     }
 }
