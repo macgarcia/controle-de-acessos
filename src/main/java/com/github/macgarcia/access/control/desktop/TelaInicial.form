@@ -41,6 +41,11 @@
                 <Property name="text" type="java.lang.String" value="Importar documento"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuExportarDados">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Exportar dados"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

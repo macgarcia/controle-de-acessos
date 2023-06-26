@@ -5,6 +5,7 @@ import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaCadastroNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaDeHistoricoNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaTodasAnotacoes;
+import com.github.macgarcia.access.control.desktop.view.integracoes.TelaDeExportacaoDados;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
 
 /**
@@ -44,6 +45,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuSair = new javax.swing.JMenuItem();
         btnMenuIntegracao = new javax.swing.JMenu();
         btnItemMenuImportarDocumento = new javax.swing.JMenuItem();
+        btnItemMenuExportarDados = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +80,9 @@ public class TelaInicial extends javax.swing.JFrame {
 
         btnItemMenuImportarDocumento.setText("Importar documento");
         btnMenuIntegracao.add(btnItemMenuImportarDocumento);
+
+        btnItemMenuExportarDados.setText("Exportar dados");
+        btnMenuIntegracao.add(btnItemMenuExportarDados);
 
         jMenuBar1.add(btnMenuIntegracao);
 
@@ -134,6 +139,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnItemHistoricoDeNotas;
+    private javax.swing.JMenuItem btnItemMenuExportarDados;
     private javax.swing.JMenuItem btnItemMenuImportarDocumento;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
     private javax.swing.JMenuItem btnItemMenuSair;
@@ -155,7 +161,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaCadastroNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                TelaCadastroNota tela = new TelaCadastroNota();
+                final TelaCadastroNota tela = new TelaCadastroNota();
                 tela.setAtualizacaoDeNota(false);
                 this.desktopPanel.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
@@ -167,7 +173,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaTodasAnotacoes.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                TelaTodasAnotacoes tela = new TelaTodasAnotacoes(desktopPanel);
+                final TelaTodasAnotacoes tela = new TelaTodasAnotacoes(desktopPanel);
                 this.desktopPanel.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
                 tela.setVisible(true);
@@ -178,7 +184,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaDeHistoricoNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                TelaDeHistoricoNota tela = new TelaDeHistoricoNota();
+                final TelaDeHistoricoNota tela = new TelaDeHistoricoNota();
                 this.desktopPanel.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
                 tela.setVisible(true);
@@ -191,11 +197,23 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     private void acoesDoMenuIntegracao() {
+
         this.btnItemMenuImportarDocumento.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaIntegracaoTxt.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                TelaIntegracaoTxt tela = new TelaIntegracaoTxt();
+                final TelaIntegracaoTxt tela = new TelaIntegracaoTxt();
+                this.desktopPanel.add(tela);
+                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
+                tela.setVisible(true);
+            }
+        });
+
+        this.btnItemMenuExportarDados.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaDeExportacaoDados.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                final TelaDeExportacaoDados tela = new TelaDeExportacaoDados();
                 this.desktopPanel.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
                 tela.setVisible(true);

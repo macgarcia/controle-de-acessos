@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.view.integracoes;
 
+import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.service.TelaIntegracaoTxtService;
 import java.io.IOException;
@@ -7,8 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -56,6 +55,7 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
 
         btnIniciar.setText("Iniciar");
 
+        lblProgresso.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblProgresso.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -89,8 +89,8 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
                 .addGap(30, 30, 30)
                 .addComponent(lblProgresso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
@@ -121,7 +121,7 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
     private void acoesDosBotoes() {
         
         this.btnProcurarArquivo.addActionListener(ev -> {
-            this.construirLancador();
+            Configuracao.construirLancador(true, txtCaminhoArquivo);
             if (!txtCaminhoArquivo.getText().isEmpty()) {
                 this.btnIniciar.setEnabled(true);
             }
@@ -157,19 +157,6 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
             this.barraProgresso.setValue(100);
             this.lblProgresso.setText("Integração finalizada.");
         });
-    }
-
-    private void construirLancador() {
-        final JFileChooser lancador = new JFileChooser();
-        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Arquivos de Texto (*.txt)", "txt");
-        lancador.addChoosableFileFilter(txtFilter);
-        lancador.setFileFilter(txtFilter);
-
-        int result = lancador.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            java.io.File selectedFile = lancador.getSelectedFile();
-            this.txtCaminhoArquivo.setText(selectedFile.getPath());
-        }
     }
 
     private void lerArquivoSelecionado() throws IOException {

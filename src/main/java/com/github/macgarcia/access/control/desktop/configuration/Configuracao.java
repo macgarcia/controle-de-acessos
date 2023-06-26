@@ -1,18 +1,23 @@
 package com.github.macgarcia.access.control.desktop.configuration;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  *
  * @author macgarcia
  */
 public class Configuracao {
-    
-        /**
+
+    /**
      * *
      * Método que inicializa uma tela interna no centro.
      *
@@ -72,5 +77,32 @@ public class Configuracao {
             valido = false;
         }
         return valido;
-    }    
+    }
+
+    /**
+     * *
+     * Método que abre um explorer de arquivos.
+     *
+     * @param abrirArquivo
+     * @param campo
+     */
+    public static void construirLancador(final boolean abrirArquivo, final JTextField campo) {
+        JFileChooser lancador = null;
+        if (abrirArquivo) {
+            lancador = new JFileChooser();
+            FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Arquivos de Texto (*.txt)", "txt");
+            lancador.addChoosableFileFilter(txtFilter);
+            lancador.setFileFilter(txtFilter);
+        } else {
+            lancador = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            lancador.setDialogTitle("Selecione um diretório");
+            lancador.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        }
+
+        int result = lancador.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            final File selectedFile = lancador.getSelectedFile();
+            campo.setText(selectedFile.getPath());
+        }
+    }
 }

@@ -12,6 +12,11 @@
         <exec.mainClass>com.github.macgarcia.access.control.desktop.AccessControlDesktop</exec.mainClass>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
             <groupId>org.hibernate</groupId>
