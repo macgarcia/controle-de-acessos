@@ -25,35 +25,33 @@ public class HistoricoNota implements Serializable, EntidadeBase {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id_nota")
+    @JoinColumn(name = "id_nota", nullable = false)
     private Nota nota;
 
-    @Column(name = "data_validade_inicial")
+    @Column(name = "data_validade_inicial", nullable = false)
     private LocalDateTime dataValidadeInicial;
-    @Column(name = "data_validade_final")
+    @Column(name = "data_validade_final", nullable = false)
     private LocalDateTime dataValidadeFinal;
-    @Column(name = "numero_atualizacao")
+    @Column(name = "numero_atualizacao", nullable = false)
     private Integer numeroAtualizacao;
-    @Column(name = "descricao")
+    @Column(name = "descricao", nullable = true)
     private String descricao;
-    @Column(name = "titulo")
+    @Column(name = "titulo", nullable = false)
     private String titulo;
-    @Column(name = "data_criacao")
+    @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
-    @Column(name = "usuario")
+    @Column(name = "usuario", nullable = false)
     private String usuario;
-    @Column(name = "senha")
+    @Column(name = "senha", nullable = false)
     private String senha;
-    @Column(name = "url_site")
+    @Column(name = "url_site", nullable = true)
     private String urlSite;
-    @Column(name = "data_atualizacao")
-    private LocalDateTime dataAtualizacao;
 
     public HistoricoNota() {
     }
 
     public HistoricoNota(LocalDateTime dataValidadeInicial, LocalDateTime dataValidadeFinal,
-            Integer numeroAtualizacao, String descricao, String titulo, String usuario, String senha, String urlSite, LocalDateTime dataAtualizacao) {
+            Integer numeroAtualizacao, String descricao, String titulo, String usuario, String senha, String urlSite) {
         this.dataValidadeInicial = dataValidadeInicial;
         this.dataValidadeFinal = dataValidadeFinal;
         this.numeroAtualizacao = numeroAtualizacao;
@@ -62,7 +60,6 @@ public class HistoricoNota implements Serializable, EntidadeBase {
         this.usuario = usuario;
         this.senha = senha;
         this.urlSite = urlSite;
-        this.dataAtualizacao = dataAtualizacao;
         this.dataCriacao = LocalDateTime.now();
     }
 
@@ -153,18 +150,5 @@ public class HistoricoNota implements Serializable, EntidadeBase {
 
     public void setUrlSite(String urlSite) {
         this.urlSite = urlSite;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
-    }
-
-    @Override
-    public String toString() {
-        return "HistoricoNota{" + "id=" + id + ", dataValidadeInicial=" + dataValidadeInicial + ", dataValidadeFinal=" + dataValidadeFinal + ", numeroAtualizacao=" + numeroAtualizacao + ", descricao=" + descricao + ", titulo=" + titulo + ", dataCriacao=" + dataCriacao + ", usuario=" + usuario + ", senha=" + senha + ", urlSite=" + urlSite + ", dataAtualizacao=" + dataAtualizacao + '}';
     }
 }

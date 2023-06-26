@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTabelaHistoricoNota extends AbstractTableModel {
     
-    private final int NUMERO_COLUNAS = 10;
+    private final int NUMERO_COLUNAS = 9;
     
     private HistoricoNotaRepository repository;
     private List<HistoricoNota> historicos;
@@ -51,7 +51,6 @@ public class ModeloTabelaHistoricoNota extends AbstractTableModel {
             case 6 -> historicoNota.getUsuario();
             case 7 -> historicoNota.getSenha();
             case 8 -> historicoNota.getUrlSite() == null ? "--" : historicoNota.getUrlSite();
-            case 9 -> historicoNota.getDataAtualizacao() == null ? "--" : dtf.format(historicoNota.getDataAtualizacao());
             default -> throw new IllegalArgumentException("Erro interno na construção da tabela");
         };
     }
@@ -68,7 +67,6 @@ public class ModeloTabelaHistoricoNota extends AbstractTableModel {
             case 6 -> "Usuário";
             case 7 -> "Senha";
             case 8 -> "Url do site";
-            case 9 -> "Data da última atualização";
             default -> throw new IllegalArgumentException("Erro interno na construção da tabela");
         };
     }

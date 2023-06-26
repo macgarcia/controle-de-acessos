@@ -156,7 +156,6 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
         this.btnSalvar.addActionListener(ev -> {
             if (this.atualizacaoDeNota) {
                 this.preencherDadosNovosDaNota();
-                // Validar dados da nota
                 final boolean validou = validar(notaParaAtualizar);
                 if (validou) {
                     this.service.salvarNota(notaParaAtualizar);
@@ -165,7 +164,6 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
                 }
             } else {
                 final Nota novaNota = capturarInformacoesDaTela();
-                // Validar dados da nota
                 final boolean validou = validar(novaNota);
                 if (validou) {
                     this.service.salvarNota(novaNota);
@@ -196,10 +194,12 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
         this.notaParaAtualizar.setSenha(dadosNovosDaNota.getSenha());
         this.notaParaAtualizar.setUrlSite(dadosNovosDaNota.getUrlSite());
         this.notaParaAtualizar.setDataAtualizacao(LocalDateTime.now());
+        this.notaParaAtualizar.setHistorico(null);
     }
 
     /* Iniciar a tela com os dados da nota selecionada para atualização */
     public void setDadosNaTelaDeAtualização(final Nota nota) {
+        this.notaParaAtualizar = nota;
         this.txtTitulo.setText(nota.getTitulo());
         this.txtDescricao.setText(nota.getDescricao());
         this.txtUsuario.setText(nota.getUsuario());

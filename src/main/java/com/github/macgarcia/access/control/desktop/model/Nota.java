@@ -3,6 +3,7 @@ package com.github.macgarcia.access.control.desktop.model;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,25 +28,25 @@ public class Nota implements Serializable, EntidadeBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "descricao")
+    @Column(name = "descricao", nullable = true)
     private String descricao;
     
-    @Column(name = "titulo")
+    @Column(name = "titulo", nullable = false)
     private String titulo;
     
-    @Column(name = "data_criacao")
+    @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
     
-    @Column(name = "usuario")
+    @Column(name = "usuario", nullable = false)
     private String usuario;
     
-    @Column(name = "senha")
+    @Column(name = "senha", nullable = false)
     private String senha;
     
-    @Column(name = "url_site")
+    @Column(name = "url_site", nullable = true)
     private String urlSite;
     
-    @Column(name = "data_atualizacao")
+    @Column(name = "data_atualizacao", nullable = true)
     private LocalDateTime dataAtualizacao;
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = CascadeType.PERSIST)
@@ -130,20 +131,9 @@ public class Nota implements Serializable, EntidadeBase {
     }
 
     public void setHistorico(List<HistoricoNota> historico) {
+        if (this.historico == null) {
+            this.historico = new ArrayList<>();
+        }
         this.historico = historico;
-    }
-
-    @Override
-    public String toString() {
-        return "Nota{" + "id=" + id + ", descricao=" + descricao + ", titulo=" + titulo + ", dataCriacao=" + dataCriacao + ", usuario=" + usuario + ", senha=" + senha + ", urlSite=" + urlSite + ", dataAtualizacao=" + dataAtualizacao + '}';
-    }
-    
-    public String comHistorico() {
-        return "Nota{" + "id=" + id + ", descricao=" + descricao 
-                + ", titulo=" + titulo + ", dataCriacao=" + dataCriacao 
-                + ", usuario=" + usuario + ", senha=" + senha + ", urlSite=" + urlSite 
-                + ", dataAtualizacao=" + dataAtualizacao 
-                + ", historico=" + historico
-                + '}';
     }
 }

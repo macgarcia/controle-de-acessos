@@ -38,10 +38,10 @@ public class TelaIntegracaoTxtService {
             final String[] dadosLinha = linha.split("\\|");
             montarNota(dadosLinha);
             montarHistorico(dadosLinha);
-            if (qtdeHistoricosPorNota == getHistoricos().size()) {
-                this.nota.setHistorico(historicos);
+            if (qtdeHistoricosPorNota == nota.getHistorico().size()) {
+                //this.nota.setHistorico(historicos);
                 getNotas().add(nota);
-                this.historicos = null;
+                //this.historicos = null;
             }
         }
     }
@@ -72,21 +72,20 @@ public class TelaIntegracaoTxtService {
                     dadosLinha[5].trim().isEmpty() ? null : dadosLinha[5],
                     dadosLinha[6].trim().isEmpty() ? null : dadosLinha[6],
                     dadosLinha[7].trim().isEmpty() ? null : dadosLinha[7],
-                    dadosLinha[8].trim().isEmpty() ? null : dadosLinha[8],
-                    dadosLinha[9].trim().isEmpty() ? null : LocalDateTime.parse(dadosLinha[9], formatter)
+                    dadosLinha[8].trim().isEmpty() ? null : dadosLinha[8]
             );
-            this.getHistoricos();
+            //this.getHistoricos();
             this.historicoNota.setNota(nota);
-            this.historicos.add(historicoNota);
+            this.nota.getHistorico().add(historicoNota);
         }
     }
 
-    public ArrayList<HistoricoNota> getHistoricos() {
-        if (this.historicos == null) {
-            this.historicos = new ArrayList<>();
-        }
-        return historicos;
-    }
+//    public ArrayList<HistoricoNota> getHistoricos() {
+//        if (this.historicos == null) {
+//            this.historicos = new ArrayList<>();
+//        }
+//        return historicos;
+//    }
 
     public List<Nota> getNotas() {
         if (this.notas == null) {
