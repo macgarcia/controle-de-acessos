@@ -32,3 +32,8 @@ alter table historico_nota
    add constraint pk_historico_nota foreign key (id_nota)
    references nota(id);
 
+alter table historico_nota
+    drop column data_atualizacao;
+
+alter  table historico_nota
+   modify id_nota int not null;
