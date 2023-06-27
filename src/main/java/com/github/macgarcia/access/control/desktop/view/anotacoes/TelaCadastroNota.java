@@ -1,15 +1,19 @@
 package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
+import com.github.macgarcia.access.control.desktop.configuration.LogConfiguracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaCadastroNota extends javax.swing.JInternalFrame {
+    
+    private final Logger LOGGER = LogConfiguracao.getLogger(TelaCadastroNota.class);
 
     private final NotaService service;
     private boolean atualizacaoDeNota;
@@ -153,20 +157,30 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
     }
 
     private void acoesBotoes() {
+        
         this.btnSalvar.addActionListener(ev -> {
+            
             if (this.atualizacaoDeNota) {
+                
+                LOGGER.info("Atualização de uma nota");
+                
                 this.preencherDadosNovosDaNota();
                 final boolean validou = validar(notaParaAtualizar);
                 if (validou) {
                     this.service.salvarNota(notaParaAtualizar);
+                    LOGGER.info(String.format("Nota atualizada. [%s]", notaParaAtualizar));
                     this.notaParaAtualizar = null;
                     this.dispose();
                 }
             } else {
+                
+                LOGGER.info("Criação de uma nova nota.");
+                
                 final Nota novaNota = capturarInformacoesDaTela();
                 final boolean validou = validar(novaNota);
                 if (validou) {
                     this.service.salvarNota(novaNota);
+                    LOGGER.info(String.format("Nota inserida. [%s]", novaNota));
                     this.dispose();
                 }
             }
@@ -194,7 +208,6 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
         this.notaParaAtualizar.setSenha(dadosNovosDaNota.getSenha());
         this.notaParaAtualizar.setUrlSite(dadosNovosDaNota.getUrlSite());
         this.notaParaAtualizar.setDataAtualizacao(LocalDateTime.now());
-        this.notaParaAtualizar.setHistorico(null);
     }
 
     /* Iniciar a tela com os dados da nota selecionada para atualização */

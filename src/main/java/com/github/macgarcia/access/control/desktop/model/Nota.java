@@ -19,41 +19,40 @@ import javax.persistence.Table;
  *
  * @author macgarcia
  */
-
 @Entity
 @Table(name = "nota")
 public class Nota implements Serializable, EntidadeBase {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(name = "descricao", nullable = true)
     private String descricao;
-    
+
     @Column(name = "titulo", nullable = false)
     private String titulo;
-    
+
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
-    
+
     @Column(name = "usuario", nullable = false)
     private String usuario;
-    
+
     @Column(name = "senha", nullable = false)
     private String senha;
-    
+
     @Column(name = "url_site", nullable = true)
     private String urlSite;
-    
+
     @Column(name = "data_atualizacao", nullable = true)
     private LocalDateTime dataAtualizacao;
-    
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = CascadeType.PERSIST)
     private List<HistoricoNota> historico;
-    
-    public Nota(){
-        
+
+    public Nota() {
+
     }
 
     public Nota(String titulo, String descricao, String usuario, String senha, String urlSite) {
@@ -127,13 +126,19 @@ public class Nota implements Serializable, EntidadeBase {
     }
 
     public List<HistoricoNota> getHistorico() {
+        if (this.historico == null) {
+            this.historico = new ArrayList<>();
+        }
         return historico;
     }
 
     public void setHistorico(List<HistoricoNota> historico) {
-        if (this.historico == null) {
-            this.historico = new ArrayList<>();
-        }
         this.historico = historico;
     }
+
+    @Override
+    public String toString() {
+        return "Nota{" + "id=" + id + ", descricao=" + descricao + ", titulo=" + titulo + ", dataCriacao=" + dataCriacao + ", usuario=" + usuario + ", senha=" + senha + ", urlSite=" + urlSite + ", dataAtualizacao=" + dataAtualizacao + '}';
+    }
+
 }

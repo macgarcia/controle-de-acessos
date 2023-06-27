@@ -1,6 +1,7 @@
 package com.github.macgarcia.access.control.desktop.service;
 
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.configuration.LogConfiguracao;
 import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
@@ -8,12 +9,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaIntegracaoTxtService {
+    
+    private final Logger LOGGER = LogConfiguracao.getLogger(TelaIntegracaoTxtService.class);
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
@@ -22,7 +26,6 @@ public class TelaIntegracaoTxtService {
 
     private Nota nota = null;
     private HistoricoNota historicoNota = null;
-    private ArrayList<HistoricoNota> historicos;
     private int qtdeHistoricosPorNota;
 
     private List<Nota> notas;
@@ -35,19 +38,20 @@ public class TelaIntegracaoTxtService {
 
     public void processarDadosDoArquivo(List<String> linhasDoArquivo) throws Exception {
         for (String linha : linhasDoArquivo) {
+            LOGGER.info(String.format("Lendo e montando a linha: [%s]", linha));
             final String[] dadosLinha = linha.split("\\|");
             montarNota(dadosLinha);
             montarHistorico(dadosLinha);
             if (qtdeHistoricosPorNota == nota.getHistorico().size()) {
-                //this.nota.setHistorico(historicos);
                 getNotas().add(nota);
-                //this.historicos = null;
             }
+            LOGGER.info("Linha montada com sucesso.");
         }
     }
 
     public void salvarNotas() {
         getNotas().forEach(notaRepository::salvarEntidade);
+        LOGGER.info("Dados salvos.");
         FactoryMensagem.mensagemOk("Integração realizada com sucesso.");
     }
 
@@ -74,18 +78,10 @@ public class TelaIntegracaoTxtService {
                     dadosLinha[7].trim().isEmpty() ? null : dadosLinha[7],
                     dadosLinha[8].trim().isEmpty() ? null : dadosLinha[8]
             );
-            //this.getHistoricos();
             this.historicoNota.setNota(nota);
             this.nota.getHistorico().add(historicoNota);
         }
     }
-
-//    public ArrayList<HistoricoNota> getHistoricos() {
-//        if (this.historicos == null) {
-//            this.historicos = new ArrayList<>();
-//        }
-//        return historicos;
-//    }
 
     public List<Nota> getNotas() {
         if (this.notas == null) {

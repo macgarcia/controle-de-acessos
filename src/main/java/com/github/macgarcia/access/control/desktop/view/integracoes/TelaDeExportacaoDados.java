@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -225,7 +226,7 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                     + File.separator + "arq_export_"
                     + df.format(LocalDateTime.now()) + ".txt";
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho, StandardCharsets.UTF_8))) {
                 for (Nota n : notas) {
                     getLinhas().add(montaLinhaNota(n));
                     if (!n.getHistorico().isEmpty()) {
@@ -256,13 +257,13 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                 .append("|")
                 .append(n.getTitulo())
                 .append("|")
-                .append(n.getDescricao() != null ? n.getDescricao() : " ")
+                .append(n.getDescricao() != null && n.getDescricao().length() != 0 ? n.getDescricao() : " ")
                 .append("|")
                 .append(n.getUsuario())
                 .append("|")
                 .append(n.getSenha())
                 .append("|")
-                .append(n.getUrlSite() != null ? n.getUrlSite() : " ");
+                .append(n.getUrlSite() != null && n.getUrlSite().length() != 0 ? n.getUrlSite() : " ");
         return linha.toString();
     }
 
@@ -276,13 +277,15 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                 .append("|")
                 .append(hn.getNumeroAtualizacao())
                 .append("|")
-                .append(hn.getDescricao() != null ? hn.getDescricao() : " ")
+                .append(hn.getDescricao() != null && hn.getDescricao().length() != 0 ? hn.getDescricao() : " ")
                 .append("|")
                 .append(hn.getTitulo())
                 .append("|")
+                .append(hn.getUsuario())
+                .append("|")
                 .append(hn.getSenha())
                 .append("|")
-                .append(hn.getUrlSite() != null ? hn.getUrlSite() : " ");
+                .append(hn.getUrlSite() != null && hn.getUrlSite().length() != 0 ? hn.getUrlSite() : " ");
         return linha.toString();
     }
 

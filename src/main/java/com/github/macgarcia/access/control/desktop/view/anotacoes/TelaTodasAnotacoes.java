@@ -3,10 +3,12 @@ package com.github.macgarcia.access.control.desktop.view.anotacoes;
 import com.github.macgarcia.access.control.desktop.component.ModeloTabelaNota;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.configuration.LogConfiguracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 
 /**
@@ -14,7 +16,10 @@ import javax.swing.JDesktopPane;
  * @author macgarcia
  */
 public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
+    
+    private final Logger LOGGER = LogConfiguracao.getLogger(TelaTodasAnotacoes.class);
 
+    private final NotaService service;
     private ModeloTabelaNota model;
     private Nota notaSelecionada;
     private final JDesktopPane desktop;
@@ -22,10 +27,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form TelaTodasAnotacoes
+     *
      * @param desktopPane
      */
     public TelaTodasAnotacoes(final JDesktopPane desktopPane) {
         initComponents();
+        service = new NotaService();
         this.desktop = desktopPane;
         configurarJanela();
         construirTabela();
@@ -194,12 +201,20 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             } else {
                 final int resposta = FactoryMensagem.mensagemConfirmacao();
                 if (resposta == ZERO) {
-                    new NotaService().apagar(notaSelecionada.getId());
-                    construirTabela();
+                    final Long quantidade = service.contarhistorico(notaSelecionada.getId());
+                    if (quantidade.equals(ZERO)) {
+                        service.apagar(notaSelecionada.getId());
+                        construirTabela();
+                        FactoryMensagem.mensagemAlerta("Nota apagada com sucesso.");
+                        LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
+                    } else {
+                        FactoryMensagem.mensagemAlerta("Nota possui historico, não pode ser apagada.");
+                        LOGGER.warning("Erro ao apagar nota, possui historico.");
+                    }
                 }
             }
         });
-        
+
         this.btnPesquisar.addActionListener(ev -> {
             final String chave = this.txtPesquisar.getText().trim();
             if (!chave.isEmpty()) {
@@ -207,8 +222,8 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 this.jTableNotas.updateUI();
             }
         });
-        
-        this.btnLimparPesquisa.addActionListener(ev ->{
+
+        this.btnLimparPesquisa.addActionListener(ev -> {
             this.txtPesquisar.setText(null);
             construirTabela();
         });

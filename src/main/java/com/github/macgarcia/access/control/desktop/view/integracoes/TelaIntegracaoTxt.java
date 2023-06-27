@@ -2,18 +2,22 @@ package com.github.macgarcia.access.control.desktop.view.integracoes;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.configuration.LogConfiguracao;
 import com.github.macgarcia.access.control.desktop.service.TelaIntegracaoTxtService;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
+    
+    private final Logger LOGGER = LogConfiguracao.getLogger(TelaIntegracaoTxt.class);
 
     private List<String> linhasDoArquivo;
     private final TelaIntegracaoTxtService service;
@@ -113,7 +117,6 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
 
     private void configurarComponentes() {
         this.txtCaminhoArquivo.setEditable(false);
-        this.barraProgresso.setVisible(false);
         this.lblProgresso.setText("Aguardando arquivo...");
         this.btnIniciar.setEnabled(false);
     }
@@ -123,11 +126,13 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
         this.btnProcurarArquivo.addActionListener(ev -> {
             Configuracao.construirLancador(true, txtCaminhoArquivo);
             if (!txtCaminhoArquivo.getText().isEmpty()) {
+                this.lblProgresso.setText("Arquivo selecionado.");
                 this.btnIniciar.setEnabled(true);
             }
         });
 
         this.btnIniciar.addActionListener(ev -> {
+            LOGGER.info("Iniciando processo de integração...");
             this.barraProgresso.setVisible(true);
             
             this.lblProgresso.setText("Leitura do arquivo...");
@@ -136,16 +141,19 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
                 lerArquivoSelecionado();
             } catch (IOException e) {
                 FactoryMensagem.mensagemErro("Erro ao ler o arquivo.");
+                LOGGER.severe(String.format("Erro ao ler o arquivo. Causa: [%s]", e.getCause()));
                 dispose();
                 return;
             }
             
+            LOGGER.info("Iniciando processo de leitura do arquivo...");
             this.lblProgresso.setText("Processando o arquivo...");
             this.barraProgresso.setValue(50);
             try {
                 service.processarDadosDoArquivo(linhasDoArquivo);
             } catch (Exception e) {
-                FactoryMensagem.mensagemErro("Erro ao processar o arquivo." + e.getMessage());
+                FactoryMensagem.mensagemErro("Erro ao processar o arquivo.");
+                LOGGER.severe(String.format("Erro ao processar o arquivo. Causa: [%s]", e.getCause()));
                 dispose();
                 return;
             }
@@ -156,6 +164,7 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
             
             this.barraProgresso.setValue(100);
             this.lblProgresso.setText("Integração finalizada.");
+            LOGGER.info("Integração realizada.");
         });
     }
 

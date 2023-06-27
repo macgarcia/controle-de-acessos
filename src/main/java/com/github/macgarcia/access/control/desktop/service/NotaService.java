@@ -29,4 +29,8 @@ public class NotaService {
         this.repository.apagarEntidade(Nota.class, id);
         FactoryMensagem.mensagemOk("Registro apagado com sucesso.");
     }
+    
+    public Long contarhistorico(final Integer idNota) {
+        return repository.contarhistoricoDaNota(idNota);
+    }
 }
