@@ -1,7 +1,7 @@
 package com.github.macgarcia.access.control.desktop.service;
 
+import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
-import com.github.macgarcia.access.control.desktop.configuration.LogConfiguracao;
 import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class TelaIntegracaoTxtService {
     
-    private final Logger LOGGER = LogConfiguracao.getLogger(TelaIntegracaoTxtService.class);
+    private static final Logger LOGGER = FactoryLog.getLog();
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 

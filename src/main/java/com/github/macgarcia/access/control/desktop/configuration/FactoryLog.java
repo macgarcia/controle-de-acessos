@@ -11,31 +11,36 @@ import java.util.logging.SimpleFormatter;
  *
  * @author macgarcia
  */
-public class LogConfiguracao {
+public class FactoryLog {
 
-    private static Logger logger;
+    private static Logger logger = buildLog();
+
     private static final String DIR_NAME = "log";
-    private static final String LOG_FILE = DIR_NAME + File.separator + "arq_log.log";
+    private static final String LOG_FILE = "arq_log.log";
 
-    public static Logger getLogger(Class<?> clazz) {
+    private static Logger buildLog() {
         montarDiretorio();
         try {
-            logger = Logger.getLogger(clazz.getName());
-            FileHandler fh = new FileHandler(LOG_FILE, true);
+            logger = Logger.getLogger(FactoryLog.class.getName());
+            FileHandler fh = new FileHandler(DIR_NAME + File.separator + LOG_FILE, true);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
             logger.addHandler(fh);
         } catch (IOException | SecurityException ex) {
-            Logger.getLogger(LogConfiguracao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FactoryLog.class.getName()).log(Level.SEVERE, null, ex);
         }
         return logger;
     }
-    
+
     private static void montarDiretorio() {
         File file = new File(DIR_NAME);
         if (!file.exists()) {
             file.mkdir();
         }
+    }
+
+    public static Logger getLog() {
+        return logger;
     }
 
 }

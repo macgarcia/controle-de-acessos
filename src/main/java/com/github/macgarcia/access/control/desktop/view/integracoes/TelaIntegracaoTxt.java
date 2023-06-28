@@ -1,8 +1,8 @@
 package com.github.macgarcia.access.control.desktop.view.integracoes;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
+import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
-import com.github.macgarcia.access.control.desktop.configuration.LogConfiguracao;
 import com.github.macgarcia.access.control.desktop.service.TelaIntegracaoTxtService;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
     
-    private final Logger LOGGER = LogConfiguracao.getLogger(TelaIntegracaoTxt.class);
+    private static final Logger LOGGER = FactoryLog.getLog();
 
     private List<String> linhasDoArquivo;
     private final TelaIntegracaoTxtService service;
