@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.view.integracoes;
 
+import com.github.macgarcia.access.control.desktop.component.ManipulacaoDeArquivoTxt;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
@@ -169,7 +170,6 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
     }
 
     private void lerArquivoSelecionado() throws IOException {
-        Path caminhoDoArquivo = Paths.get(this.txtCaminhoArquivo.getText());
-        this.linhasDoArquivo = Files.readAllLines(caminhoDoArquivo);
+        linhasDoArquivo = ManipulacaoDeArquivoTxt.lerArquivo(this.txtCaminhoArquivo.getText());
     }
 }

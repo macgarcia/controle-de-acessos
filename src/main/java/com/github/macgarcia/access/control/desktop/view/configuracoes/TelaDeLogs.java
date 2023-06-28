@@ -1,12 +1,9 @@
 package com.github.macgarcia.access.control.desktop.view.configuracoes;
 
+import com.github.macgarcia.access.control.desktop.component.ManipulacaoDeArquivoTxt;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
-import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -23,7 +20,7 @@ public class TelaDeLogs extends javax.swing.JInternalFrame {
     private final String ARQ_LOG_FILE = "arq_log.log";
     private final String PATH_LOG_FILE = DIR_LOG_FILE + File.separator + ARQ_LOG_FILE;
     
-    private final int MAX_LINHAS = 1000;
+    private final int MAX_LINHAS = 1_000_000;
     private List<String> linhasDoLog;
     private DefaultListModel<String> modeloLista;
 
@@ -108,15 +105,10 @@ public class TelaDeLogs extends javax.swing.JInternalFrame {
     }
     
     private void carregandoArquivoDeLog() throws IOException {
-        Path path = Paths.get(PATH_LOG_FILE);
-        this.linhasDoLog = Files.readAllLines(path);
+        linhasDoLog = ManipulacaoDeArquivoTxt.lerAqruivo(PATH_LOG_FILE, MAX_LINHAS);
     }
     
     private void populandoJList() {
-        if (this.linhasDoLog.size() > MAX_LINHAS) {
-            FactoryMensagem.mensagemAlerta(String.format("Arquivo de log muito extenso, verifique no caminho.: [%s]", PATH_LOG_FILE));
-            return;
-        }
         for (String linha : this.linhasDoLog) {
             modeloLista.addElement(linha);
         }

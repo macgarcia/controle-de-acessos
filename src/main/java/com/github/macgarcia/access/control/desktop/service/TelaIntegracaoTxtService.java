@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author macgarcia
  */
 public class TelaIntegracaoTxtService {
-    
+
     private static final Logger LOGGER = FactoryLog.getLog();
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -38,15 +38,16 @@ public class TelaIntegracaoTxtService {
 
     public void processarDadosDoArquivo(List<String> linhasDoArquivo) throws Exception {
         for (String linha : linhasDoArquivo) {
-            LOGGER.info(String.format("Lendo e montando a linha: [%s]", linha));
+            LOGGER.info(String.format("Linha do arquivo.: [%s]", linha));
             final String[] dadosLinha = linha.split("\\|");
             montarNota(dadosLinha);
             montarHistorico(dadosLinha);
             if (qtdeHistoricosPorNota == nota.getHistorico().size()) {
                 getNotas().add(nota);
+                LOGGER.info("Linha transformada em objeto com sucesso.");
             }
-            LOGGER.info("Linha montada com sucesso.");
         }
+        LOGGER.info("Leitura do arquivo feita com sucesso.");
     }
 
     public void salvarNotas() {
@@ -58,16 +59,20 @@ public class TelaIntegracaoTxtService {
     private void montarNota(final String[] dadosLinha) {
         if (TOKEN_NOTA.equals(dadosLinha[0])) {
 
+            LOGGER.info("Montando nota...");
+
             /* Quantidade de historicos que a nota possui */
             this.qtdeHistoricosPorNota = Integer.parseInt(dadosLinha[1]);
 
             this.nota = new Nota(dadosLinha[2], dadosLinha[3],
                     dadosLinha[4], dadosLinha[5], dadosLinha[6]);
+            LOGGER.info("Nota montada.");
         }
     }
 
     private void montarHistorico(final String[] dadosLinha) {
         if (TOKEN_HISTORICO.equals(dadosLinha[0])) {
+            LOGGER.info("Montando historico da nota...");
             this.historicoNota = new HistoricoNota(
                     LocalDateTime.parse(dadosLinha[1], formatter),
                     LocalDateTime.parse(dadosLinha[2], formatter),
@@ -80,6 +85,7 @@ public class TelaIntegracaoTxtService {
             );
             this.historicoNota.setNota(nota);
             this.nota.getHistorico().add(historicoNota);
+            LOGGER.info("Historico montado.");
         }
     }
 
