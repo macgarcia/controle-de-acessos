@@ -136,9 +136,4 @@ public class Nota implements Serializable, EntidadeBase {
         this.historico = historico;
     }
 
-    @Override
-    public String toString() {
-        return "Nota{" + "id=" + id + ", descricao=" + descricao + ", titulo=" + titulo + ", dataCriacao=" + dataCriacao + ", usuario=" + usuario + ", senha=" + senha + ", urlSite=" + urlSite + ", dataAtualizacao=" + dataAtualizacao + '}';
-    }
-
 }

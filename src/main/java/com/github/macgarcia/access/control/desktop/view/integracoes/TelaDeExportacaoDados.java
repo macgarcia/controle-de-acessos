@@ -230,11 +230,12 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
             LOGGER.info("Nenhum dado foi encontrado com o filtro informado.");
             FactoryMensagem.mensagemAlerta("Não existe notas no periodo informado.");
         } else {
+            
             LOGGER.info("Tratamento dos dados recuperados.");
+            
             final String caminho = this.txtCaminhoArquivoDescarga.getText()
                     + File.separator + "arq_export_"
                     + df.format(LocalDateTime.now()) + ".txt";
-            LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", caminho));
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho, StandardCharsets.UTF_8))) {
                 for (Nota n : notas) {
@@ -245,7 +246,9 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                         }
                     }
                 }
+                
                 LOGGER.info("Ecrevendo arquivo...");
+                
                 linhas.forEach(linha -> {
                     try {
                         writer.write(linha);
@@ -255,7 +258,10 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                         FactoryMensagem.mensagemErro("Erro ao escrever os dados no arquivo");
                     }
                 });
+                
                 LOGGER.info("Arquivo escrito com sucesso.");
+                LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", caminho));
+                
             } catch (Exception e) {
                 LOGGER.severe(String.format("Erro ao criar o arquivo de exportação.: [%s]", e.getMessage()));
                 FactoryMensagem.mensagemErro("Erro ao criar o arquivo de exportação.");

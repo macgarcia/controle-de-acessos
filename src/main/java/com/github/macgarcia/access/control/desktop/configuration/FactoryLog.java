@@ -2,6 +2,7 @@ package com.github.macgarcia.access.control.desktop.configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class FactoryLog {
             FileHandler fh = new FileHandler(DIR_NAME + File.separator + LOG_FILE, true);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
+            fh.setEncoding(StandardCharsets.UTF_8.name());
             logger.addHandler(fh);
         } catch (IOException | SecurityException ex) {
             Logger.getLogger(FactoryLog.class.getName()).log(Level.SEVERE, null, ex);

@@ -151,4 +151,5 @@ public class HistoricoNota implements Serializable, EntidadeBase {
     public void setUrlSite(String urlSite) {
         this.urlSite = urlSite;
     }
+    
 }
