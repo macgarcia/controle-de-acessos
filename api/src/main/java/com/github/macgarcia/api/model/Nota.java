@@ -2,6 +2,7 @@ package com.github.macgarcia.api.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.macgarcia.api.dto.NotaDtoEntrada;
@@ -58,7 +59,7 @@ public class Nota implements Serializable {
 	@Column(name = "data_atualizacao")
 	private LocalDateTime dataAtualizacao;
 
-	@OneToMany(mappedBy = "nota", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "nota", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<HistoricoNota> historico;
 
 	public Nota() {
@@ -74,15 +75,13 @@ public class Nota implements Serializable {
 		this.urlSite = dto.urlSite();
 	}
 	
-	public Nota(final NotaDtoEntrada dto, final List<HistoricoNota> historico) {
-		this.idIntegracao = dto.idIntegracao();
+	public void atualizarNota(final NotaDtoEntrada dto) {
 		this.descricao = dto.descricao();
 		this.titulo = dto.titulo();
 		this.dataCriacao = dto.dataCriacao();
 		this.usuario = dto.usuario();
 		this.senha = dto.senha();
 		this.urlSite = dto.urlSite();
-		this.historico = historico;
 	}
 
 	public Long getId() {
@@ -158,6 +157,9 @@ public class Nota implements Serializable {
 	}
 
 	public List<HistoricoNota> getHistorico() {
+		if (this.historico == null) {
+			this.historico = new ArrayList<>();
+		}
 		return historico;
 	}
 
