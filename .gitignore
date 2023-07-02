@@ -26,3 +26,26 @@ replay_pid*
 #Pessoal
 target
 log
+
+# Diretórios
+/api/build/
+/api/out/
+/api/.gradle/
+/api/.idea/
+
+# Arquivos de log
+/api/*.log
+/api/logs/
+
+# Arquivos de configuração específicos do ambiente
+/api/application.properties
+/application.yml
+
+# Cache do Gradle
+/api/.gradle/
+
+# Arquivos de dependências do Gradle
+/api/.gradle/*
+/api/build/*
+
+/api/.*

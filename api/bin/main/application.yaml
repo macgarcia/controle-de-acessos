@@ -1,0 +1,13 @@
+server:
+  port: 8081
+  
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: api_backup_nota
+    password: nota
+    driver-class-name: oracle.jdbc.OracleDriver

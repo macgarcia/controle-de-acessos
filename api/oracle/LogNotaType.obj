@@ -1,0 +1,57 @@
+create or replace type LogNotaType as object ( indicador_acao number -- 1 - Inserir, 2 - Atualizar, 3 - Apagar
+       	  	       		      	     , acao varchar2(10)
+       	  	       		      	     , data_hora_acao date
+       	  	       		      	     , id_nota number
+
+       	  	       		      	     , member procedure persistir
+       	  	       		      	     );
+/
+
+create or replace type body LogNotaType as
+   --
+   member procedure persistir is
+      --
+      INSERIR	constant char(6) := 'INSERT';
+      APAGAR	constant char(6) := 'DELETE';
+      ATUALIZAR constant char(6) := 'UPDATE';
+      
+      acao_invalida exception;
+      --
+   begin
+      --
+      if (self.indicador_acao > 3 or self.indicador_acao <= 0) then
+         --
+         raise acao_invalida;
+         --
+      end if;
+
+      if (self.indicador_acao = 1) then
+         --
+         self.acao := INSERIR;
+         --
+      elsif (self.indicador_acao = 2) then
+         --
+         self.acao := ATUALIZAR;
+         --
+      elsif (self.indicador_acao = 3) then
+         --
+         self.acao := APAGAR;
+         --
+      end if;
+
+      insert into log_nota(acao, data_hora_acao, id_nota)
+         values(self.acao, self.data_hora_acao, self.id_nota);
+      --
+   exception
+      when acao_invalida then
+         --
+         raise_application_error(-20001, 'Indicador de ação invalido.');
+         --
+      when others then
+         --
+         raise_application_error(-20001, 'Erro.: ' || sqlcode || ' ' ||sqlerrm);
+         --
+   end persistir;
+   --
+end;
+/
