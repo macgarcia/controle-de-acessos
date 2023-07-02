@@ -15,7 +15,7 @@ public class NotaService {
 	@Autowired
 	private NotaRepository repository;
 
-	public void processar(final NotaDtoEntrada dto) {
+	public void processar(final NotaDtoEntrada dto) throws Exception {
 
 		final Nota nota = repository.findByIntegracao(dto.idIntegracao());
 
