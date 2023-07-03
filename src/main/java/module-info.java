@@ -1,8 +1,5 @@
 
 module AccessControlDesktop {
-//    requires com.fasterxml.jackson.databind;
-//    requires com.fasterxml.jackson.annotation;
-//    requires com.fasterxml.jackson.core;
     requires jersey.client;
     requires jakarta.ws.rs;
     requires jersey.common;

@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.MediaType;
  */
 public class ClientApiBackup {
 
-    private final String URL_API = "http://localhost:8081/api";
+    private final String URL_API = "http://localhost:8081/api/";
     private final Client client;
     private final WebTarget webTarget;
     private final Gson gson;

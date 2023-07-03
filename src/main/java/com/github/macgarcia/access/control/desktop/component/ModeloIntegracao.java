@@ -1,8 +1,11 @@
 package com.github.macgarcia.access.control.desktop.component;
 
+import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.integracao.ClientApiBackup;
 import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegracao;
+import com.github.macgarcia.access.control.desktop.integracao.HistoricoDtoRequest;
 import com.github.macgarcia.access.control.desktop.integracao.IntegracaoResponse;
+import com.github.macgarcia.access.control.desktop.integracao.NotaDtoRequest;
 import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.repository.ConfiguracaoIntegracaoRepository;
@@ -10,8 +13,11 @@ import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,9 +25,10 @@ import java.util.TimerTask;
  */
 public class ModeloIntegracao extends TimerTask {
 
+    private static final Logger LOGGER = FactoryLog.getLog();
+
     private final Integer ID_CONFIGURACAO = 1;
-    private final Integer STATUS_OK = 200;
-    private final Integer STATUS_ERRO = 500;
+    private final Integer STATUS_OK = 201;
 
     private Timer timer;
     private ConfiguracaoIntegracaoRepository configuracaoRepository;
@@ -48,32 +55,59 @@ public class ModeloIntegracao extends TimerTask {
         if (config.getInicioImediato().equals(FlagIntegracao.DESLIGADO)) {
             espera = periodo;
         }
-        //timer.schedule(this, espera, periodo);
-        timer.schedule(this, 0, 120_000);
+        timer.schedule(this, espera, periodo);
+        LOGGER.info("Integração configurada e iniciada.");
     }
 
     @Override
     public void run() {
+        LOGGER.info(String.format("Iniciando de integração de dados em [%s]", LocalDateTime.now()));
+        
         var notas = notaRepository.notasParaIntegrar();
+        
         if (notas.isEmpty()) {
             timer.cancel();
+            LOGGER.info("Não há dados para integrar.");
+            LOGGER.info("Integração desligada.");
         }
-            final ClientApiBackup cliente = new ClientApiBackup();
-            
-            final Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
-            
-            for (Nota n : notas) {
-                System.out.println(n.getDataCriacao().toString());
-                final String json = gson.toJson(n);
-                final IntegracaoResponse response = cliente.postIntegrarDados(json);
-                if (response.codigo.equals(STATUS_OK)) {
-                    System.out.println("Integração realizada" + response);
-                }
-            }
+        
+        final ClientApiBackup cliente = new ClientApiBackup();
 
+        final Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+
+        List<HistoricoDtoRequest> historico = null;
+        
+        for (Nota n : notas) {
+            if (n.getHistorico() != null && !n.getHistorico().isEmpty()) {
+                historico = new ArrayList<>();
+                historico = n.getHistorico().stream().map(HistoricoDtoRequest::new).toList();
+            }
+            NotaDtoRequest notaParaIntegrar = new NotaDtoRequest(n.getId().longValue(),
+                    n.getDescricao(),
+                    n.getTitulo(),
+                    n.getDataCriacao(),
+                    n.getUsuario(),
+                    n.getSenha(),
+                    n.getUrlSite(),
+                    n.getDataAtualizacao(),
+                    historico);
+            LOGGER.info(String.format("Nota de id:[%s], pronta para envio.", n.getId()));
+
+            final String json = gson.toJson(notaParaIntegrar);
+            
+            LOGGER.info("Enviando os dados...");
+            final IntegracaoResponse response = cliente.postIntegrarDados(json);
+            
+            LOGGER.info(String.format("Retorno da api para a nota de id:[%s] -> [%s]", n.getId(), response));
+            
+            if (response.codigo.equals(STATUS_OK)) {
+                n.setFlagIntegrado(FlagIntegracao.DESLIGADO);
+                notaRepository.salvarEntidade(n);
+                LOGGER.info("Nota integrada.");
+            }
+        }
     }
 
 }

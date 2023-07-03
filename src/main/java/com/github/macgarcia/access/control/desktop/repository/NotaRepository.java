@@ -5,7 +5,10 @@ import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.pojo.PojoDadosExportacao;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -93,6 +96,7 @@ public class NotaRepository extends DAOGenerico<Nota> {
         try {
             final TypedQuery<Nota> query = manager.createQuery(NOTAS_PARA_INTEGRACAO, Nota.class);
             query.setParameter("flagIntegrado", FlagIntegracao.LIGADO);
+            query.setMaxResults(10);
             return query.getResultList();
         } finally {
             manager.clear();

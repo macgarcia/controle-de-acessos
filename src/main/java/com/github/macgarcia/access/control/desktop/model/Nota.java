@@ -30,39 +30,30 @@ public class Nota implements Serializable, EntidadeBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "descricao", nullable = true)
     private String descricao;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "usuario", nullable = false)
     private String usuario;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "senha", nullable = false)
     private String senha;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "url_site", nullable = true)
     private String urlSite;
 
-    @Expose(serialize = true, deserialize = true)
     @Column(name = "data_atualizacao", nullable = true)
     private LocalDateTime dataAtualizacao;
 
-    @Expose(serialize = true, deserialize = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = CascadeType.PERSIST)
     private List<HistoricoNota> historico;
     
-    @Expose(serialize = false, deserialize = false) /* Não enviar na integração */
     @Column(name = "flag_integrado")
     @Enumerated(EnumType.ORDINAL)
     private FlagIntegracao flagIntegrado;
@@ -77,7 +68,7 @@ public class Nota implements Serializable, EntidadeBase {
         this.usuario = usuario;
         this.senha = senha;
         this.urlSite = urlSite;
-        //this.dataCriacao = LocalDateTime.now();
+        this.dataCriacao = LocalDateTime.now();
         this.flagIntegrado = FlagIntegracao.LIGADO;
     }
 
