@@ -63,6 +63,11 @@
                 <Property name="text" type="java.lang.String" value="Logs"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuConfigurarIntegracao">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Configurar integra&#xe7;&#xe3;o backup api"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

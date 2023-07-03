@@ -33,6 +33,7 @@ public class NotaController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<IntegracaoResponse> integrarDadosDeNota(@RequestBody NotaDtoEntrada request) {
 		try {
+			System.out.println(request.toString());
 			service.processar(request);
 			IntegracaoResponse response = new IntegracaoResponse(HttpStatus.CREATED.value(),
 					"Integração de dados", "Não houve erros");

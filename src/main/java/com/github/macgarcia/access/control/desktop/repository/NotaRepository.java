@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.repository;
 
+import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.pojo.PojoDadosExportacao;
 import java.util.List;
@@ -13,17 +14,19 @@ import javax.persistence.TypedQuery;
 public class NotaRepository extends DAOGenerico<Nota> {
 
     private final String TODAS_AS_NOTAS = "select n from Nota n";
-    
+
     private final String NOTA_COM_HISTORICO = "select n from Nota n join fetch n.historico h where n.id = :idNota";
-    
+
     private final String NOTAS_POR_PESQUISA = "select n from Nota n where lower(n.titulo) like lower(:chave) or lower(n.descricao) like lower(:chave)";
-    
+
     private final String NOTAS_PARA_EXPORTACAO = "select distinct n from Nota n left join fetch n.historico h"
             + " where n.dataCriacao between :dataInicial and :dataFinal"
             + " or n.dataAtualizacao between :dataInicial and :dataFinal"
             + " order by n.dataCriacao desc";
-    
+
     private final String CONTAGEM_DA_QUANTIDADE_DE_HISTORICO_DA_NOTA = "select count(*) from HistoricoNota h where h.nota.id = :idNota";
+
+    private final String NOTAS_PARA_INTEGRACAO = "select n from Nota n left join fetch n.historico where n.flagIntegrado = :flagIntegrado";
 
     public Nota getNotaComHistorico(final Integer idNota) {
         final EntityManager manager = getEntityManager();
@@ -79,6 +82,18 @@ public class NotaRepository extends DAOGenerico<Nota> {
             TypedQuery<Long> query = manager.createQuery(CONTAGEM_DA_QUANTIDADE_DE_HISTORICO_DA_NOTA, Long.class);
             query.setParameter("idNota", idNota);
             return query.getSingleResult();
+        } finally {
+            manager.clear();
+            manager.close();
+        }
+    }
+
+    public List<Nota> notasParaIntegrar() {
+        final EntityManager manager = getEntityManager();
+        try {
+            final TypedQuery<Nota> query = manager.createQuery(NOTAS_PARA_INTEGRACAO, Nota.class);
+            query.setParameter("flagIntegrado", FlagIntegracao.LIGADO);
+            return query.getResultList();
         } finally {
             manager.clear();
             manager.close();

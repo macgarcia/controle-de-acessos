@@ -1,10 +1,12 @@
 package com.github.macgarcia.access.control.desktop;
 
+import com.github.macgarcia.access.control.desktop.component.ModeloIntegracao;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaCadastroNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaDeHistoricoNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaTodasAnotacoes;
+import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaConfigurarIntegracaoApi;
 import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaDeLogs;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaDeExportacaoDados;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
@@ -16,6 +18,7 @@ import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegrac
 public class TelaInicial extends javax.swing.JFrame {
 
     private final String MENSAGEM_DE_TELA_ABERTA = "A tela já esta aberta em sua area de trabalho.";
+    private ModeloIntegracao integracao;
 
     /**
      * Creates new form TelaInicial
@@ -27,6 +30,8 @@ public class TelaInicial extends javax.swing.JFrame {
         acoesDoMenuAnotacoes();
         acoesDoMenuIntegracao();
         acoesDoMenuConfiguracao();
+        integracao = new ModeloIntegracao();
+        
     }
 
     /**
@@ -51,6 +56,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuExportarDados = new javax.swing.JMenuItem();
         btnMenuConfiguracoes = new javax.swing.JMenu();
         btnItemMenuLogs = new javax.swing.JMenuItem();
+        btnItemMenuConfigurarIntegracao = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -97,6 +103,9 @@ public class TelaInicial extends javax.swing.JFrame {
 
         btnItemMenuLogs.setText("Logs");
         btnMenuConfiguracoes.add(btnItemMenuLogs);
+
+        btnItemMenuConfigurarIntegracao.setText("Configurar integração backup api");
+        btnMenuConfiguracoes.add(btnItemMenuConfigurarIntegracao);
 
         jMenuBar1.add(btnMenuConfiguracoes);
 
@@ -153,6 +162,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnItemHistoricoDeNotas;
+    private javax.swing.JMenuItem btnItemMenuConfigurarIntegracao;
     private javax.swing.JMenuItem btnItemMenuExportarDados;
     private javax.swing.JMenuItem btnItemMenuImportarDocumento;
     private javax.swing.JMenuItem btnItemMenuLogs;
@@ -245,6 +255,17 @@ public class TelaInicial extends javax.swing.JFrame {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
                 final TelaDeLogs tela = new TelaDeLogs();
+                this.desktopPanel.add(tela);
+                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
+                tela.setVisible(true);
+            }
+        });
+
+        this.btnItemMenuConfigurarIntegracao.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaConfigurarIntegracaoApi.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                final TelaConfigurarIntegracaoApi tela = new TelaConfigurarIntegracaoApi();
                 this.desktopPanel.add(tela);
                 Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
                 tela.setVisible(true);

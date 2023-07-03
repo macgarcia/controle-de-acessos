@@ -2,6 +2,7 @@ package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
+import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.time.LocalDateTime;
@@ -208,6 +209,7 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
         this.notaParaAtualizar.setSenha(dadosNovosDaNota.getSenha());
         this.notaParaAtualizar.setUrlSite(dadosNovosDaNota.getUrlSite());
         this.notaParaAtualizar.setDataAtualizacao(LocalDateTime.now());
+        this.notaParaAtualizar.setFlagIntegrado(FlagIntegracao.LIGADO);
     }
 
     /* Iniciar a tela com os dados da nota selecionada para atualização */
