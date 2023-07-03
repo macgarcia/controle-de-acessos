@@ -37,3 +37,17 @@ alter table historico_nota
 
 alter  table historico_nota
    modify id_nota int not null;
+   
+alter table nota
+   add column flag_integrado int not null -- 1 - não integrado, 0 - integrado
+
+create table configuracao ( id int auto_increment
+       	     		  , ativar_integracao int -- 1 - Ligado, 0 - desligado
+       	     		  , intervalo_integracao int
+       	     		  , constraint pk_configuracao primary key(id)
+			  );
+alter table configuracao
+   add column inicio_imediato int;
+   
+alter table configuracao
+   modify id int;
