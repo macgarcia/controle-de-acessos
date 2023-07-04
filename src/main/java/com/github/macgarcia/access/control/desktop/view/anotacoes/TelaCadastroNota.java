@@ -2,6 +2,7 @@ package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
+import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  * @author macgarcia
  */
 public class TelaCadastroNota extends javax.swing.JInternalFrame {
-    
+
     private static final Logger LOGGER = FactoryLog.getLog();
 
     private final NotaService service;
@@ -158,31 +159,42 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
     }
 
     private void acoesBotoes() {
-        
+
         this.btnSalvar.addActionListener(ev -> {
-            
+
             if (this.atualizacaoDeNota) {
-                
+
                 LOGGER.info("Atualização de uma nota");
-                
+
                 this.preencherDadosNovosDaNota();
                 final boolean validou = validar(notaParaAtualizar);
                 if (validou) {
-                    this.service.salvarNota(notaParaAtualizar);
-                    LOGGER.info(String.format("Nota atualizada. [%s]", notaParaAtualizar));
-                    this.notaParaAtualizar = null;
-                    this.dispose();
+                    final boolean salvou = service.salvarNota(notaParaAtualizar);
+                    if (salvou) {
+                        FactoryMensagem.mensagemOk("Nota atualizada com sucesso");
+                        LOGGER.info(String.format("Nota atualizada. [%s]", notaParaAtualizar));
+                        this.notaParaAtualizar = null;
+                        this.dispose();
+                    } else {
+                        FactoryMensagem.mensagemErro("Erro ao atualizar a nota");
+                    }
                 }
             } else {
-                
+
                 LOGGER.info("Criação de uma nova nota.");
-                
+
                 final Nota novaNota = capturarInformacoesDaTela();
                 final boolean validou = validar(novaNota);
                 if (validou) {
-                    this.service.salvarNota(novaNota);
-                    LOGGER.info(String.format("Nota inserida. [%s]", novaNota));
-                    this.dispose();
+                    final boolean salvou = service.salvarNota(novaNota);
+                    if (salvou) {
+                        FactoryMensagem.mensagemOk("Nota salva com sucesso");
+                        LOGGER.info(String.format("Nota inserida. [%s]", novaNota));
+                        this.dispose();
+                    } else {
+                        FactoryMensagem.mensagemOk("Erro ao salvar a nota.");
+                    }
+
                 }
             }
         });

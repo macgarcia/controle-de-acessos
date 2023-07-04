@@ -1,16 +1,18 @@
 package com.github.macgarcia.access.control.desktop.view.configuracoes;
 
+import com.github.macgarcia.access.control.desktop.component.ModeloIntegracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegracao;
 import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.ConfiguracaoIntegracaoRepository;
+import java.util.Timer;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
-    
+
     private final Integer ID_CONFIGURACAO = 1;
 
     private ConfiguracaoIntegracao config;
@@ -45,6 +47,7 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         check = new javax.swing.JCheckBox();
         btnSalvar = new javax.swing.JButton();
+        btnIniciar = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -63,6 +66,8 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
 
         btnSalvar.setText("Salvar");
 
+        btnIniciar.setText("Iniciar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,6 +80,8 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(check)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnIniciar)
+                            .addGap(18, 18, 18)
                             .addComponent(btnSalvar))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -106,7 +113,9 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
                         .addContainerGap(27, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalvar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSalvar)
+                            .addComponent(btnIniciar))
                         .addContainerGap())))
         );
 
@@ -116,6 +125,7 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> boxOpcoes;
+    private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JCheckBox check;
     private javax.swing.JLabel jLabel1;
@@ -151,7 +161,7 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
     private void buscarInformacoesBase() {
         config = repository.consultarPorId(ConfiguracaoIntegracao.class, ID_CONFIGURACAO);
     }
-    
+
     private void montarTelaComInformacoes() {
         if (config != null) {
             this.boxOpcoes.setSelectedIndex(config.getAtivarIntegracao().getValor());
@@ -161,34 +171,48 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     private void acaoBotao() {
+
+        this.btnIniciar.addActionListener(ev -> {
+            final Timer timer = ModeloIntegracao.getTimer();
+            if (timer != null) {
+                FactoryMensagem.mensagemAlerta("já existe uma integração no momento.");
+            } else {
+                new ModeloIntegracao();
+                FactoryMensagem.mensagemOk("Iniciando a integração");
+            }
+        });
+
         this.btnSalvar.addActionListener(ev -> {
             recuperarInformacaoesDaTela();
             repository.salvarEntidade(config);
             FactoryMensagem.mensagemOk("Configurações armazendas.");
         });
     }
-    
+
     private void recuperarInformacaoesDaTela() {
         if (config == null) {
             config = new ConfiguracaoIntegracao();
         }
         config.setId(ID_CONFIGURACAO);
-        
+
         int selectedIndex = boxOpcoes.getSelectedIndex();
-        switch(selectedIndex) {
-            case 0 -> config.setAtivarIntegracao(FlagIntegracao.DESLIGADO);
-            case 1 -> config.setAtivarIntegracao(FlagIntegracao.LIGADO);
-            default -> throw new IllegalArgumentException("Erro na seleção");
+        switch (selectedIndex) {
+            case 0 ->
+                config.setAtivarIntegracao(FlagIntegracao.DESLIGADO);
+            case 1 ->
+                config.setAtivarIntegracao(FlagIntegracao.LIGADO);
+            default ->
+                throw new IllegalArgumentException("Erro na seleção");
         }
-        
+
         if (check.isSelected()) {
             config.setInicioImediato(FlagIntegracao.LIGADO);
         } else {
             config.setInicioImediato(FlagIntegracao.DESLIGADO);
         }
-        
+
         config.setIntervaloIntegracao(Integer.parseInt(txtIntervaloMinutos.getText()));
     }
 

@@ -7,7 +7,7 @@ spring:
       ddl-auto: update
       
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:xe
+    url: jdbc:oracle:thin:@172.17.0.3:1521:xe
     username: api_backup_nota
     password: nota
     driver-class-name: oracle.jdbc.OracleDriver

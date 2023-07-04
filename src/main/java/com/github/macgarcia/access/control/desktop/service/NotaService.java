@@ -16,13 +16,8 @@ public class NotaService {
         this.repository = new NotaRepository();
     }
     
-    public void salvarNota(final Nota novaNota) {
-        final boolean salvou = repository.salvarEntidade(novaNota);
-        if (salvou) {
-            FactoryMensagem.mensagemOk("Nota salva com sucesso.");
-        } else {
-            FactoryMensagem.mensagemErro("Erro ao salvar a nota.");
-        }
+    public boolean salvarNota(final Nota novaNota) {
+        return repository.salvarEntidade(novaNota);
     }
     
     public void apagar(final Integer id) {
