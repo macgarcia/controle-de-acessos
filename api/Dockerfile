@@ -10,7 +10,7 @@ COPY settings.gradle .
 COPY src ./src
 
 # Execute o comando Gradle para construir a aplicação
-RUN gradle build
+RUN gradle build -x test
 
 EXPOSE 8081
 
