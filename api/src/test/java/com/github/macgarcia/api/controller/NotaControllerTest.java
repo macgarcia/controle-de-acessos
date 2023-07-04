@@ -47,32 +47,32 @@ public class NotaControllerTest {
 	void testeIntegracaoDeDados() throws Exception {
 
 		doNothing().when(service).processar(dto);
-		
+
 		ResponseEntity<IntegracaoResponse> response = controller.integrarDadosDeNota(dto);
-		
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Integração de dados", response.getBody().metodo());
-        assertEquals("Não houve erros", response.getBody().erro());
-        
-        verify(service, times(1)).processar(dto);
+
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertEquals("Integração de dados", response.getBody().metodo());
+		assertEquals("Não houve erros", response.getBody().erro());
+
+		verify(service, times(1)).processar(dto);
 
 	}
-	
+
 	@Test
 	void testeDeErroIntegracaoDeDados() throws Exception {
-		
+
 		Exception e = new Exception("Erro de integração");
-		
+
 		doThrow(e).when(service).processar(dto);
-		
+
 		ResponseEntity<IntegracaoResponse> response = controller.integrarDadosDeNota(dto);
 
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("Integração de dados", response.getBody().metodo());
-        assertEquals("Erro de integração", response.getBody().erro());
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+		assertEquals("Integração de dados", response.getBody().metodo());
+		assertEquals("Erro de integração", response.getBody().erro());
 
-        verify(service, times(1)).processar(dto);
-		
+		verify(service, times(1)).processar(dto);
+
 	}
 
 }
