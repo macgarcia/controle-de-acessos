@@ -53,3 +53,6 @@ alter table configuracao
    
 alter table configuracao
    modify id int;
+
+/* Registro inicial com a integração desligada */
+insert into configuracao(id, ativar_integracao, intervalo_integracao) values(1, 0, 10);
