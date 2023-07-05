@@ -4,6 +4,7 @@ import com.github.macgarcia.access.control.desktop.component.ModeloTabelaNota;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.awt.event.MouseAdapter;
@@ -16,13 +17,13 @@ import javax.swing.JDesktopPane;
  * @author macgarcia
  */
 public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
-    
+
     private static final Logger LOGGER = FactoryLog.getLog();
 
     private final NotaService service;
     private ModeloTabelaNota model;
     private Nota notaSelecionada;
-    private final JDesktopPane desktop;
+    private JDesktopPane desktop;
     private final int ZERO = 0;
 
     /**
@@ -30,10 +31,9 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
      *
      * @param desktopPane
      */
-    public TelaTodasAnotacoes(final JDesktopPane desktopPane) {
+    public TelaTodasAnotacoes() {
         initComponents();
         service = new NotaService();
-        this.desktop = desktopPane;
         configurarJanela();
         construirTabela();
         acoesDosBotoes();
@@ -170,15 +170,10 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 if (Configuracao.verificarJanelaAberta(desktop, TelaCadastroNota.class)) {
                     FactoryMensagem.mensagemAlerta("Tela já esta aberta para edição.");
                 } else {
-                    TelaCadastroNota tela = new TelaCadastroNota();
-
+                    final TelaCadastroNota tela = FactoryTela.criarTela(TelaCadastroNota.class, desktop);
                     tela.setAtualizacaoDeNota(true);
                     tela.setNotaParaAtualizar(notaSelecionada);
                     tela.setDadosNaTelaDeAtualização(this.notaSelecionada);
-
-                    this.desktop.add(tela);
-                    Configuracao.setPosicaoInternalFrame(desktop, tela);
-                    tela.setVisible(true);
                 }
             }
         });
@@ -187,11 +182,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
                 FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
             } else {
-                final TelaVerDadosNota tela = new TelaVerDadosNota();
-                tela.mostrarDados(notaSelecionada);
-                this.desktop.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktop, tela);
-                tela.setVisible(true);
+                if (notaSelecionada == null) {
+                    FactoryMensagem.mensagemAlerta("Selecione uma nota.");
+                } else {
+                    final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
+                    tela.mostrarDados(notaSelecionada);
+                }
             }
         });
 
@@ -236,5 +232,9 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 notaSelecionada = model.getNota(jTableNotas.getSelectedRow());
             }
         });
+    }
+
+    public void setDesktop(JDesktopPane desktop) {
+        this.desktop = desktop;
     }
 }

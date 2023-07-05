@@ -3,6 +3,7 @@ package com.github.macgarcia.access.control.desktop;
 import com.github.macgarcia.access.control.desktop.component.ModeloIntegracao;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaCadastroNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaDeHistoricoNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaTodasAnotacoes;
@@ -18,7 +19,7 @@ import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegrac
 public class TelaInicial extends javax.swing.JFrame {
 
     private final String MENSAGEM_DE_TELA_ABERTA = "A tela já esta aberta em sua area de trabalho.";
-    private ModeloIntegracao integracao;
+    private final ModeloIntegracao integracao;
 
     /**
      * Creates new form TelaInicial
@@ -31,7 +32,7 @@ public class TelaInicial extends javax.swing.JFrame {
         acoesDoMenuIntegracao();
         acoesDoMenuConfiguracao();
         integracao = new ModeloIntegracao();
-        
+
     }
 
     /**
@@ -188,11 +189,8 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaCadastroNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaCadastroNota tela = new TelaCadastroNota();
+                final TelaCadastroNota tela = FactoryTela.criarTela(TelaCadastroNota.class, desktopPanel);
                 tela.setAtualizacaoDeNota(false);
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
             }
         });
 
@@ -200,10 +198,8 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaTodasAnotacoes.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaTodasAnotacoes tela = new TelaTodasAnotacoes(desktopPanel);
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
+                final TelaTodasAnotacoes tela = FactoryTela.criarTela(TelaTodasAnotacoes.class, desktopPanel);
+                tela.setDesktop(desktopPanel);
             }
         });
 
@@ -211,10 +207,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaDeHistoricoNota.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaDeHistoricoNota tela = new TelaDeHistoricoNota();
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
+                FactoryTela.criarTela(TelaDeHistoricoNota.class, desktopPanel);
             }
         });
 
@@ -229,10 +222,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaIntegracaoTxt.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaIntegracaoTxt tela = new TelaIntegracaoTxt();
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
+                FactoryTela.criarTela(TelaIntegracaoTxt.class, desktopPanel);
             }
         });
 
@@ -240,10 +230,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaDeExportacaoDados.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaDeExportacaoDados tela = new TelaDeExportacaoDados();
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
+                FactoryTela.criarTela(TelaIntegracaoTxt.class, desktopPanel);
             }
         });
     }
@@ -254,10 +241,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaDeLogs.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaDeLogs tela = new TelaDeLogs();
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
+                FactoryTela.criarTela(TelaDeLogs.class, desktopPanel);
             }
         });
 
@@ -265,10 +249,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaConfigurarIntegracaoApi.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                final TelaConfigurarIntegracaoApi tela = new TelaConfigurarIntegracaoApi();
-                this.desktopPanel.add(tela);
-                Configuracao.setPosicaoInternalFrame(desktopPanel, tela);
-                tela.setVisible(true);
+                FactoryTela.criarTela(TelaConfigurarIntegracaoApi.class, desktopPanel);
             }
         });
     }
