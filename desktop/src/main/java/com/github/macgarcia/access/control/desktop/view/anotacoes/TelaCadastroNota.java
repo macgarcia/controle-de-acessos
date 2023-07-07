@@ -194,7 +194,6 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
                     } else {
                         FactoryMensagem.mensagemOk("Erro ao salvar a nota.");
                     }
-
                 }
             }
         });

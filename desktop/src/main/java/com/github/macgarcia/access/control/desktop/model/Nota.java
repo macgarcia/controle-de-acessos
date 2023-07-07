@@ -151,4 +151,10 @@ public class Nota implements Serializable, EntidadeBase {
     public void setFlagIntegrado(FlagIntegracao flagIntegrado) {
         this.flagIntegrado = flagIntegrado;
     }
+
+    @Override
+    public String toString() {
+        return "Nota{" + "id=" + id + ", titulo=" + titulo + '}';
+    }
+
 }

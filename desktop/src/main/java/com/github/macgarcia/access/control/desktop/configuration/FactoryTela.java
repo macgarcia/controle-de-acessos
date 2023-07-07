@@ -21,8 +21,7 @@ public class FactoryTela {
             tela.setVisible(true);
             return tela;
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
-            LOGGER.severe(String.format("Erro para abrir a tela.: [%s]", classe));
-            ex.printStackTrace();
+            LOGGER.severe(String.format("Erro para abrir a tela.: [%s], Erro[%s]", classe, ex.getMessage()));
         }
         return null;
     }

@@ -5,6 +5,7 @@ import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem
 import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegracao;
 import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.ConfiguracaoIntegracaoRepository;
+import java.util.Objects;
 import java.util.Timer;
 
 /**
@@ -163,10 +164,10 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
     }
 
     private void montarTelaComInformacoes() {
-        if (config != null) {
+        if (Objects.nonNull(config)) {
             this.boxOpcoes.setSelectedIndex(config.getAtivarIntegracao().getValor());
             this.txtIntervaloMinutos.setText(String.valueOf(config.getIntervaloIntegracao()));
-            if (config.getInicioImediato() == FlagIntegracao.LIGADO) {
+            if (Objects.equals(config.getInicioImediato(), FlagIntegracao.LIGADO)) {
                 this.check.setSelected(true);
             }
         }
@@ -176,7 +177,7 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
 
         this.btnIniciar.addActionListener(ev -> {
             final Timer timer = ModeloIntegracao.getTimer();
-            if (timer != null) {
+            if (Objects.nonNull(timer)) {
                 FactoryMensagem.mensagemAlerta("já existe uma integração no momento.");
             } else {
                 new ModeloIntegracao();
@@ -192,7 +193,7 @@ public class TelaConfigurarIntegracaoApi extends javax.swing.JInternalFrame {
     }
 
     private void recuperarInformacaoesDaTela() {
-        if (config == null) {
+        if (Objects.isNull(config)) {
             config = new ConfiguracaoIntegracao();
         }
         config.setId(ID_CONFIGURACAO);
