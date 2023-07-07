@@ -32,7 +32,7 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
     private final DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
     private PojoDadosExportacao pojo;
     private List<Nota> notas;
-    private NotaRepository repository;
+    private final NotaRepository repository;
 
     private List<String> linhas = null;
 
@@ -186,13 +186,15 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                 barraProgresso.setValue(25);
                 this.notas = this.repository.getNotasParaExportacao(this.pojo);
 
-                this.lblProgresso.setText("Escrevendo exportação em texto...");
-                barraProgresso.setValue(75);
-                escreverTxt();
+                //this.lblProgresso.setText("Escrevendo exportação em texto...");
+                final boolean escreveuTxt = escreverTxt();
+                if (escreveuTxt) {
+                    barraProgresso.setValue(35);
+                    this.lblProgresso.setText("Arquivo escrito com sucesso.");
+                    barraProgresso.setValue(100);
+                    FactoryMensagem.mensagemOk("Exportação feita com sucesso.");
+                }
 
-                this.lblProgresso.setText("Arquivo escrito com sucesso.");
-                barraProgresso.setValue(100);
-                FactoryMensagem.mensagemOk("Exportação feita com sucesso.");
             } else {
                 FactoryMensagem.mensagemOk("Todos os dados são obrigatórios.");
             }
@@ -225,19 +227,21 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
         }
     }
 
-    private void escreverTxt() {
+    private boolean escreverTxt() {
         if (this.notas.isEmpty()) {
             LOGGER.info("Nenhum dado foi encontrado com o filtro informado.");
             FactoryMensagem.mensagemAlerta("Não existe notas no periodo informado.");
+            return false;
         } else {
-            
+
             LOGGER.info("Tratamento dos dados recuperados.");
-            
+
             final String caminho = this.txtCaminhoArquivoDescarga.getText()
                     + File.separator + "arq_export_"
                     + df.format(LocalDateTime.now()) + ".txt";
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho, StandardCharsets.UTF_8))) {
+
                 for (Nota n : notas) {
                     getLinhas().add(montaLinhaNota(n));
                     if (!n.getHistorico().isEmpty()) {
@@ -246,9 +250,9 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-                
+
                 LOGGER.info("Ecrevendo arquivo...");
-                
+
                 linhas.forEach(linha -> {
                     try {
                         writer.write(linha);
@@ -256,15 +260,18 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                     } catch (IOException e) {
                         LOGGER.severe(String.format("Erro ao escrever o arquivo.: [%s]", e.getMessage()));
                         FactoryMensagem.mensagemErro("Erro ao escrever os dados no arquivo");
+                        throw new RuntimeException("Erro ao escrever os dados no arquivo", e);
                     }
                 });
-                
+
                 LOGGER.info("Arquivo escrito com sucesso.");
                 LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", caminho));
-                
+                return true;
+
             } catch (Exception e) {
                 LOGGER.severe(String.format("Erro ao criar o arquivo de exportação.: [%s]", e.getMessage()));
                 FactoryMensagem.mensagemErro("Erro ao criar o arquivo de exportação.");
+                return false;
             }
         }
     }

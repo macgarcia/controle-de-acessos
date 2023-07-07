@@ -230,7 +230,7 @@ public class TelaInicial extends javax.swing.JFrame {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaDeExportacaoDados.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                FactoryTela.criarTela(TelaIntegracaoTxt.class, desktopPanel);
+                FactoryTela.criarTela(TelaDeExportacaoDados.class, desktopPanel);
             }
         });
     }
