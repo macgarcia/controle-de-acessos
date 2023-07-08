@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.model;
 
+import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;

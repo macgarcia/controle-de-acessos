@@ -1,4 +1,4 @@
-package com.github.macgarcia.access.control.desktop.model;
+package com.github.macgarcia.access.control.desktop.enuns;
 
 /**
  *

@@ -3,6 +3,7 @@ package com.github.macgarcia.access.control.desktop.view.integracoes;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
 import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.pojo.PojoDadosExportacao;
@@ -27,6 +28,8 @@ import java.util.logging.Logger;
 public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
 
     private static final Logger LOGGER = FactoryLog.getLog();
+    
+    private final String ACAO = "Abrir...";
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private final DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
@@ -175,7 +178,7 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
     private void acoesDoBotoes() {
 
         this.btnPesquisar.addActionListener(ev -> {
-            Configuracao.construirLancador(false, txtCaminhoArquivoDescarga);
+            Configuracao.construirLancador(false, txtCaminhoArquivoDescarga, AcaoParaArquivo.ABRIR);
         });
 
         this.btnIniciar.addActionListener(ev -> {

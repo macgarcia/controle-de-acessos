@@ -6,7 +6,7 @@ import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegr
 import com.github.macgarcia.access.control.desktop.integracao.HistoricoDtoRequest;
 import com.github.macgarcia.access.control.desktop.integracao.IntegracaoResponse;
 import com.github.macgarcia.access.control.desktop.integracao.NotaDtoRequest;
-import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
+import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.repository.ConfiguracaoIntegracaoRepository;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;

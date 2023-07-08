@@ -3,7 +3,7 @@ package com.github.macgarcia.access.control.desktop.view.configuracoes;
 import com.github.macgarcia.access.control.desktop.component.ModeloIntegracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegracao;
-import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
+import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.ConfiguracaoIntegracaoRepository;
 import java.util.Objects;
 import java.util.Timer;
