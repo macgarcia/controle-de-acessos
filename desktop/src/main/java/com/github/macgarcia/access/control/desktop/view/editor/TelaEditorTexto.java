@@ -135,7 +135,6 @@ public class TelaEditorTexto extends javax.swing.JInternalFrame {
 
     private void recuperarTextoDaTela() {
         texto = txtAreaTexto.getText();
-        System.out.println(texto);
     }
 
     private void salvar() {
