@@ -1,7 +1,6 @@
 package com.github.macgarcia.access.control.desktop.view.editor;
 
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
-import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -47,6 +46,7 @@ public class TelaEditorTexto extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
 
         txtAreaTexto.setColumns(20);
         txtAreaTexto.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N

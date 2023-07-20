@@ -44,8 +44,13 @@ public class ModeloIntegracao extends TimerTask {
     }
 
     private void buscarConfiguracaoDeIntegracao() {
-        configuracaoRepository = new ConfiguracaoIntegracaoRepository();
-        this.config = configuracaoRepository.consultarPorId(ConfiguracaoIntegracao.class, ID_CONFIGURACAO);
+        try {
+            configuracaoRepository = new ConfiguracaoIntegracaoRepository();
+            this.config = configuracaoRepository.consultarPorId(ConfiguracaoIntegracao.class, ID_CONFIGURACAO);
+        } catch (InternalError e) {
+            config = null;
+        }
+
     }
 
     private void montarTimerDeIntegracao() {
@@ -62,23 +67,22 @@ public class ModeloIntegracao extends TimerTask {
     public static Timer getTimer() {
         return timer;
     }
-    
 
     @Override
     public void run() {
-        
+
         LOGGER.info(String.format("Iniciando de integração de dados em [%s]",
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now())));
-        
+
         var notas = notaRepository.notasParaIntegrar();
-        
+
         if (notas.isEmpty()) {
             timer.cancel();
             LOGGER.info("Não há dados para integrar.");
             LOGGER.info("Integração desligada.");
             timer = null;
         }
-        
+
         final ClientApiBackup cliente = new ClientApiBackup();
 
         final Gson gson = new GsonBuilder()
@@ -86,7 +90,7 @@ public class ModeloIntegracao extends TimerTask {
                 .create();
 
         List<HistoricoDtoRequest> historico = null;
-        
+
         for (Nota n : notas) {
             if (n.getHistorico() != null && !n.getHistorico().isEmpty()) {
                 historico = n.getHistorico().stream().map(HistoricoDtoRequest::new).toList();
@@ -100,15 +104,15 @@ public class ModeloIntegracao extends TimerTask {
                     n.getUrlSite(),
                     n.getDataAtualizacao(),
                     historico);
-            
+
             final String json = gson.toJson(notaParaIntegrar);
             LOGGER.info(String.format("Nota de id:[%s], pronta para envio.", n.getId()));
-            
+
             LOGGER.info("Enviando os dados...");
             final IntegracaoResponse response = cliente.postIntegrarDados(json);
-            
+
             LOGGER.info(String.format("Retorno da api para a nota de id:[%s] -> [%s]", n.getId(), response));
-            
+
             if (STATUS_OK.equals(response.codigo)) {
                 n.setFlagIntegrado(FlagIntegracao.DESLIGADO);
                 notaRepository.salvarEntidade(n);
