@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
  *
  * @author macgarcia
  */
-public class NotaRepository extends DAOGenerico<Nota> {
+public class NotaRepository extends JPARepository<Nota> {
 
     private final String TODAS_AS_NOTAS = "select n from Nota n";
 
@@ -23,8 +23,6 @@ public class NotaRepository extends DAOGenerico<Nota> {
             + " where n.dataCriacao between :dataInicial and :dataFinal"
             + " or n.dataAtualizacao between :dataInicial and :dataFinal"
             + " order by n.dataCriacao desc";
-
-    private final String CONTAGEM_DA_QUANTIDADE_DE_HISTORICO_DA_NOTA = "select count(*) from HistoricoNota h where h.nota.id = :idNota";
 
     private final String NOTAS_PARA_INTEGRACAO = "select n from Nota n left join fetch n.historico where n.flagIntegrado = :flagIntegrado";
 
@@ -70,18 +68,6 @@ public class NotaRepository extends DAOGenerico<Nota> {
             query.setParameter("dataInicial", filtro.getDataInicial())
                     .setParameter("dataFinal", filtro.getDataFinal());
             return query.getResultList();
-        } finally {
-            manager.clear();
-            manager.close();
-        }
-    }
-
-    public Long contarhistoricoDaNota(Integer idNota) {
-        final EntityManager manager = getEntityManager();
-        try {
-            TypedQuery<Long> query = manager.createQuery(CONTAGEM_DA_QUANTIDADE_DE_HISTORICO_DA_NOTA, Long.class);
-            query.setParameter("idNota", idNota);
-            return query.getSingleResult();
         } finally {
             manager.clear();
             manager.close();

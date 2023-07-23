@@ -25,7 +25,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     private ModeloTabelaNota model;
     private Nota notaSelecionada;
     private JDesktopPane desktop;
-    private final int ZERO = 0;
+    private final Long ZERO = 0L;
 
     /**
      * Creates new form TelaTodasAnotacoes
@@ -197,17 +197,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             } else {
                 final int resposta = FactoryMensagem.mensagemConfirmacao();
                 if (resposta == ZERO) {
-                    final Long quantidade = service.contarhistorico(notaSelecionada.getId());
-                    if (quantidade.equals(ZERO)) {
-                        service.apagar(notaSelecionada.getId());
-                        construirTabela();
-                        FactoryMensagem.mensagemAlerta("Nota apagada com sucesso.");
-                        LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
-                    } else {
-                        FactoryMensagem.mensagemAlerta("Nota possui historico, não pode ser apagada.");
-                        LOGGER.warning(String.format("Erro ao apagar nota de id.: [%s], possui historico.", notaSelecionada.getId()));
-                    }
+                    service.apagar(notaSelecionada.getId());
+                    construirTabela();
+                    FactoryMensagem.mensagemOk("Nota apagada com sucesso.");
+                    LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
                 }
+                notaSelecionada = null;
             }
         });
 

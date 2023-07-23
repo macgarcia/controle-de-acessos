@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
  *
  * @author macgarcia
  */
-public class HistoricoNotaRepository extends DAOGenerico<HistoricoNota> {
+public class HistoricoNotaRepository extends JPARepository<HistoricoNota> {
 
     private final String TODO_O_HISTORICO_DE_UMA_NOTA = "select h from HistoricoNota h where h.nota.id = :idNota order by h.numeroAtualizacao desc";
 

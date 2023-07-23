@@ -6,6 +6,6 @@ import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegr
  *
  * @author macgarcia
  */
-public class ConfiguracaoIntegracaoRepository extends DAOGenerico<ConfiguracaoIntegracao>{
+public class ConfiguracaoIntegracaoRepository extends JPARepository<ConfiguracaoIntegracao>{
     
 }

@@ -7,8 +7,9 @@ import javax.persistence.Persistence;
 /**
  *
  * @author macgarcia
+ * @param <T>
  */
-public class DAOGenerico<T extends EntidadeBase> {
+public class JPARepository<T extends EntidadeBase> {
     
     private final String UNIDADE_PERSISTENCIA = "NomeUnidadeDePersistencia";
 
