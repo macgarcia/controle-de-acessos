@@ -71,7 +71,7 @@ public class Nota implements Serializable, EntidadeBase {
         this.dataCriacao = LocalDateTime.now();
         this.flagIntegrado = FlagIntegracao.LIGADO;
     }
-
+    
     @Override
     public Integer getId() {
         return this.id;

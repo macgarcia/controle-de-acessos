@@ -1,5 +1,6 @@
 package com.github.macgarcia.access.control.desktop.component;
 
+import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.integracao.ClientApiBackup;
 import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegracao;
@@ -85,9 +86,7 @@ public class ModeloIntegracao extends TimerTask {
 
         final ClientApiBackup cliente = new ClientApiBackup();
 
-        final Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+        final Gson gson = Configuracao.getGson();
 
         List<HistoricoDtoRequest> historico = null;
 

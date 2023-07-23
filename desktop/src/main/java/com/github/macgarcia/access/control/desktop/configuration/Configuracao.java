@@ -1,11 +1,14 @@
 package com.github.macgarcia.access.control.desktop.configuration;
 
+import com.github.macgarcia.access.control.desktop.component.LocalDateTimeAdapter;
 import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.Dimension;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.time.LocalDateTime;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
@@ -133,5 +136,12 @@ public class Configuracao {
             return path;
         }
         return null;
+    }
+
+    /* Devolve uma instancia do gson configurado com o adapter de data */
+    public static Gson getGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
     }
 }

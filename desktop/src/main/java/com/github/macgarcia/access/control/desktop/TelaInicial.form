@@ -36,9 +36,14 @@
             <Property name="text" type="java.lang.String" value="Integra&#xe7;&#xe3;o"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuImportarDocumento">
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuImportarDocumentoTxt">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Importar documento"/>
+                <Property name="text" type="java.lang.String" value="Importar documento .txt"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuimportarDocumentoJson">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Importar documento .json"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuExportarDados">

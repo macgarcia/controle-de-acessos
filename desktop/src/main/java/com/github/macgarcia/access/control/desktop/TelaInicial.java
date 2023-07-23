@@ -11,6 +11,7 @@ import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaConfig
 import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaDeLogs;
 import com.github.macgarcia.access.control.desktop.view.editor.TelaEditorTexto;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaDeExportacaoDados;
+import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoJson;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
 
 /**
@@ -54,7 +55,8 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemHistoricoDeNotas = new javax.swing.JMenuItem();
         btnItemMenuSair = new javax.swing.JMenuItem();
         btnMenuIntegracao = new javax.swing.JMenu();
-        btnItemMenuImportarDocumento = new javax.swing.JMenuItem();
+        btnItemMenuImportarDocumentoTxt = new javax.swing.JMenuItem();
+        btnItemMenuimportarDocumentoJson = new javax.swing.JMenuItem();
         btnItemMenuExportarDados = new javax.swing.JMenuItem();
         btnMenuConfiguracoes = new javax.swing.JMenu();
         btnItemMenuLogs = new javax.swing.JMenuItem();
@@ -93,8 +95,11 @@ public class TelaInicial extends javax.swing.JFrame {
 
         btnMenuIntegracao.setText("Integração");
 
-        btnItemMenuImportarDocumento.setText("Importar documento");
-        btnMenuIntegracao.add(btnItemMenuImportarDocumento);
+        btnItemMenuImportarDocumentoTxt.setText("Importar documento .txt");
+        btnMenuIntegracao.add(btnItemMenuImportarDocumentoTxt);
+
+        btnItemMenuimportarDocumentoJson.setText("Importar documento .json");
+        btnMenuIntegracao.add(btnItemMenuimportarDocumentoJson);
 
         btnItemMenuExportarDados.setText("Exportar dados");
         btnMenuIntegracao.add(btnItemMenuExportarDados);
@@ -173,12 +178,13 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnItemHistoricoDeNotas;
     private javax.swing.JMenuItem btnItemMenuConfigurarIntegracao;
     private javax.swing.JMenuItem btnItemMenuExportarDados;
-    private javax.swing.JMenuItem btnItemMenuImportarDocumento;
+    private javax.swing.JMenuItem btnItemMenuImportarDocumentoTxt;
     private javax.swing.JMenuItem btnItemMenuLogs;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
     private javax.swing.JMenuItem btnItemMenuNovoEditor;
     private javax.swing.JMenuItem btnItemMenuSair;
     private javax.swing.JMenuItem btnItemMenuTodasNotas;
+    private javax.swing.JMenuItem btnItemMenuimportarDocumentoJson;
     private javax.swing.JMenu btnMenuAnotacoes;
     private javax.swing.JMenu btnMenuConfiguracoes;
     private javax.swing.JMenu btnMenuEditorTexto;
@@ -227,11 +233,19 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void acoesDoMenuIntegracao() {
 
-        this.btnItemMenuImportarDocumento.addActionListener(ev -> {
+        this.btnItemMenuImportarDocumentoTxt.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaIntegracaoTxt.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
                 FactoryTela.criarTela(TelaIntegracaoTxt.class, desktopPanel);
+            }
+        });
+        
+        this.btnItemMenuimportarDocumentoJson.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(desktopPanel, TelaIntegracaoJson.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                FactoryTela.criarTela(TelaIntegracaoJson.class, desktopPanel);
             }
         });
 
