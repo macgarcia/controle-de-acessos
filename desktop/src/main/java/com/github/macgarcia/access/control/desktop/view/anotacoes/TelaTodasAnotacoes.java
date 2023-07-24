@@ -20,6 +20,7 @@ import javax.swing.JDesktopPane;
 public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
     private static final Logger LOGGER = FactoryLog.getLog();
+    private final int DUPLO_CLICK = 2;
 
     private final NotaService service;
     private ModeloTabelaNota model;
@@ -161,6 +162,20 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         this.jTableNotas.getTableHeader().setReorderingAllowed(false);
     }
 
+    /* Utilizado no duplo click na tabela de todas as notas, e tambem, no click do botão ver */
+    private void verNota() {
+        if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
+            FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
+        } else {
+            if (Objects.isNull(notaSelecionada)) {
+                FactoryMensagem.mensagemAlerta("Selecione uma nota.");
+            } else {
+                final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
+                tela.mostrarDados(notaSelecionada);
+            }
+        }
+    }
+
     private void acoesDosBotoes() {
 
         this.btnEditar.addActionListener(ev -> {
@@ -178,18 +193,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             }
         });
 
-        this.btnVer.addActionListener(ev -> {
-            if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
-                FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
-            } else {
-                if (Objects.isNull(notaSelecionada)) {
-                    FactoryMensagem.mensagemAlerta("Selecione uma nota.");
-                } else {
-                    final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
-                    tela.mostrarDados(notaSelecionada);
-                }
-            }
-        });
+        this.btnVer.addActionListener(ev -> verNota());
 
         this.btnApagar.addActionListener(ev -> {
             if (Objects.isNull(notaSelecionada)) {
@@ -229,6 +233,9 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 notaSelecionada = model.getNota(jTableNotas.getSelectedRow());
+                if (e.getClickCount() == DUPLO_CLICK) {
+                    verNota();
+                }
             }
         });
     }
