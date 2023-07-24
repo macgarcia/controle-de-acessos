@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -33,8 +32,6 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
     private PojoDadosExportacao pojo;
     private List<Nota> notas;
     private final NotaRepository repository;
-
-    private List<String> linhas = null;
 
     /**
      * Creates new form TelaDeExportacaoDados
@@ -233,11 +230,10 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
             FactoryMensagem.mensagemAlerta("Não existe notas no periodo informado.");
             return false;
         } else {
-            List<String> linhas;
             LOGGER.info("Tratamento dos dados recuperados.");
             final String arquivo = criarArquivo();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo, StandardCharsets.UTF_8))) {
-                linhas = criarConteudoArquivo(notas);
+                final List<String> linhas = criarConteudoArquivo(notas);
                 LOGGER.info("Ecrevendo arquivo...");
                 escreverConteudoNoArquivo(linhas, writer);
                 LOGGER.info("Arquivo escrito com sucesso.");

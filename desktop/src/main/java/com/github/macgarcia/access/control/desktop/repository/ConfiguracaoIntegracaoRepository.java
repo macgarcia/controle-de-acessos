@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.repository;
 
-import com.github.macgarcia.access.control.desktop.integracao.ConfiguracaoIntegracao;
+import com.github.macgarcia.access.control.desktop.model.ConfiguracaoIntegracao;
 
 /**
  *

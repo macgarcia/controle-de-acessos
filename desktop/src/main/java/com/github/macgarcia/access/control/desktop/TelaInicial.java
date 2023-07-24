@@ -57,7 +57,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnMenuIntegracao = new javax.swing.JMenu();
         btnItemMenuImportarDocumentoTxt = new javax.swing.JMenuItem();
         btnItemMenuimportarDocumentoJson = new javax.swing.JMenuItem();
-        btnItemMenuExportarDados = new javax.swing.JMenuItem();
+        btnItemMenuExportarDadosTxt = new javax.swing.JMenuItem();
         btnMenuConfiguracoes = new javax.swing.JMenu();
         btnItemMenuLogs = new javax.swing.JMenuItem();
         btnItemMenuConfigurarIntegracao = new javax.swing.JMenuItem();
@@ -101,8 +101,8 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuimportarDocumentoJson.setText("Importar documento .json");
         btnMenuIntegracao.add(btnItemMenuimportarDocumentoJson);
 
-        btnItemMenuExportarDados.setText("Exportar dados");
-        btnMenuIntegracao.add(btnItemMenuExportarDados);
+        btnItemMenuExportarDadosTxt.setText("Exportar dados(txt)");
+        btnMenuIntegracao.add(btnItemMenuExportarDadosTxt);
 
         jMenuBar1.add(btnMenuIntegracao);
 
@@ -177,7 +177,7 @@ public class TelaInicial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnItemHistoricoDeNotas;
     private javax.swing.JMenuItem btnItemMenuConfigurarIntegracao;
-    private javax.swing.JMenuItem btnItemMenuExportarDados;
+    private javax.swing.JMenuItem btnItemMenuExportarDadosTxt;
     private javax.swing.JMenuItem btnItemMenuImportarDocumentoTxt;
     private javax.swing.JMenuItem btnItemMenuLogs;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
@@ -249,7 +249,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
-        this.btnItemMenuExportarDados.addActionListener(ev -> {
+        this.btnItemMenuExportarDadosTxt.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaDeExportacaoDados.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
