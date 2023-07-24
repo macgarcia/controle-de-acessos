@@ -278,7 +278,6 @@ public class TelaInicial extends javax.swing.JFrame {
     }
     
     private void acoesDoMenuEditorTexto() {
-        
         this.btnItemMenuNovoEditor.addActionListener(ev -> {
             FactoryTela.criarTela(TelaEditorTexto.class, desktopPanel);
         });

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  *
@@ -28,11 +29,7 @@ import java.util.logging.Logger;
 public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
 
     private static final Logger LOGGER = FactoryLog.getLog();
-    
-    private final String ACAO = "Abrir...";
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-    private final DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
     private PojoDadosExportacao pojo;
     private List<Nota> notas;
     private final NotaRepository repository;
@@ -236,41 +233,16 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
             FactoryMensagem.mensagemAlerta("Não existe notas no periodo informado.");
             return false;
         } else {
-
+            List<String> linhas;
             LOGGER.info("Tratamento dos dados recuperados.");
-
-            final String caminho = this.txtCaminhoArquivoDescarga.getText()
-                    + File.separator + "arq_export_"
-                    + df.format(LocalDateTime.now()) + ".txt";
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho, StandardCharsets.UTF_8))) {
-
-                for (Nota n : notas) {
-                    getLinhas().add(montaLinhaNota(n));
-                    if (!n.getHistorico().isEmpty()) {
-                        for (HistoricoNota hn : n.getHistorico()) {
-                            getLinhas().add(montarLinhaHistorico(hn));
-                        }
-                    }
-                }
-
+            final String arquivo = criarArquivo();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo, StandardCharsets.UTF_8))) {
+                linhas = criarConteudoArquivo(notas);
                 LOGGER.info("Ecrevendo arquivo...");
-
-                linhas.forEach(linha -> {
-                    try {
-                        writer.write(linha);
-                        writer.newLine();
-                    } catch (IOException e) {
-                        LOGGER.severe(String.format("Erro ao escrever o arquivo.: [%s]", e.getMessage()));
-                        FactoryMensagem.mensagemErro("Erro ao escrever os dados no arquivo");
-                        throw new RuntimeException("Erro ao escrever os dados no arquivo", e);
-                    }
-                });
-
+                escreverConteudoNoArquivo(linhas, writer);
                 LOGGER.info("Arquivo escrito com sucesso.");
-                LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", caminho));
+                LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", arquivo));
                 return true;
-
             } catch (Exception e) {
                 LOGGER.severe(String.format("Erro ao criar o arquivo de exportação.: [%s]", e.getMessage()));
                 FactoryMensagem.mensagemErro("Erro ao criar o arquivo de exportação.");
@@ -279,54 +251,34 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
         }
     }
 
-    private String montaLinhaNota(final Nota n) {
-        LOGGER.info(String.format("Montando linha de nota, dados:[%s]", n));
-        final StringBuilder linha = new StringBuilder();
-        linha.append("NOTA")
-                .append("|")
-                .append(n.getHistorico().size())
-                .append("|")
-                .append(n.getTitulo())
-                .append("|")
-                .append(n.getDescricao() != null && n.getDescricao().length() != 0 ? n.getDescricao() : " ")
-                .append("|")
-                .append(n.getUsuario())
-                .append("|")
-                .append(n.getSenha())
-                .append("|")
-                .append(n.getUrlSite() != null && n.getUrlSite().length() != 0 ? n.getUrlSite() : " ");
-        LOGGER.info("Linha montada com sucesso.");
-        return linha.toString();
+    private String criarArquivo() {
+        return this.txtCaminhoArquivoDescarga.getText()
+                + File.separator + "arq_export_"
+                + DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss").format(LocalDateTime.now()) + ".txt";
     }
 
-    private String montarLinhaHistorico(final HistoricoNota hn) {
-        LOGGER.info(String.format("Montando linha de histórico, dados:[%s]", hn));
-        final StringBuilder linha = new StringBuilder();
-        linha.append("HISTORICO")
-                .append("|")
-                .append(formatter.format(hn.getDataValidadeInicial()))
-                .append("|")
-                .append(formatter.format(hn.getDataValidadeFinal()))
-                .append("|")
-                .append(hn.getNumeroAtualizacao())
-                .append("|")
-                .append(hn.getDescricao() != null && hn.getDescricao().length() != 0 ? hn.getDescricao() : " ")
-                .append("|")
-                .append(hn.getTitulo())
-                .append("|")
-                .append(hn.getUsuario())
-                .append("|")
-                .append(hn.getSenha())
-                .append("|")
-                .append(hn.getUrlSite() != null && hn.getUrlSite().length() != 0 ? hn.getUrlSite() : " ");
-        LOGGER.info("Linha montada com sucesso.");
-        return linha.toString();
+    private List<String> criarConteudoArquivo(List<Nota> notas) {
+        return notas.stream()
+                .flatMap(nota -> {
+                    Stream<String> notaStream = Stream.of(nota.montarNotaTxt());
+                    Stream<String> historicosStream = nota.getHistorico().stream()
+                            .map(HistoricoNota::montarHistoricoTxt);
+                    return Stream.concat(notaStream, historicosStream);
+                })
+                .toList();
     }
 
-    public List<String> getLinhas() {
-        if (this.linhas == null) {
-            this.linhas = new ArrayList<>();
-        }
-        return linhas;
+    private void escreverConteudoNoArquivo(List<String> linhas, BufferedWriter writer) {
+        linhas.forEach(linha -> {
+            try {
+                writer.write(linha);
+                writer.newLine();
+            } catch (IOException e) {
+                LOGGER.severe(String.format("Erro ao escrever o arquivo.: [%s]", e.getMessage()));
+                FactoryMensagem.mensagemErro("Erro ao escrever os dados no arquivo");
+                throw new RuntimeException("Erro ao escrever os dados no arquivo", e);
+            }
+        });
     }
+
 }

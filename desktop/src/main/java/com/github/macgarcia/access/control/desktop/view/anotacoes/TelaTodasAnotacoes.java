@@ -162,70 +162,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         this.jTableNotas.getTableHeader().setReorderingAllowed(false);
     }
 
-    /* Utilizado no duplo click na tabela de todas as notas, e tambem, no click do botão ver */
-    private void verNota() {
-        if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
-            FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
-        } else {
-            if (Objects.isNull(notaSelecionada)) {
-                FactoryMensagem.mensagemAlerta("Selecione uma nota.");
-            } else {
-                final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
-                tela.mostrarDados(notaSelecionada);
-            }
-        }
-    }
-
     private void acoesDosBotoes() {
-
-        this.btnEditar.addActionListener(ev -> {
-            if (Objects.isNull(notaSelecionada)) {
-                FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
-            } else {
-                if (Configuracao.verificarJanelaAberta(desktop, TelaCadastroNota.class)) {
-                    FactoryMensagem.mensagemAlerta("Tela já esta aberta para edição.");
-                } else {
-                    final TelaCadastroNota tela = FactoryTela.criarTela(TelaCadastroNota.class, desktop);
-                    tela.setAtualizacaoDeNota(true);
-                    tela.setNotaParaAtualizar(notaSelecionada);
-                    tela.setDadosNaTelaDeAtualização(this.notaSelecionada);
-                }
-            }
-        });
-
+        this.btnEditar.addActionListener(ev -> editarNota());
         this.btnVer.addActionListener(ev -> verNota());
-
-        this.btnApagar.addActionListener(ev -> {
-            if (Objects.isNull(notaSelecionada)) {
-                FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
-            } else {
-                final int resposta = FactoryMensagem.mensagemConfirmacao();
-                if (resposta == ZERO) {
-                    service.apagar(notaSelecionada.getId());
-                    construirTabela();
-                    FactoryMensagem.mensagemOk("Nota apagada com sucesso.");
-                    LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
-                }
-                notaSelecionada = null;
-            }
-        });
-
-        this.btnPesquisar.addActionListener(ev -> {
-            final String chave = this.txtPesquisar.getText().trim();
-            if (!chave.isEmpty()) {
-                this.model.pesquisar(chave);
-                this.jTableNotas.updateUI();
-            } else {
-                FactoryMensagem.mensagemAlerta("Digite algo no campo de pesquisa.");
-            }
-            notaSelecionada = null;
-        });
-
-        this.btnLimparPesquisa.addActionListener(ev -> {
-            this.txtPesquisar.setText(null);
-            notaSelecionada = null;
-            construirTabela();
-        });
+        this.btnApagar.addActionListener(ev -> apagarNota());
+        this.btnPesquisar.addActionListener(ev -> pesquisar());
+        this.btnLimparPesquisa.addActionListener(ev -> limparPesquisa());
     }
 
     private void acaoDeClickDeSelecaoNaTabela() {
@@ -243,4 +185,67 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     public void setDesktop(JDesktopPane desktop) {
         this.desktop = desktop;
     }
+
+    /* Comportamentos*/
+    private void editarNota() {
+        if (Objects.isNull(notaSelecionada)) {
+            FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
+        } else {
+            if (Configuracao.verificarJanelaAberta(desktop, TelaCadastroNota.class)) {
+                FactoryMensagem.mensagemAlerta("Tela já esta aberta para edição.");
+            } else {
+                final TelaCadastroNota tela = FactoryTela.criarTela(TelaCadastroNota.class, desktop);
+                tela.setAtualizacaoDeNota(true);
+                tela.setNotaParaAtualizar(notaSelecionada);
+                tela.setDadosNaTelaDeAtualização(this.notaSelecionada);
+            }
+        }
+    }
+
+    /* Utilizado no duplo click na tabela de todas as notas, e tambem, no click do botão ver */
+    private void verNota() {
+        if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
+            FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
+        } else {
+            if (Objects.isNull(notaSelecionada)) {
+                FactoryMensagem.mensagemAlerta("Selecione uma nota.");
+            } else {
+                final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
+                tela.mostrarDados(notaSelecionada);
+            }
+        }
+    }
+
+    private void apagarNota() {
+        if (Objects.isNull(notaSelecionada)) {
+            FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
+        } else {
+            final int resposta = FactoryMensagem.mensagemConfirmacao();
+            if (resposta == ZERO) {
+                service.apagar(notaSelecionada.getId());
+                construirTabela();
+                FactoryMensagem.mensagemOk("Nota apagada com sucesso.");
+                LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
+            }
+            notaSelecionada = null;
+        }
+    }
+
+    private void pesquisar() {
+        final String chave = this.txtPesquisar.getText().trim();
+        if (!chave.isEmpty()) {
+            this.model.pesquisar(chave);
+            this.jTableNotas.updateUI();
+        } else {
+            FactoryMensagem.mensagemAlerta("Digite algo no campo de pesquisa.");
+        }
+        notaSelecionada = null;
+    }
+
+    private void limparPesquisa() {
+        this.txtPesquisar.setText(null);
+        notaSelecionada = null;
+        construirTabela();
+    }
+    
 }

@@ -1,8 +1,11 @@
 package com.github.macgarcia.access.control.desktop.model;
 
+import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +22,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "historico_nota")
 public class HistoricoNota implements Serializable, EntidadeBase {
+
+    private static final Logger LOGGER = FactoryLog.getLog();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -152,4 +157,28 @@ public class HistoricoNota implements Serializable, EntidadeBase {
         this.urlSite = urlSite;
     }
 
+    public String montarHistoricoTxt() {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LOGGER.info(String.format("Montando linha de histórico, dados:[%s]", this));
+        final StringBuilder linha = new StringBuilder();
+        linha.append("HISTORICO")
+                .append("|")
+                .append(formatter.format(this.dataValidadeInicial))
+                .append("|")
+                .append(formatter.format(this.dataValidadeFinal))
+                .append("|")
+                .append(this.numeroAtualizacao)
+                .append("|")
+                .append(this.descricao != null && this.descricao.length() != 0 ? this.descricao : " ")
+                .append("|")
+                .append(this.titulo)
+                .append("|")
+                .append(this.usuario)
+                .append("|")
+                .append(this.senha)
+                .append("|")
+                .append(this.urlSite != null && this.urlSite.length() != 0 ? this.urlSite : " ");
+        LOGGER.info("Linha montada com sucesso.");
+        return linha.toString();
+    }
 }
