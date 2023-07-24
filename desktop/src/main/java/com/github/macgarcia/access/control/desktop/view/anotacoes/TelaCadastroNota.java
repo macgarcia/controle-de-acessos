@@ -205,10 +205,10 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
 
     private Nota capturarInformacoesDaTela() {
         final String titulo = txtTitulo.getText().trim();
-        final String descricao = txtDescricao.getText().trim();
+        final String descricao = txtDescricao.getText().trim().length() == 0 ? null : txtDescricao.getText().trim();
         final String usuario = txtUsuario.getText().trim();
         final String senha = txtSenha.getText().trim();
-        final String urlSite = txtUrlSite.getText().trim();
+        final String urlSite = txtUrlSite.getText().trim().length() == 0 ? null : txtUrlSite.getText().trim();
         return new Nota(titulo, descricao, usuario, senha, urlSite);
     }
 

@@ -1,37 +1,26 @@
 package com.github.macgarcia.access.control.desktop.view.integracoes;
 
-import com.github.macgarcia.access.control.desktop.component.LocalDateTimeAdapter;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
-import com.github.macgarcia.access.control.desktop.integracao.HistoricoDtoRequest;
-import com.github.macgarcia.access.control.desktop.integracao.NotaDtoRequest;
-import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaIntegracaoJson extends javax.swing.JInternalFrame {
-
-    private List<Nota> novasNotas = new ArrayList<>();
 
     /**
      * Creates new form TelaIntegracaoJson
@@ -146,13 +135,15 @@ public class TelaIntegracaoJson extends javax.swing.JInternalFrame {
 
                 final Gson gson = Configuracao.getGson();
 
-                var typeToken = new TypeToken<List<Nota>>() {
-                };
+                var typeToken = new TypeToken<List<Nota>>() {};
+                
                 final List<Nota> dados = gson.fromJson(json, typeToken.getType());
+                
                 processarDados(dados);
-                //persistirDados();
-                System.out.println(dados);
+                persistirDados(dados);                
+                
                 barraProgresso.setIndeterminate(false);
+                
                 FactoryMensagem.mensagemOk("Integração concluida com sucesso.");
             } catch (IOException ex) {
                 Logger.getLogger(TelaIntegracaoJson.class.getName()).log(Level.SEVERE, null, ex);
@@ -172,9 +163,9 @@ public class TelaIntegracaoJson extends javax.swing.JInternalFrame {
         });
     }
 
-    private void persistirDados() {
+    private void persistirDados(final List<Nota> dados) {
         NotaRepository repository = new NotaRepository();
-        repository.persistAll(novasNotas);
+        repository.persistAll(dados);
     }
 
 }
