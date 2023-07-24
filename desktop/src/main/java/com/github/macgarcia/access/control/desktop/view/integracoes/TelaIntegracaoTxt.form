@@ -25,16 +25,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="txtCaminhoArquivo" min="-2" pref="297" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnProcurarArquivo" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="barraProgresso" alignment="0" min="-2" pref="378" max="-2" attributes="0"/>
-                  <Component id="btnIniciar" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblProgresso" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="barraProgresso" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnIniciar" alignment="0" max="32767" attributes="0"/>
+                  <Component id="lblProgresso" alignment="0" min="-2" pref="213" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="10" max="32767" attributes="0"/>
           </Group>
@@ -50,13 +50,13 @@
                   <Component id="txtCaminhoArquivo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnProcurarArquivo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnIniciar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Component id="lblProgresso" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="barraProgresso" min="-2" pref="15" max="-2" attributes="0"/>
-              <EmptySpace pref="37" max="32767" attributes="0"/>
+              <Component id="barraProgresso" min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <Component id="btnIniciar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="8" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

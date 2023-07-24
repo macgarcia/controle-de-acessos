@@ -140,7 +140,7 @@ public class TelaIntegracaoJson extends javax.swing.JInternalFrame {
                 final List<Nota> dados = gson.fromJson(json, typeToken.getType());
                 
                 processarDados(dados);
-                persistirDados(dados);                
+                persistirDados(dados);              
                 
                 barraProgresso.setIndeterminate(false);
                 

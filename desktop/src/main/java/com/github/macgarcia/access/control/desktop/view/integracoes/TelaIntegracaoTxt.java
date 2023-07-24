@@ -67,15 +67,15 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtCaminhoArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnProcurarArquivo))
-                    .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnIniciar)
-                    .addComponent(lblProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(barraProgresso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -87,13 +87,13 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCaminhoArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnProcurarArquivo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnIniciar)
-                .addGap(30, 30, 30)
+                .addGap(27, 27, 27)
                 .addComponent(lblProgresso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btnIniciar)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,7 +110,7 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private void configurarJanela() {
-        setTitle("Importação de documentos");
+        setTitle("Importação de dados via Txt");
         setResizable(false);
     }
 
@@ -132,10 +132,9 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
 
         this.btnIniciar.addActionListener(ev -> {
             LOGGER.info("Iniciando processo de integração...");
-            this.barraProgresso.setVisible(true);
+            this.barraProgresso.setIndeterminate(true);
             
             this.lblProgresso.setText("Leitura do arquivo...");
-            this.barraProgresso.setValue(25);
             try {
                 lerArquivoSelecionado();
             } catch (IOException e) {
@@ -147,7 +146,6 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
             
             LOGGER.info("Iniciando processo de leitura do arquivo...");
             this.lblProgresso.setText("Processando o arquivo...");
-            this.barraProgresso.setValue(50);
             try {
                 service.processarDadosDoArquivo(linhasDoArquivo);
             } catch (Exception e) {
@@ -157,12 +155,11 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
                 return;
             }
             
-            this.barraProgresso.setValue(75);
             this.lblProgresso.setText("Salvando dados...");
             service.salvarNotas();
             
-            this.barraProgresso.setValue(100);
             this.lblProgresso.setText("Integração finalizada.");
+            this.barraProgresso.setIndeterminate(false);
             LOGGER.info("Integração realizada.");
         });
     }
