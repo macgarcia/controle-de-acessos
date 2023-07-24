@@ -11,8 +11,8 @@ begin
      --
      if new.data_atualizacao < old.data_atualizacao then
      	--
-     	signal sqlstate '45000' set message_text = 'Data de atualização é mais velha que a data que já existe. trigger interrompido.';
-	--
+     	signal sqlstate '45000' set message_text = 'Data de atualizaÃ§Ã£o Ã© mais velha que a data que jÃ¡ existe. trigger interrompido.';
+		--
     end if;
 
     if new.data_atualizacao is not null then

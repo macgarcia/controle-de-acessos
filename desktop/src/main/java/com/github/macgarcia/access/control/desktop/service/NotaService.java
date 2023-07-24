@@ -1,6 +1,5 @@
 package com.github.macgarcia.access.control.desktop.service;
 
-import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 
@@ -22,10 +21,6 @@ public class NotaService {
     
     public void apagar(final Integer id) {
         this.repository.apagarEntidade(Nota.class, id);
-        FactoryMensagem.mensagemOk("Registro apagado com sucesso.");
     }
     
-    public Long contarhistorico(final Integer idNota) {
-        return repository.contarhistoricoDaNota(idNota);
-    }
 }

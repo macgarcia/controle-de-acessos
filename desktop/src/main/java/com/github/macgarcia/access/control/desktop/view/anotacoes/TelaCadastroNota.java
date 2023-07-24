@@ -3,7 +3,7 @@ package com.github.macgarcia.access.control.desktop.view.anotacoes;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
-import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
+import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.model.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.time.LocalDateTime;
@@ -194,7 +194,6 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
                     } else {
                         FactoryMensagem.mensagemOk("Erro ao salvar a nota.");
                     }
-
                 }
             }
         });
@@ -206,10 +205,10 @@ public class TelaCadastroNota extends javax.swing.JInternalFrame {
 
     private Nota capturarInformacoesDaTela() {
         final String titulo = txtTitulo.getText().trim();
-        final String descricao = txtDescricao.getText().trim();
+        final String descricao = txtDescricao.getText().trim().length() == 0 ? null : txtDescricao.getText().trim();
         final String usuario = txtUsuario.getText().trim();
         final String senha = txtSenha.getText().trim();
-        final String urlSite = txtUrlSite.getText().trim();
+        final String urlSite = txtUrlSite.getText().trim().length() == 0 ? null : txtUrlSite.getText().trim();
         return new Nota(titulo, descricao, usuario, senha, urlSite);
     }
 

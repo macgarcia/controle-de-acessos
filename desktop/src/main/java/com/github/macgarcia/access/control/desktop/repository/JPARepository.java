@@ -1,14 +1,17 @@
 package com.github.macgarcia.access.control.desktop.repository;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
  *
  * @author macgarcia
+ * @param <T>
  */
-public class DAOGenerico<T extends EntidadeBase> {
+public class JPARepository<T extends EntidadeBase> {
     
     private final String UNIDADE_PERSISTENCIA = "NomeUnidadeDePersistencia";
 
@@ -65,5 +68,29 @@ public class DAOGenerico<T extends EntidadeBase> {
             manager.close();
         }
         return t;
+    }
+    
+    public void persistAll(final List<T> list) {
+        final EntityManager manager = getEntityManager();
+        try {
+            manager.getTransaction().begin();
+            final int bachSize = 50;
+            final int listSize = list.size();
+            for (int i = 0; i < listSize; i++) {
+                manager.persist(list.get(i));
+                if (i % bachSize == 0 || i == listSize -1) {
+                    manager.flush();
+                    manager.clear();
+                }
+            }
+            manager.getTransaction().commit();
+        } catch (Exception e) {
+            if (manager.getTransaction() != null && manager.getTransaction().isActive()) {
+                manager.getTransaction().rollback();
+            }
+        } finally {
+            manager.clear();
+            manager.close();
+        }
     }
 }

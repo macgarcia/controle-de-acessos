@@ -1,10 +1,14 @@
 package com.github.macgarcia.access.control.desktop.configuration;
 
+import com.github.macgarcia.access.control.desktop.component.LocalDateTimeAdapter;
+import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.Dimension;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.time.LocalDateTime;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
@@ -87,7 +91,7 @@ public class Configuracao {
      * @param abrirArquivo
      * @param campo
      */
-    public static void construirLancador(final boolean abrirArquivo, final JTextField campo) {
+    private static String construir(final boolean abrirArquivo, final String acao) {
         JFileChooser lancador = null;
         if (abrirArquivo) {
             lancador = new JFileChooser();
@@ -100,10 +104,44 @@ public class Configuracao {
             lancador.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         }
 
+        lancador.setDialogTitle(acao);
         int result = lancador.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
             final File selectedFile = lancador.getSelectedFile();
-            campo.setText(selectedFile.getPath());
+            return selectedFile.getPath();
         }
+        return null;
+    }
+
+    public static void construirLancador(final boolean abrirArquivo, final JTextField campo, final AcaoParaArquivo acao) {
+        campo.setText(construir(abrirArquivo, acao.getValor()));
+    }
+
+    public static String construirLancador(final boolean abrirArquivo, final AcaoParaArquivo acao) {
+        return construir(abrirArquivo, acao.getValor());
+    }
+
+    public static String construirLancadorDeSalvamento(final AcaoParaArquivo acao) {
+        JFileChooser lancador = new JFileChooser();
+        FileNameExtensionFilter txtFilter = new FileNameExtensionFilter("Arquivos de Texto (*.txt)", "txt");
+        lancador.addChoosableFileFilter(txtFilter);
+        lancador.setDialogTitle(acao.getValor());
+        int userSelection = lancador.showSaveDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            String path = lancador.getSelectedFile().getPath();
+            if (!path.toLowerCase().endsWith(".txt")) {
+                path += ".txt";
+            }
+            return path;
+        }
+        return null;
+    }
+
+    /* Devolve uma instancia do gson configurado com o adapter de data */
+    public static Gson getGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
     }
 }

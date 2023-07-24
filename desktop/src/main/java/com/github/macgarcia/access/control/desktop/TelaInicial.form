@@ -2,11 +2,6 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.JMenuItem" name="jMenuItem1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-      </Properties>
-    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="btnMenuAnotacoes">
@@ -41,9 +36,14 @@
             <Property name="text" type="java.lang.String" value="Integra&#xe7;&#xe3;o"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuImportarDocumento">
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuImportarDocumentoTxt">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Importar documento"/>
+                <Property name="text" type="java.lang.String" value="Importar documento .txt"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuimportarDocumentoJson">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Importar documento .json"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuExportarDados">
@@ -66,6 +66,18 @@
             <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuConfigurarIntegracao">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Configurar integra&#xe7;&#xe3;o backup api"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="btnMenuEditorTexto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Editor de texto"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuNovoEditor">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Novo editor"/>
               </Properties>
             </MenuItem>
           </SubComponents>

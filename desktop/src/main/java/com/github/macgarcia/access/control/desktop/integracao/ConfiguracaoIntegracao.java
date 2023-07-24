@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.integracao;
 
-import com.github.macgarcia.access.control.desktop.model.FlagIntegracao;
+import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import javax.persistence.Column;

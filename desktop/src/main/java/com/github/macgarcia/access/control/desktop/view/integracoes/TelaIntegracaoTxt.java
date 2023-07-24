@@ -4,11 +4,9 @@ import com.github.macgarcia.access.control.desktop.component.ManipulacaoDeArquiv
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
 import com.github.macgarcia.access.control.desktop.service.TelaIntegracaoTxtService;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -125,7 +123,7 @@ public class TelaIntegracaoTxt extends javax.swing.JInternalFrame {
     private void acoesDosBotoes() {
         
         this.btnProcurarArquivo.addActionListener(ev -> {
-            Configuracao.construirLancador(true, txtCaminhoArquivo);
+            Configuracao.construirLancador(true, txtCaminhoArquivo, AcaoParaArquivo.ABRIR);
             if (!txtCaminhoArquivo.getText().isEmpty()) {
                 this.lblProgresso.setText("Arquivo selecionado.");
                 this.btnIniciar.setEnabled(true);

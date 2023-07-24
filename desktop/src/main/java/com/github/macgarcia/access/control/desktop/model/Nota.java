@@ -1,7 +1,7 @@
 package com.github.macgarcia.access.control.desktop.model;
 
+import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
-import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class Nota implements Serializable, EntidadeBase {
     @Column(name = "data_atualizacao", nullable = true)
     private LocalDateTime dataAtualizacao;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<HistoricoNota> historico;
     
     @Column(name = "flag_integrado")
@@ -71,7 +71,7 @@ public class Nota implements Serializable, EntidadeBase {
         this.dataCriacao = LocalDateTime.now();
         this.flagIntegrado = FlagIntegracao.LIGADO;
     }
-
+    
     @Override
     public Integer getId() {
         return this.id;
@@ -151,4 +151,10 @@ public class Nota implements Serializable, EntidadeBase {
     public void setFlagIntegrado(FlagIntegracao flagIntegrado) {
         this.flagIntegrado = flagIntegrado;
     }
+
+    @Override
+    public String toString() {
+        return "Nota{" + "id=" + id + ", titulo=" + titulo + '}';
+    }
+
 }
