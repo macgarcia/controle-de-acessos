@@ -4,6 +4,7 @@ import com.github.macgarcia.access.control.desktop.component.ModeloIntegracao;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
+import com.github.macgarcia.access.control.desktop.relatorio.Relatorio;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaCadastroNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaDeHistoricoNota;
 import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaTodasAnotacoes;
@@ -13,6 +14,13 @@ import com.github.macgarcia.access.control.desktop.view.editor.TelaEditorTexto;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaDeExportacaoDados;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoJson;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
+import com.github.macgarcia.access.control.desktop.view.relatorios.TelaRelatorioNota;
+import java.awt.BorderLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -34,6 +42,7 @@ public class TelaInicial extends javax.swing.JFrame {
         acoesDoMenuIntegracao();
         acoesDoMenuConfiguracao();
         acoesDoMenuEditorTexto();
+        acaoDoMenuRelatorio();
         integracao = new ModeloIntegracao();
 
     }
@@ -63,6 +72,8 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuConfigurarIntegracao = new javax.swing.JMenuItem();
         btnMenuEditorTexto = new javax.swing.JMenu();
         btnItemMenuNovoEditor = new javax.swing.JMenuItem();
+        btnMenuRelatorio = new javax.swing.JMenu();
+        btnItemMenuRelatorioNotas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,6 +134,13 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jMenuBar1.add(btnMenuEditorTexto);
 
+        btnMenuRelatorio.setText("Relatorios");
+
+        btnItemMenuRelatorioNotas.setText("Relatorio de notas");
+        btnMenuRelatorio.add(btnItemMenuRelatorioNotas);
+
+        jMenuBar1.add(btnMenuRelatorio);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -182,6 +200,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnItemMenuLogs;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
     private javax.swing.JMenuItem btnItemMenuNovoEditor;
+    private javax.swing.JMenuItem btnItemMenuRelatorioNotas;
     private javax.swing.JMenuItem btnItemMenuSair;
     private javax.swing.JMenuItem btnItemMenuTodasNotas;
     private javax.swing.JMenuItem btnItemMenuimportarDocumentoJson;
@@ -189,6 +208,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenu btnMenuConfiguracoes;
     private javax.swing.JMenu btnMenuEditorTexto;
     private javax.swing.JMenu btnMenuIntegracao;
+    private javax.swing.JMenu btnMenuRelatorio;
     private javax.swing.JDesktopPane desktopPanel;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
@@ -240,7 +260,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 FactoryTela.criarTela(TelaIntegracaoTxt.class, desktopPanel);
             }
         });
-        
+
         this.btnItemMenuimportarDocumentoJson.addActionListener(ev -> {
             if (Configuracao.verificarJanelaAberta(desktopPanel, TelaIntegracaoJson.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
@@ -276,10 +296,29 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void acoesDoMenuEditorTexto() {
         this.btnItemMenuNovoEditor.addActionListener(ev -> {
             FactoryTela.criarTela(TelaEditorTexto.class, desktopPanel);
+        });
+    }
+
+    private void acaoDoMenuRelatorio() {
+        this.btnItemMenuRelatorioNotas.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaRelatorioNota.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                try {
+                    JasperPrint relatorio = new Relatorio().criarRelatorio();
+                    JRViewer jrViewer = new JRViewer(relatorio);
+                    TelaRelatorioNota tela = FactoryTela.criarTela(TelaRelatorioNota.class, desktopPanel);
+                    tela.setLayout(new BorderLayout());
+                    tela.setTitle("Relatorio de notas");
+                    tela.add(jrViewer, BorderLayout.CENTER);
+                } catch (JRException ex) {
+                    Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
     }
 }
