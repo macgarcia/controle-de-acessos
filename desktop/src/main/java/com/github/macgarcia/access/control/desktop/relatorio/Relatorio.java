@@ -17,7 +17,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  */
 public class Relatorio {
     
-    private final String RELATORIO_NOTAS = "/report/MinhasAnotacoes.jrxml";
+    private final String RELATORIO_NOTAS = "/report/anotacoes.jrxml";
     
     private List<Nota> notas;
     
