@@ -29,6 +29,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     private final Long ZERO = 0L;
     
     private int pagina = 1;
+    private boolean estaFiltrada = false;
 
     /**
      * Creates new form TelaTodasAnotacoes
@@ -210,7 +211,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     
     private void proximaPagina() {
         this.pagina++;
-        this.model.paginar(pagina);
+        if (estaFiltrada) {
+            this.model.pesquisar(txtPesquisar.getText(), pagina);
+        } else {
+            this.model.getNotasPaginada(pagina);
+        }
+        
         int linhasNaTabela = this.model.getRowCount();
         if (linhasNaTabela == 0) {
             FactoryMensagem.mensagemAlerta("Não existem mais dados...");
@@ -225,7 +231,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             return;
         }
         this.pagina--;
-        this.model.paginar(pagina);
+        if (estaFiltrada) {
+            this.model.pesquisar(txtPesquisar.getText(), pagina);
+        } else {
+            this.model.getNotasPaginada(pagina);
+        }
+        
         notaSelecionada = null;
         this.jTableNotas.updateUI();
     }
@@ -280,9 +291,11 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     }
 
     private void pesquisar() {
+        this.pagina = 1;
         final String chave = this.txtPesquisar.getText().trim();
         if (!chave.isEmpty()) {
-            this.model.pesquisar(chave);
+            estaFiltrada = true;
+            this.model.pesquisar(chave, pagina);
             this.jTableNotas.updateUI();
         } else {
             FactoryMensagem.mensagemAlerta("Digite algo no campo de pesquisa.");
@@ -291,9 +304,12 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     }
 
     private void limparPesquisa() {
+        this.pagina = 1;
+        estaFiltrada = false;
         this.txtPesquisar.setText(null);
         notaSelecionada = null;
-        construirTabela();
+        this.model.getNotasPaginada(pagina);
+        this.jTableNotas.updateUI();
     }
     
 }

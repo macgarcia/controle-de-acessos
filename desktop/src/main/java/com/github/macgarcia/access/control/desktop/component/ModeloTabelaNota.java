@@ -15,12 +15,11 @@ public class ModeloTabelaNota extends AbstractTableModel {
     private final int PAGINA_INICIAL = 1;
     private final int NUMERO_COLUNAS = 6;
     
-    private final NotaRepository notaRepository;
+    private NotaRepository notaRepository;
     private List<Nota> notas;
     
     public ModeloTabelaNota() {
-        this.notaRepository = new NotaRepository();
-        this.notas = notaRepository.getTodasNotasPaginado(PAGINA_INICIAL);
+        this.notas = getNotaRepository().getTodasNotasPaginado(PAGINA_INICIAL);
     }
     
     @Override
@@ -61,16 +60,23 @@ public class ModeloTabelaNota extends AbstractTableModel {
         };
     }
     
+    private NotaRepository getNotaRepository() {
+        if (this.notaRepository == null) {
+            this.notaRepository = new NotaRepository();
+        }
+        return this.notaRepository;
+    }
+    
     /* Recuperar a nota selecionada na tabela */
     public Nota getNota(final int linha) {
         return notas.get(linha);
     }
     
-    public void pesquisar(final String chave) {
-        this.notas = notaRepository.getNotasPorPesquisa(chave);
+    public void pesquisar(final String chave, final int pagina) {
+        this.notas = notaRepository.getNotasPorPesquisa(chave, pagina);
     }
     
-    public void paginar(final int pagina) {
+    public void getNotasPaginada(final int pagina) {
         this.notas = notaRepository.getTodasNotasPaginado(pagina);
     }
 }
