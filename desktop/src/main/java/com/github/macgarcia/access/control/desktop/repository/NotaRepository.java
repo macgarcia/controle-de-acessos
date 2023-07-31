@@ -12,6 +12,8 @@ import javax.persistence.TypedQuery;
  * @author macgarcia
  */
 public class NotaRepository extends JPARepository<Nota> {
+    
+    private final int RESULTATO_MAXIMO = 10;
 
     private final String TODAS_AS_NOTAS = "select n from Nota n";
 
@@ -42,6 +44,19 @@ public class NotaRepository extends JPARepository<Nota> {
         final EntityManager manager = getEntityManager();
         try {
             TypedQuery<Nota> query = manager.createQuery(TODAS_AS_NOTAS, Nota.class);
+            return query.getResultList();
+        } finally {
+            manager.clear();
+            manager.close();
+        }
+    }
+    
+    public List<Nota> getTodasNotasPaginado(final int pagina) {
+        final EntityManager manager = getEntityManager();
+        try {
+            TypedQuery<Nota> query = manager.createQuery(TODAS_AS_NOTAS, Nota.class);
+            query.setFirstResult((pagina - 1) * RESULTATO_MAXIMO)
+                    .setMaxResults(RESULTATO_MAXIMO);
             return query.getResultList();
         } finally {
             manager.clear();

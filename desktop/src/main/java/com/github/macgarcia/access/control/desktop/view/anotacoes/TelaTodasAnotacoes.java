@@ -27,6 +27,8 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     private Nota notaSelecionada;
     private JDesktopPane desktop;
     private final Long ZERO = 0L;
+    
+    private int pagina = 1;
 
     /**
      * Creates new form TelaTodasAnotacoes
@@ -50,6 +52,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableNotas = new javax.swing.JTable();
@@ -59,6 +62,10 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         txtPesquisar = new javax.swing.JTextField();
         btnPesquisar = new javax.swing.JButton();
         btnLimparPesquisa = new javax.swing.JButton();
+        btnProxima = new javax.swing.JButton();
+        btnAnterior = new javax.swing.JButton();
+
+        jLabel3.setText("jLabel3");
 
         setClosable(true);
         setIconifiable(true);
@@ -92,6 +99,10 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         btnLimparPesquisa.setForeground(new java.awt.Color(51, 51, 255));
         btnLimparPesquisa.setText("Limpar pesquisa");
 
+        btnProxima.setText(">>>");
+
+        btnAnterior.setText("<<<");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -105,16 +116,20 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnApagar)
-                        .addGap(149, 149, 149)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVer)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPesquisar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLimparPesquisa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnVer)
+                        .addComponent(btnAnterior)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEditar)))
+                        .addComponent(btnProxima)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -123,15 +138,21 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPesquisar)
+                        .addComponent(btnLimparPesquisa))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnProxima)
+                        .addComponent(btnAnterior)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnVer)
-                    .addComponent(btnApagar)
-                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisar)
-                    .addComponent(btnLimparPesquisa))
+                    .addComponent(btnApagar))
                 .addContainerGap())
         );
 
@@ -140,12 +161,15 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnApagar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnLimparPesquisa;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnProxima;
     private javax.swing.JButton btnVer;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableNotas;
     private javax.swing.JTextField txtPesquisar;
@@ -163,6 +187,8 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     }
 
     private void acoesDosBotoes() {
+        this.btnAnterior.addActionListener(ev -> paginaAnterior());
+        this.btnProxima.addActionListener(ev -> proximaPagina());
         this.btnEditar.addActionListener(ev -> editarNota());
         this.btnVer.addActionListener(ev -> verNota());
         this.btnApagar.addActionListener(ev -> apagarNota());
@@ -180,6 +206,28 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 }
             }
         });
+    }
+    
+    private void proximaPagina() {
+        this.pagina++;
+        this.model.paginar(pagina);
+        int linhasNaTabela = this.model.getRowCount();
+        if (linhasNaTabela == 0) {
+            FactoryMensagem.mensagemAlerta("Não existem mais dados...");
+        }
+        notaSelecionada = null;
+        this.jTableNotas.updateUI();
+    }
+    
+    private void paginaAnterior() {
+        if (this.pagina == 1) {
+            FactoryMensagem.mensagemAlerta("Você esta na primeira pagina...");
+            return;
+        }
+        this.pagina--;
+        this.model.paginar(pagina);
+        notaSelecionada = null;
+        this.jTableNotas.updateUI();
     }
 
     public void setDesktop(JDesktopPane desktop) {

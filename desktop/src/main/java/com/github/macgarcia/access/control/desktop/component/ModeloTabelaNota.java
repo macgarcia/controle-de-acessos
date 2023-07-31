@@ -12,13 +12,15 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTabelaNota extends AbstractTableModel {
     
+    private final int PAGINA_INICIAL = 1;
     private final int NUMERO_COLUNAS = 6;
-    private NotaRepository notaRepository;
+    
+    private final NotaRepository notaRepository;
     private List<Nota> notas;
     
     public ModeloTabelaNota() {
         this.notaRepository = new NotaRepository();
-        this.notas = notaRepository.getTodasNotas();
+        this.notas = notaRepository.getTodasNotasPaginado(PAGINA_INICIAL);
     }
     
     @Override
@@ -66,5 +68,9 @@ public class ModeloTabelaNota extends AbstractTableModel {
     
     public void pesquisar(final String chave) {
         this.notas = notaRepository.getNotasPorPesquisa(chave);
+    }
+    
+    public void paginar(final int pagina) {
+        this.notas = notaRepository.getTodasNotasPaginado(pagina);
     }
 }

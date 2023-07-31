@@ -38,6 +38,11 @@ public class Relatorio {
         /* Gera o relatorio */
         return JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(notas));
         
+//        JasperPrint print = JasperFillManager.fillReport(report, null, new JRBeanCollectionDataSource(notas));
+//        
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        JasperExportManager.exportReportToPdfStream(print, outputStream);
+        
         //JasperViewer.viewReport(print, false);
     }
 
