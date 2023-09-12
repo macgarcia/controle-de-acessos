@@ -211,12 +211,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     
     private void proximaPagina() {
         this.pagina++;
-        if (estaFiltrada) {
-            this.model.pesquisar(txtPesquisar.getText(), pagina);
-        } else {
-            this.model.getNotasPaginada(pagina);
-        }
-        
+        this.model.paginaSolicitada(pagina, estaFiltrada, txtPesquisar.getText());    
         int linhasNaTabela = this.model.getRowCount();
         if (linhasNaTabela == 0) {
             FactoryMensagem.mensagemAlerta("Não existem mais dados...");
@@ -231,12 +226,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             return;
         }
         this.pagina--;
-        if (estaFiltrada) {
-            this.model.pesquisar(txtPesquisar.getText(), pagina);
-        } else {
-            this.model.getNotasPaginada(pagina);
-        }
-        
+        this.model.paginaSolicitada(pagina, estaFiltrada, txtPesquisar.getText());        
         notaSelecionada = null;
         this.jTableNotas.updateUI();
     }
