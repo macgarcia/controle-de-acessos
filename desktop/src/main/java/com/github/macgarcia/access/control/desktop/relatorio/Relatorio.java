@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.relatorio;
 
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import java.io.InputStream;
 import java.util.List;

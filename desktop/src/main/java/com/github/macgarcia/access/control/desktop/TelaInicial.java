@@ -11,6 +11,7 @@ import com.github.macgarcia.access.control.desktop.view.anotacoes.TelaTodasAnota
 import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaConfigurarIntegracaoApi;
 import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaDeLogs;
 import com.github.macgarcia.access.control.desktop.view.editor.TelaEditorTexto;
+import com.github.macgarcia.access.control.desktop.view.financeiro.TelaContaDoMes;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaDeExportacaoDados;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoJson;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
@@ -43,6 +44,7 @@ public class TelaInicial extends javax.swing.JFrame {
         acoesDoMenuConfiguracao();
         acoesDoMenuEditorTexto();
         acaoDoMenuRelatorio();
+        acaoDoMenuFinanceiro();
         integracao = new ModeloIntegracao();
 
     }
@@ -74,6 +76,8 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuNovoEditor = new javax.swing.JMenuItem();
         btnMenuRelatorio = new javax.swing.JMenu();
         btnItemMenuRelatorioNotas = new javax.swing.JMenuItem();
+        btnMenuFinanceiro = new javax.swing.JMenu();
+        btnItemMenuFinanceiroContasMes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,6 +145,13 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jMenuBar1.add(btnMenuRelatorio);
 
+        btnMenuFinanceiro.setText("Financeiro");
+
+        btnItemMenuFinanceiroContasMes.setText("Contas do mês");
+        btnMenuFinanceiro.add(btnItemMenuFinanceiroContasMes);
+
+        jMenuBar1.add(btnMenuFinanceiro);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,6 +207,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnItemHistoricoDeNotas;
     private javax.swing.JMenuItem btnItemMenuConfigurarIntegracao;
     private javax.swing.JMenuItem btnItemMenuExportarDadosTxt;
+    private javax.swing.JMenuItem btnItemMenuFinanceiroContasMes;
     private javax.swing.JMenuItem btnItemMenuImportarDocumentoTxt;
     private javax.swing.JMenuItem btnItemMenuLogs;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
@@ -207,6 +219,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenu btnMenuAnotacoes;
     private javax.swing.JMenu btnMenuConfiguracoes;
     private javax.swing.JMenu btnMenuEditorTexto;
+    private javax.swing.JMenu btnMenuFinanceiro;
     private javax.swing.JMenu btnMenuIntegracao;
     private javax.swing.JMenu btnMenuRelatorio;
     private javax.swing.JDesktopPane desktopPanel;
@@ -318,6 +331,16 @@ public class TelaInicial extends javax.swing.JFrame {
                 } catch (JRException ex) {
                     Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+        });
+    }
+    
+    private void acaoDoMenuFinanceiro() {
+        this.btnItemMenuFinanceiroContasMes.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaContaDoMes.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                FactoryTela.criarTela(TelaContaDoMes.class, desktopPanel);
             }
         });
     }

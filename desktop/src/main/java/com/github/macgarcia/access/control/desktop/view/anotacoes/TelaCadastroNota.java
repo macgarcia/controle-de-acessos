@@ -4,7 +4,7 @@ import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;

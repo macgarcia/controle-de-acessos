@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.integracao;
 
-import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.HistoricoNota;
 import java.time.LocalDateTime;
 
 /**

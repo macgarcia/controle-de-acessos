@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.component;
 
-import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.HistoricoNota;
 import com.github.macgarcia.access.control.desktop.repository.HistoricoNotaRepository;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

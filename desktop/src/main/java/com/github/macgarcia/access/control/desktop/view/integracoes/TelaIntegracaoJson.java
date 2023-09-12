@@ -4,7 +4,7 @@ import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

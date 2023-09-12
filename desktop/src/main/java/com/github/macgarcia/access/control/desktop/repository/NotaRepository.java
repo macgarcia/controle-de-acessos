@@ -1,7 +1,7 @@
 package com.github.macgarcia.access.control.desktop.repository;
 
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.pojo.PojoDadosExportacao;
 import java.util.List;
 import javax.persistence.EntityManager;

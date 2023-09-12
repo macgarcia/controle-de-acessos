@@ -5,7 +5,7 @@ import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

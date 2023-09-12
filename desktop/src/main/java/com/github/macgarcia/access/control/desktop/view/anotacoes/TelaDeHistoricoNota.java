@@ -2,7 +2,7 @@ package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
 import com.github.macgarcia.access.control.desktop.component.ModeloTabelaHistoricoNota;
 import com.github.macgarcia.access.control.desktop.component.ModeloTabelaNota;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

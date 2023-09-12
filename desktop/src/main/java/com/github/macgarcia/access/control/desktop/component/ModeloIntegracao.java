@@ -8,7 +8,7 @@ import com.github.macgarcia.access.control.desktop.integracao.HistoricoDtoReques
 import com.github.macgarcia.access.control.desktop.integracao.IntegracaoResponse;
 import com.github.macgarcia.access.control.desktop.integracao.NotaDtoRequest;
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.repository.ConfiguracaoIntegracaoRepository;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import com.google.gson.Gson;
