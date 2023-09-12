@@ -17,7 +17,7 @@ public class ModeloTabelaNota extends AbstractTableModel {
     
     private NotaRepository notaRepository;
     private List<Nota> notas;
-    
+        
     public ModeloTabelaNota() {
         this.notas = getNotaRepository().getTodasNotasPaginado(PAGINA_INICIAL);
     }
@@ -79,4 +79,14 @@ public class ModeloTabelaNota extends AbstractTableModel {
     public void getNotasPaginada(final int pagina) {
         this.notas = notaRepository.getTodasNotasPaginado(pagina);
     }
+    
+    /* Paginação padão para os dados de tabela de todas as notas */
+    public void paginaSolicitada(final int pagina, final boolean estaFiltrada, final String chave) {
+        if (estaFiltrada) {
+            this.pesquisar(chave, pagina);
+        } else {
+            this.getNotasPaginada(pagina);
+        }
+    }
+    
 }
