@@ -1,14 +1,29 @@
 package com.github.macgarcia.access.control.desktop.view.financeiro;
 
-import com.github.macgarcia.access.control.desktop.enuns.CategoriaDivida;
-import com.github.macgarcia.access.control.desktop.enuns.Mes;
-import java.time.LocalDate;
+import com.github.macgarcia.access.control.desktop.component.ModeloTabelaDivida;
+import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
+import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
+import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
+import com.github.macgarcia.access.control.desktop.model.financeiro.Divida;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Objects;
+import javax.swing.JDesktopPane;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaContaDoMes extends javax.swing.JInternalFrame {
+
+    private ModeloTabelaDivida model = new ModeloTabelaDivida();
+    private JDesktopPane desktop;
+    private Divida dividaSelecionada;
+    
+    /* Quando houver uma ação de inserção e atualização de dados */
+    private boolean precisaRecarregarATabela = false;
 
     /**
      * Creates new form ContaDoMes
@@ -18,6 +33,9 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         configurarJanela();
         startComboMes();
         startComboCategoria();
+        construirTabelaDividas();
+        acoesDosBotoes();
+        eventosDaTela();
     }
 
     /**
@@ -42,7 +60,11 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         txtValorTotalDeDividas = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtValorResultante = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        btnNovaDivida = new javax.swing.JButton();
+        btnAtualizarDivida = new javax.swing.JButton();
+        btnExcluirDivida = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -82,6 +104,24 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Valor resultante");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("Menus");
+
+        btnNovaDivida.setBackground(new java.awt.Color(51, 153, 0));
+        btnNovaDivida.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNovaDivida.setForeground(new java.awt.Color(255, 255, 255));
+        btnNovaDivida.setText("Nova divida");
+
+        btnAtualizarDivida.setBackground(new java.awt.Color(0, 51, 255));
+        btnAtualizarDivida.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAtualizarDivida.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtualizarDivida.setText("Atualizar divida");
+
+        btnExcluirDivida.setBackground(new java.awt.Color(255, 0, 51));
+        btnExcluirDivida.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnExcluirDivida.setForeground(new java.awt.Color(255, 255, 255));
+        btnExcluirDivida.setText("Excluir divida");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,22 +133,30 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(126, 126, 126)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                .addComponent(txtValorResultante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                                 .addComponent(txtValorTotalDeDividas, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtValorSaldoMensal, javax.swing.GroupLayout.Alignment.LEADING)))
+                                .addComponent(txtValorSaldoMensal, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(126, 126, 126)
+                                .addComponent(jLabel2)
+                                .addGap(188, 188, 188)
+                                .addComponent(jLabel7))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82)
+                                .addComponent(btnNovaDivida)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAtualizarDivida)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnExcluirDivida)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -118,12 +166,16 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                    .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNovaDivida)
+                    .addComponent(btnAtualizarDivida)
+                    .addComponent(btnExcluirDivida))
+                .addGap(26, 26, 26)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -140,7 +192,7 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtValorResultante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(51, Short.MAX_VALUE))
         );
 
@@ -148,6 +200,9 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtualizarDivida;
+    private javax.swing.JButton btnExcluirDivida;
+    private javax.swing.JButton btnNovaDivida;
     private javax.swing.JComboBox<String> comboCategoria;
     private javax.swing.JComboBox<String> comboMes;
     private javax.swing.JLabel jLabel1;
@@ -156,10 +211,11 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tabelaDividas;
+    private javax.swing.JTextField txtValorResultante;
     private javax.swing.JTextField txtValorSaldoMensal;
     private javax.swing.JTextField txtValorTotalDeDividas;
     // End of variables declaration//GEN-END:variables
@@ -170,21 +226,82 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
     }
 
     private void startComboMes() {
-        this.comboMes.removeAllItems();
-        for (Mes mes : Mes.values()) {
-            this.comboMes.addItem(mes.name());
-        }
-        LocalDate localDate = LocalDate.now();
-        final int digitoMesAtual = localDate.getMonthValue();
-        this.comboMes.setSelectedIndex(digitoMesAtual - 1);
+        Configuracao.startComboMes(comboMes);
     }
 
     private void startComboCategoria() {
-        this.comboCategoria.removeAllItems();
-        this.comboCategoria.addItem("TODAS");
-        for (CategoriaDivida cat : CategoriaDivida.values()) {
-            this.comboCategoria.addItem(cat.name());
-        }
-        this.comboCategoria.setSelectedIndex(0);
+        Configuracao.startComboCategoria(comboCategoria);
     }
+
+    private void construirTabelaDividas() {
+        this.tabelaDividas.setModel(model);
+        this.tabelaDividas.getTableHeader().setReorderingAllowed(false);
+    }
+
+    private void reconstruirTabelaDividas() {
+        model = new ModeloTabelaDivida();
+        construirTabelaDividas();
+    }
+
+    private void acoesDosBotoes() {
+        this.btnNovaDivida.addActionListener(ev -> abrirTelaDeCadastroDivida());
+        this.btnAtualizarDivida.addActionListener(ev -> abrirTelaDeEditarDivida());
+        this.btnExcluirDivida.addActionListener(ev -> {
+        });
+    }
+
+    private void eventosDaTela() {
+        tabelaDividas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dividaSelecionada = model.getDivida(tabelaDividas.getSelectedRow());
+                if (e.getClickCount() == 2) {
+                    abrirTelaDeEditarDivida();
+                }
+            }
+        });
+
+        this.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameActivated(InternalFrameEvent e) {
+                if (precisaRecarregarATabela) {
+                    reconstruirTabelaDividas();
+                    precisaRecarregarATabela = false;
+                }
+            }
+
+        });
+    }
+
+    /* Abre a tela de cadastro em formato primario */
+    private void abrirTelaDeCadastroDivida() {
+        precisaRecarregarATabela = true;
+        if (Configuracao.verificarJanelaAberta(this.desktop, TelaCadastroDivida.class)) {
+            FactoryMensagem.mensagemAlerta("Tela de cadastro esta aberta em sua area de trabalho.");
+        } else {
+            TelaCadastroDivida tela = FactoryTela.criarTela(TelaCadastroDivida.class, desktop);
+            tela.setModel(model);
+        }
+    }
+
+    /* Abre a tela de cadastro em formato secundário - edição */
+    private void abrirTelaDeEditarDivida() {
+        precisaRecarregarATabela = true;
+        if (Configuracao.verificarJanelaAberta(this.desktop, TelaCadastroDivida.class)) {
+            FactoryMensagem.mensagemAlerta("Tela de cadastro esta aberta em sua area de trabalho.");
+        } else {
+            if (Objects.isNull(dividaSelecionada)) {
+                FactoryMensagem.mensagemAlerta("Selecione um registro.");
+            } else {
+                TelaCadastroDivida tela = FactoryTela.criarTela(TelaCadastroDivida.class, desktop);
+                tela.mostrarDados(dividaSelecionada);
+                tela.setModel(model);
+            }
+        }
+    }
+
+    public void setDesktop(JDesktopPane desktopPanel) {
+        this.desktop = desktopPanel;
+    }
+
 }

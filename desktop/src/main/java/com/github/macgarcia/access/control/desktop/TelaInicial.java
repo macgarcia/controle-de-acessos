@@ -46,7 +46,6 @@ public class TelaInicial extends javax.swing.JFrame {
         acaoDoMenuRelatorio();
         acaoDoMenuFinanceiro();
         integracao = new ModeloIntegracao();
-
     }
 
     /**
@@ -337,10 +336,11 @@ public class TelaInicial extends javax.swing.JFrame {
     
     private void acaoDoMenuFinanceiro() {
         this.btnItemMenuFinanceiroContasMes.addActionListener(ev -> {
-            if (Configuracao.verificarJanelaAberta(this.desktopPanel, TelaContaDoMes.class)) {
+            if (Configuracao.verificarJanelaAberta(desktopPanel, TelaContaDoMes.class)) {
                 FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
             } else {
-                FactoryTela.criarTela(TelaContaDoMes.class, desktopPanel);
+                final TelaContaDoMes tela = FactoryTela.criarTela(TelaContaDoMes.class, desktopPanel);
+                tela.setDesktop(desktopPanel);
             }
         });
     }

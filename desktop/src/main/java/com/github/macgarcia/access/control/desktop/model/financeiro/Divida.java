@@ -2,6 +2,7 @@ package com.github.macgarcia.access.control.desktop.model.financeiro;
 
 import com.github.macgarcia.access.control.desktop.enuns.CategoriaDivida;
 import com.github.macgarcia.access.control.desktop.enuns.Mes;
+import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -21,11 +22,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "divida")
-public class Divida implements Serializable {
+public class Divida implements Serializable, EntidadeBase {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     
     @Column(name = "descricao", nullable = false, length = 45)
     private String descricao;
@@ -48,11 +49,23 @@ public class Divida implements Serializable {
     @JoinColumn(name = "calculo_mensal_id")
     private CalculoMensal calculoMensal;
 
-    public Long getId() {
+    public Divida() {
+    }
+
+    public Divida(String descricao, Double valor, LocalDate dataDivida, Mes mes, CategoriaDivida categoria) {
+        this.descricao = descricao;
+        this.valor = valor;
+        this.dataDivida = dataDivida;
+        this.mes = mes;
+        this.categoria = categoria;
+    }
+    
+    @Override
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

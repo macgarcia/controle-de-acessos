@@ -6,16 +6,18 @@ package com.github.macgarcia.access.control.desktop.enuns;
  */
 public enum CategoriaDivida {
 
-    CARTAO_CREDITO(1), ESTUDO(2), CASA(3), SAUDE(4), DIVERSOS(5);
-
-    private final int valor;
+    CARTAO_CREDITO, ESTUDO, CASA, SAUDE, DIVERSOS;
     
-    CategoriaDivida(final int valor) {
-        this.valor = valor;
-    }
-
-    public int getValor() {
-        return valor;
+    public static CategoriaDivida get(int index) {
+        return switch (index) {
+            case 0 -> null;
+            case 1 -> CARTAO_CREDITO;
+            case 2 -> ESTUDO;
+            case 3 -> CASA;
+            case 4 -> SAUDE;
+            case 5 -> DIVERSOS;
+            default -> throw new IllegalArgumentException("Tipo de categoria não existe.");
+        };
     }
     
 }

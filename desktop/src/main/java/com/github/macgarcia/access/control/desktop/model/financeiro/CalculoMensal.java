@@ -25,7 +25,7 @@ public class CalculoMensal implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     
     @Column(name = "valor_saldo_mensal", nullable = false)
     private Double valorSaldoMensal;
@@ -43,11 +43,11 @@ public class CalculoMensal implements Serializable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "calculoMensal", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Divida> dividas;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

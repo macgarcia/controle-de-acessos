@@ -2,13 +2,21 @@ package com.github.macgarcia.access.control.desktop.configuration;
 
 import com.github.macgarcia.access.control.desktop.component.LocalDateTimeAdapter;
 import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
+import com.github.macgarcia.access.control.desktop.enuns.CategoriaDivida;
+import com.github.macgarcia.access.control.desktop.enuns.Mes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Dimension;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.Objects;
+import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
@@ -143,5 +151,40 @@ public class Configuracao {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
+    }
+    
+    /* Configuração de combo box de categoria */
+    public static void startComboCategoria(final JComboBox combo) {
+        combo.removeAllItems();
+        combo.addItem("TODAS");
+        for (CategoriaDivida cat : CategoriaDivida.values()) {
+            combo.addItem(cat.name());
+        }
+        combo.setSelectedIndex(0);
+    }
+    
+    /* Configuração do combo box de mes */
+    public static void startComboMes(final JComboBox combo) {
+        combo.removeAllItems();
+        for (Mes mes : Mes.values()) {
+            combo.addItem(mes.name());
+        }
+        LocalDate localDate = LocalDate.now();
+        final int digitoMesAtual = localDate.getMonthValue();
+        combo.setSelectedIndex(digitoMesAtual - 1);
+    }
+    
+    public static LocalDate dateToLocalDate(final Date date) {
+        if (Objects.isNull(date)) {
+            return null;
+        }
+        var instant = date.toInstant();
+        var localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return localDateTime.toLocalDate();
+    }
+    
+    public static Date localDateToDate(LocalDate localDate) {
+        LocalDateTime localDateTime = localDate.atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }
