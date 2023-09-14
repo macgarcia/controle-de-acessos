@@ -4,8 +4,8 @@ import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.enuns.AcaoParaArquivo;
-import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.HistoricoNota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.pojo.PojoDadosExportacao;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import java.io.BufferedWriter;
@@ -16,10 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  *
@@ -28,16 +28,10 @@ import java.util.logging.Logger;
 public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
 
     private static final Logger LOGGER = FactoryLog.getLog();
-    
-    private final String ACAO = "Abrir...";
 
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-    private final DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
     private PojoDadosExportacao pojo;
     private List<Nota> notas;
     private final NotaRepository repository;
-
-    private List<String> linhas = null;
 
     /**
      * Creates new form TelaDeExportacaoDados
@@ -94,11 +88,22 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(barraProgresso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCaminhoArquivoDescarga)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPesquisar))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooserInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel2)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(jLabel3)
+                                .addContainerGap(133, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(JDateChooserFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(78, 78, 78))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -106,23 +111,13 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel1)
                                     .addComponent(lblProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jDateChooserInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(55, 55, 55)
-                                        .addComponent(jLabel2)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(JDateChooserFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                                        .addGap(21, 21, 21))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(80, 80, 80)
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addComponent(btnIniciar)))
-                .addContainerGap())
+                            .addComponent(btnIniciar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(barraProgresso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtCaminhoArquivoDescarga)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPesquisar)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,13 +135,14 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JDateChooserFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooserInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnIniciar))
-                .addGap(18, 18, 18)
+                    .addComponent(jDateChooserInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addComponent(lblProgresso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addComponent(barraProgresso, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addComponent(btnIniciar)
+                .addContainerGap())
         );
 
         pack();
@@ -186,21 +182,19 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
             if (validarDados()) {
 
                 this.lblProgresso.setText("Executando busca dos dados...");
-                barraProgresso.setValue(25);
+                barraProgresso.setIndeterminate(true);
                 this.notas = this.repository.getNotasParaExportacao(this.pojo);
 
-                //this.lblProgresso.setText("Escrevendo exportação em texto...");
                 final boolean escreveuTxt = escreverTxt();
                 if (escreveuTxt) {
-                    barraProgresso.setValue(35);
                     this.lblProgresso.setText("Arquivo escrito com sucesso.");
-                    barraProgresso.setValue(100);
                     FactoryMensagem.mensagemOk("Exportação feita com sucesso.");
                 }
 
             } else {
                 FactoryMensagem.mensagemOk("Todos os dados são obrigatórios.");
             }
+            barraProgresso.setIndeterminate(false);
             LOGGER.info("Fim do processo de exportação de dados.");
         });
     }
@@ -236,41 +230,15 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
             FactoryMensagem.mensagemAlerta("Não existe notas no periodo informado.");
             return false;
         } else {
-
             LOGGER.info("Tratamento dos dados recuperados.");
-
-            final String caminho = this.txtCaminhoArquivoDescarga.getText()
-                    + File.separator + "arq_export_"
-                    + df.format(LocalDateTime.now()) + ".txt";
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminho, StandardCharsets.UTF_8))) {
-
-                for (Nota n : notas) {
-                    getLinhas().add(montaLinhaNota(n));
-                    if (!n.getHistorico().isEmpty()) {
-                        for (HistoricoNota hn : n.getHistorico()) {
-                            getLinhas().add(montarLinhaHistorico(hn));
-                        }
-                    }
-                }
-
+            final String arquivo = criarArquivo();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo, StandardCharsets.UTF_8))) {
+                final List<String> linhas = criarConteudoArquivo(notas);
                 LOGGER.info("Ecrevendo arquivo...");
-
-                linhas.forEach(linha -> {
-                    try {
-                        writer.write(linha);
-                        writer.newLine();
-                    } catch (IOException e) {
-                        LOGGER.severe(String.format("Erro ao escrever o arquivo.: [%s]", e.getMessage()));
-                        FactoryMensagem.mensagemErro("Erro ao escrever os dados no arquivo");
-                        throw new RuntimeException("Erro ao escrever os dados no arquivo", e);
-                    }
-                });
-
+                escreverConteudoNoArquivo(linhas, writer);
                 LOGGER.info("Arquivo escrito com sucesso.");
-                LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", caminho));
+                LOGGER.info(String.format("Arquivo disponibilizado em: [%s]", arquivo));
                 return true;
-
             } catch (Exception e) {
                 LOGGER.severe(String.format("Erro ao criar o arquivo de exportação.: [%s]", e.getMessage()));
                 FactoryMensagem.mensagemErro("Erro ao criar o arquivo de exportação.");
@@ -279,54 +247,34 @@ public class TelaDeExportacaoDados extends javax.swing.JInternalFrame {
         }
     }
 
-    private String montaLinhaNota(final Nota n) {
-        LOGGER.info(String.format("Montando linha de nota, dados:[%s]", n));
-        final StringBuilder linha = new StringBuilder();
-        linha.append("NOTA")
-                .append("|")
-                .append(n.getHistorico().size())
-                .append("|")
-                .append(n.getTitulo())
-                .append("|")
-                .append(n.getDescricao() != null && n.getDescricao().length() != 0 ? n.getDescricao() : " ")
-                .append("|")
-                .append(n.getUsuario())
-                .append("|")
-                .append(n.getSenha())
-                .append("|")
-                .append(n.getUrlSite() != null && n.getUrlSite().length() != 0 ? n.getUrlSite() : " ");
-        LOGGER.info("Linha montada com sucesso.");
-        return linha.toString();
+    private String criarArquivo() {
+        return this.txtCaminhoArquivoDescarga.getText()
+                + File.separator + "arq_export_"
+                + DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss").format(LocalDateTime.now()) + ".txt";
     }
 
-    private String montarLinhaHistorico(final HistoricoNota hn) {
-        LOGGER.info(String.format("Montando linha de histórico, dados:[%s]", hn));
-        final StringBuilder linha = new StringBuilder();
-        linha.append("HISTORICO")
-                .append("|")
-                .append(formatter.format(hn.getDataValidadeInicial()))
-                .append("|")
-                .append(formatter.format(hn.getDataValidadeFinal()))
-                .append("|")
-                .append(hn.getNumeroAtualizacao())
-                .append("|")
-                .append(hn.getDescricao() != null && hn.getDescricao().length() != 0 ? hn.getDescricao() : " ")
-                .append("|")
-                .append(hn.getTitulo())
-                .append("|")
-                .append(hn.getUsuario())
-                .append("|")
-                .append(hn.getSenha())
-                .append("|")
-                .append(hn.getUrlSite() != null && hn.getUrlSite().length() != 0 ? hn.getUrlSite() : " ");
-        LOGGER.info("Linha montada com sucesso.");
-        return linha.toString();
+    private List<String> criarConteudoArquivo(List<Nota> notas) {
+        return notas.stream()
+                .flatMap(nota -> {
+                    Stream<String> notaStream = Stream.of(nota.montarNotaTxt());
+                    Stream<String> historicosStream = nota.getHistorico().stream()
+                            .map(HistoricoNota::montarHistoricoTxt);
+                    return Stream.concat(notaStream, historicosStream);
+                })
+                .toList();
     }
 
-    public List<String> getLinhas() {
-        if (this.linhas == null) {
-            this.linhas = new ArrayList<>();
-        }
-        return linhas;
+    private void escreverConteudoNoArquivo(List<String> linhas, BufferedWriter writer) {
+        linhas.forEach(linha -> {
+            try {
+                writer.write(linha);
+                writer.newLine();
+            } catch (IOException e) {
+                LOGGER.severe(String.format("Erro ao escrever o arquivo.: [%s]", e.getMessage()));
+                FactoryMensagem.mensagemErro("Erro ao escrever os dados no arquivo");
+                throw new RuntimeException("Erro ao escrever os dados no arquivo", e);
+            }
+        });
     }
+
 }

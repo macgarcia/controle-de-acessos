@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="anotações" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4217236d-d7ba-4134-9fa5-cd6f5d5701d1">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="urlSite" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="92" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="10" width="800" height="60" forecolor="#115BA6" backcolor="#115BA6" uuid="f31e157e-4e01-4bc3-a9de-2e385d095ec5"/>
+			</rectangle>
+			<line>
+				<reportElement x="0" y="1" width="800" height="1" uuid="ac483ccf-e773-4252-9829-02f2921a6ecd"/>
+			</line>
+			<line>
+				<reportElement x="0" y="78" width="800" height="1" uuid="22691960-e4c0-4656-a29f-156ebfc2ff45"/>
+			</line>
+			<textField>
+				<reportElement x="9" y="10" width="468" height="60" forecolor="#FFFFFF" uuid="311eb77f-0f53-4796-a954-5159eb6dbce6"/>
+				<textElement>
+					<font fontName="SansSerif" size="47" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Minhas anotações"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="170" height="30" uuid="ec3dcc3e-8d05-4425-8d70-b4b575abdcd3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="79ca136c-fc2f-4b1a-a9b6-b5b20ffcd99c"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Titulo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="189" height="30" uuid="8f971cad-a414-4f9f-b8c1-4da35d932dff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc49c7cb-1bc4-4329-9751-700fef8d722d"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="359" y="0" width="200" height="30" uuid="c05d3b14-b1b2-47ed-a059-ec24b9a5fccd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8fc66cca-6284-43e9-928e-fed51e81ae22"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="559" y="0" width="241" height="30" uuid="8ade1e3a-5d17-4b45-98f8-f41fe30a4a1e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f0735d7-9b06-46ab-a5de-00c9005f4841"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Url site]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="28" width="800" height="1" uuid="858cbff2-924b-4a82-83a3-efe03fc222ef"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<printWhenExpression><![CDATA[$V{REPORT_COUNT} %2 == 0 || $V{REPORT_COUNT} %2 == 1]]></printWhenExpression>
+			<rectangle>
+				<reportElement x="0" y="0" width="800" height="30" forecolor="#E1EFFC" backcolor="#E1EFFC" uuid="4424ce09-391a-44af-86e2-cb6f4ded6baa">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} % 2 == 1]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="1" y="0" width="170" height="30" uuid="b6de800f-5a09-4125-8574-71f44358c771">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="79ca136c-fc2f-4b1a-a9b6-b5b20ffcd99c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="189" height="30" uuid="1a8e2ee0-b675-4715-b2d3-81d3e4b4990e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc49c7cb-1bc4-4329-9751-700fef8d722d"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao} != null ? $F{descricao} : "--"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="200" height="30" uuid="2625f819-c49e-4a8d-a4f5-ffc6d63cb3fe">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8fc66cca-6284-43e9-928e-fed51e81ae22"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="560" y="0" width="241" height="30" uuid="c83fac35-58a3-4c6a-9782-2f1ed3990704">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f0735d7-9b06-46ab-a5de-00c9005f4841"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{urlSite} != null ? $F{urlSite} : "--"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

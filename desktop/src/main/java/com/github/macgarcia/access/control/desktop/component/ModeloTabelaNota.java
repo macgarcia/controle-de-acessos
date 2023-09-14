@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.component;
 
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,13 +12,14 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTabelaNota extends AbstractTableModel {
     
+    private final int PAGINA_INICIAL = 1;
     private final int NUMERO_COLUNAS = 6;
+    
     private NotaRepository notaRepository;
     private List<Nota> notas;
-    
+        
     public ModeloTabelaNota() {
-        this.notaRepository = new NotaRepository();
-        this.notas = notaRepository.getTodasNotas();
+        this.notas = getNotaRepository().getTodasNotasPaginado(PAGINA_INICIAL);
     }
     
     @Override
@@ -59,12 +60,33 @@ public class ModeloTabelaNota extends AbstractTableModel {
         };
     }
     
+    private NotaRepository getNotaRepository() {
+        if (this.notaRepository == null) {
+            this.notaRepository = new NotaRepository();
+        }
+        return this.notaRepository;
+    }
+    
     /* Recuperar a nota selecionada na tabela */
     public Nota getNota(final int linha) {
         return notas.get(linha);
     }
     
-    public void pesquisar(final String chave) {
-        this.notas = notaRepository.getNotasPorPesquisa(chave);
+    public void pesquisar(final String chave, final int pagina) {
+        this.notas = notaRepository.getNotasPorPesquisa(chave, pagina);
     }
+    
+    public void getNotasPaginada(final int pagina) {
+        this.notas = notaRepository.getTodasNotasPaginado(pagina);
+    }
+    
+    /* Paginação padão para os dados de tabela de todas as notas */
+    public void paginaSolicitada(final int pagina, final boolean estaFiltrada, final String chave) {
+        if (estaFiltrada) {
+            this.pesquisar(chave, pagina);
+        } else {
+            this.getNotasPaginada(pagina);
+        }
+    }
+    
 }

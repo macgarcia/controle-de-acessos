@@ -1,11 +1,13 @@
-package com.github.macgarcia.access.control.desktop.model;
+package com.github.macgarcia.access.control.desktop.model.anotacoes;
 
+import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "nota")
 public class Nota implements Serializable, EntidadeBase {
+    
+    private static final Logger LOGGER = FactoryLog.getLog();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +57,7 @@ public class Nota implements Serializable, EntidadeBase {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nota", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<HistoricoNota> historico;
-    
+
     @Column(name = "flag_integrado")
     @Enumerated(EnumType.ORDINAL)
     private FlagIntegracao flagIntegrado;
@@ -71,7 +75,7 @@ public class Nota implements Serializable, EntidadeBase {
         this.dataCriacao = LocalDateTime.now();
         this.flagIntegrado = FlagIntegracao.LIGADO;
     }
-    
+
     @Override
     public Integer getId() {
         return this.id;
@@ -155,6 +159,27 @@ public class Nota implements Serializable, EntidadeBase {
     @Override
     public String toString() {
         return "Nota{" + "id=" + id + ", titulo=" + titulo + '}';
+    }
+
+    /* Utilizado no momento de importação de dados via txt */
+    public String montarNotaTxt() {
+        LOGGER.info(String.format("Montando linha de nota, dados:[%s]", this));
+        final StringBuilder linha = new StringBuilder();
+        linha.append("NOTA")
+                .append("|")
+                .append(this.historico.size())
+                .append("|")
+                .append(this.titulo)
+                .append("|")
+                .append(this.descricao != null && this.descricao.length() != 0 ? this.descricao : " ")
+                .append("|")
+                .append(this.usuario)
+                .append("|")
+                .append(this.senha)
+                .append("|")
+                .append(this.urlSite != null && this.urlSite.length() != 0 ? this.urlSite : " ");
+        LOGGER.info("Linha montada com sucesso.");
+        return linha.toString(); 
     }
 
 }

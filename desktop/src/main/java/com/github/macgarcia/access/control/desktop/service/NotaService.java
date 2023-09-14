@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.service;
 
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 
 /**

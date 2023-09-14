@@ -1,4 +1,4 @@
-package com.github.macgarcia.access.control.desktop.integracao;
+package com.github.macgarcia.access.control.desktop.model;
 
 import com.github.macgarcia.access.control.desktop.enuns.FlagIntegracao;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;

@@ -5,7 +5,7 @@ import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.service.NotaService;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,12 +20,16 @@ import javax.swing.JDesktopPane;
 public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
     private static final Logger LOGGER = FactoryLog.getLog();
+    private final int DUPLO_CLICK = 2;
 
     private final NotaService service;
     private ModeloTabelaNota model;
     private Nota notaSelecionada;
     private JDesktopPane desktop;
     private final Long ZERO = 0L;
+    
+    private int pagina = 1;
+    private boolean estaFiltrada = false;
 
     /**
      * Creates new form TelaTodasAnotacoes
@@ -49,6 +53,7 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableNotas = new javax.swing.JTable();
@@ -58,6 +63,10 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         txtPesquisar = new javax.swing.JTextField();
         btnPesquisar = new javax.swing.JButton();
         btnLimparPesquisa = new javax.swing.JButton();
+        btnProxima = new javax.swing.JButton();
+        btnAnterior = new javax.swing.JButton();
+
+        jLabel3.setText("jLabel3");
 
         setClosable(true);
         setIconifiable(true);
@@ -91,6 +100,10 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
         btnLimparPesquisa.setForeground(new java.awt.Color(51, 51, 255));
         btnLimparPesquisa.setText("Limpar pesquisa");
 
+        btnProxima.setText(">>>");
+
+        btnAnterior.setText("<<<");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -104,16 +117,20 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnApagar)
-                        .addGap(149, 149, 149)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnVer)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPesquisar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLimparPesquisa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnVer)
+                        .addComponent(btnAnterior)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEditar)))
+                        .addComponent(btnProxima)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -122,15 +139,21 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnPesquisar)
+                        .addComponent(btnLimparPesquisa))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnProxima)
+                        .addComponent(btnAnterior)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnVer)
-                    .addComponent(btnApagar)
-                    .addComponent(txtPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPesquisar)
-                    .addComponent(btnLimparPesquisa))
+                    .addComponent(btnApagar))
                 .addContainerGap())
         );
 
@@ -139,12 +162,15 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAnterior;
     private javax.swing.JButton btnApagar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnLimparPesquisa;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JButton btnProxima;
     private javax.swing.JButton btnVer;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableNotas;
     private javax.swing.JTextField txtPesquisar;
@@ -162,66 +188,13 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
     }
 
     private void acoesDosBotoes() {
-
-        this.btnEditar.addActionListener(ev -> {
-            if (Objects.isNull(notaSelecionada)) {
-                FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
-            } else {
-                if (Configuracao.verificarJanelaAberta(desktop, TelaCadastroNota.class)) {
-                    FactoryMensagem.mensagemAlerta("Tela já esta aberta para edição.");
-                } else {
-                    final TelaCadastroNota tela = FactoryTela.criarTela(TelaCadastroNota.class, desktop);
-                    tela.setAtualizacaoDeNota(true);
-                    tela.setNotaParaAtualizar(notaSelecionada);
-                    tela.setDadosNaTelaDeAtualização(this.notaSelecionada);
-                }
-            }
-        });
-
-        this.btnVer.addActionListener(ev -> {
-            if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
-                FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
-            } else {
-                if (Objects.isNull(notaSelecionada)) {
-                    FactoryMensagem.mensagemAlerta("Selecione uma nota.");
-                } else {
-                    final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
-                    tela.mostrarDados(notaSelecionada);
-                }
-            }
-        });
-
-        this.btnApagar.addActionListener(ev -> {
-            if (Objects.isNull(notaSelecionada)) {
-                FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
-            } else {
-                final int resposta = FactoryMensagem.mensagemConfirmacao();
-                if (resposta == ZERO) {
-                    service.apagar(notaSelecionada.getId());
-                    construirTabela();
-                    FactoryMensagem.mensagemOk("Nota apagada com sucesso.");
-                    LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
-                }
-                notaSelecionada = null;
-            }
-        });
-
-        this.btnPesquisar.addActionListener(ev -> {
-            final String chave = this.txtPesquisar.getText().trim();
-            if (!chave.isEmpty()) {
-                this.model.pesquisar(chave);
-                this.jTableNotas.updateUI();
-            } else {
-                FactoryMensagem.mensagemAlerta("Digite algo no campo de pesquisa.");
-            }
-            notaSelecionada = null;
-        });
-
-        this.btnLimparPesquisa.addActionListener(ev -> {
-            this.txtPesquisar.setText(null);
-            notaSelecionada = null;
-            construirTabela();
-        });
+        this.btnAnterior.addActionListener(ev -> paginaAnterior());
+        this.btnProxima.addActionListener(ev -> proximaPagina());
+        this.btnEditar.addActionListener(ev -> editarNota());
+        this.btnVer.addActionListener(ev -> verNota());
+        this.btnApagar.addActionListener(ev -> apagarNota());
+        this.btnPesquisar.addActionListener(ev -> pesquisar());
+        this.btnLimparPesquisa.addActionListener(ev -> limparPesquisa());
     }
 
     private void acaoDeClickDeSelecaoNaTabela() {
@@ -229,11 +202,104 @@ public class TelaTodasAnotacoes extends javax.swing.JInternalFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 notaSelecionada = model.getNota(jTableNotas.getSelectedRow());
+                if (e.getClickCount() == DUPLO_CLICK) {
+                    verNota();
+                }
             }
         });
+    }
+    
+    private void proximaPagina() {
+        this.pagina++;
+        this.model.paginaSolicitada(pagina, estaFiltrada, txtPesquisar.getText());    
+        int linhasNaTabela = this.model.getRowCount();
+        if (linhasNaTabela == 0) {
+            FactoryMensagem.mensagemAlerta("Não existem mais dados...");
+        }
+        notaSelecionada = null;
+        this.jTableNotas.updateUI();
+    }
+    
+    private void paginaAnterior() {
+        if (this.pagina == 1) {
+            FactoryMensagem.mensagemAlerta("Você esta na primeira pagina...");
+            return;
+        }
+        this.pagina--;
+        this.model.paginaSolicitada(pagina, estaFiltrada, txtPesquisar.getText());        
+        notaSelecionada = null;
+        this.jTableNotas.updateUI();
     }
 
     public void setDesktop(JDesktopPane desktop) {
         this.desktop = desktop;
     }
+
+    /* Comportamentos*/
+    private void editarNota() {
+        if (Objects.isNull(notaSelecionada)) {
+            FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
+        } else {
+            if (Configuracao.verificarJanelaAberta(desktop, TelaCadastroNota.class)) {
+                FactoryMensagem.mensagemAlerta("Tela já esta aberta para edição.");
+            } else {
+                final TelaCadastroNota tela = FactoryTela.criarTela(TelaCadastroNota.class, desktop);
+                tela.setAtualizacaoDeNota(true);
+                tela.setNotaParaAtualizar(notaSelecionada);
+                tela.setDadosNaTelaDeAtualização(this.notaSelecionada);
+            }
+        }
+    }
+
+    /* Utilizado no duplo click na tabela de todas as notas, e tambem, no click do botão ver */
+    private void verNota() {
+        if (Configuracao.verificarJanelaAberta(desktop, TelaVerDadosNota.class)) {
+            FactoryMensagem.mensagemAlerta("Seus dados ja estão em vizualização.");
+        } else {
+            if (Objects.isNull(notaSelecionada)) {
+                FactoryMensagem.mensagemAlerta("Selecione uma nota.");
+            } else {
+                final TelaVerDadosNota tela = FactoryTela.criarTela(TelaVerDadosNota.class, desktop);
+                tela.mostrarDados(notaSelecionada);
+            }
+        }
+    }
+
+    private void apagarNota() {
+        if (Objects.isNull(notaSelecionada)) {
+            FactoryMensagem.mensagemAlerta("Selecione uma nota na tabela.");
+        } else {
+            final int resposta = FactoryMensagem.mensagemConfirmacao();
+            if (resposta == ZERO) {
+                service.apagar(notaSelecionada.getId());
+                construirTabela();
+                FactoryMensagem.mensagemOk("Nota apagada com sucesso.");
+                LOGGER.info(String.format("Nota apagada com sucesso. [%s]", notaSelecionada));
+            }
+            notaSelecionada = null;
+        }
+    }
+
+    private void pesquisar() {
+        this.pagina = 1;
+        final String chave = this.txtPesquisar.getText().trim();
+        if (!chave.isEmpty()) {
+            estaFiltrada = true;
+            this.model.pesquisar(chave, pagina);
+            this.jTableNotas.updateUI();
+        } else {
+            FactoryMensagem.mensagemAlerta("Digite algo no campo de pesquisa.");
+        }
+        notaSelecionada = null;
+    }
+
+    private void limparPesquisa() {
+        this.pagina = 1;
+        estaFiltrada = false;
+        this.txtPesquisar.setText(null);
+        notaSelecionada = null;
+        this.model.getNotasPaginada(pagina);
+        this.jTableNotas.updateUI();
+    }
+    
 }

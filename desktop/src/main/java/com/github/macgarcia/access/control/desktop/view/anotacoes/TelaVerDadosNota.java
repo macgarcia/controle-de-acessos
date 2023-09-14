@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.view.anotacoes;
 
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import java.time.format.DateTimeFormatter;
 /**
  *

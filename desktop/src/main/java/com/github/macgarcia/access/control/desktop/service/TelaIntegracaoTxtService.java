@@ -2,8 +2,8 @@ package com.github.macgarcia.access.control.desktop.service;
 
 import com.github.macgarcia.access.control.desktop.configuration.FactoryLog;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
-import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
-import com.github.macgarcia.access.control.desktop.model.Nota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.HistoricoNota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.Nota;
 import com.github.macgarcia.access.control.desktop.repository.NotaRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,6 +1,6 @@
 package com.github.macgarcia.access.control.desktop.repository;
 
-import com.github.macgarcia.access.control.desktop.model.HistoricoNota;
+import com.github.macgarcia.access.control.desktop.model.anotacoes.HistoricoNota;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
