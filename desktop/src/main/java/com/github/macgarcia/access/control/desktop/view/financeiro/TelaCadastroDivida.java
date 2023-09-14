@@ -18,6 +18,7 @@ public class TelaCadastroDivida extends javax.swing.JInternalFrame {
     private Divida dividaSelecionada;
     private Divida novaDivida;
     private ModeloTabelaDivida model;
+    private boolean estaEmEdicao = false;
 
     /**
      * Creates new form TelaCadastroDivida
@@ -165,16 +166,24 @@ public class TelaCadastroDivida extends javax.swing.JInternalFrame {
         txtValor.setText(dividaSelecionada.getValor().toString());
         jDataDivida.setDate(Configuracao.localDateToDate(dividaSelecionada.getDataDivida()));
         comboMes.setSelectedIndex(dividaSelecionada.getMes().ordinal());
-        comboCategoria.setSelectedIndex(dividaSelecionada.getCategoria().ordinal() + 1);
+        comboCategoria.setSelectedIndex(
+                dividaSelecionada.getCategoria() == null ? 0
+                        :dividaSelecionada.getCategoria().ordinal() + 1);
     }
 
     private void acoesComponentes() {
         btnSalvar.addActionListener(ev -> {
             if (validarDadosDoFormulario()) {
                 capturarInformacoesDaTela();
-                model.salvarDivida(novaDivida);
-                FactoryMensagem.mensagemOk("Divida salva com sucesso.");
+                if (estaEmEdicao) {
+                    model.salvarDivida(dividaSelecionada);
+                    estaEmEdicao = false;
+                } else {
+                    model.salvarDivida(novaDivida);
+                }
+                dividaSelecionada = null;
                 dispose();
+                FactoryMensagem.mensagemOk("Divida salva com sucesso.");
             }
         });
     }
@@ -197,20 +206,32 @@ public class TelaCadastroDivida extends javax.swing.JInternalFrame {
     }
 
     private void capturarInformacoesDaTela() {
-        String descricao = txtDescricao.getText();
-        String valor = txtValor.getText();
-        LocalDate date = Configuracao.dateToLocalDate(jDataDivida.getDate());
-        Mes mes = Mes.getMesComDigito(comboMes.getSelectedIndex());
-        CategoriaDivida categoria = CategoriaDivida.get(comboCategoria.getSelectedIndex());
-        novaDivida = new Divida(descricao,
-                "".equals(valor) ? null : Double.valueOf(valor),
-                date,
-                mes,
-                categoria);
+        if (estaEmEdicao) {
+            dividaSelecionada.setDescricao(txtDescricao.getText());
+            dividaSelecionada.setValor(Double.valueOf(txtValor.getText()));
+            dividaSelecionada.setDataDivida(Configuracao.dateToLocalDate(jDataDivida.getDate()));
+            dividaSelecionada.setMes(Mes.getMesComDigito(comboMes.getSelectedIndex()));
+            dividaSelecionada.setCategoria(CategoriaDivida.get(comboCategoria.getSelectedIndex()));
+        } else {
+            String descricao = txtDescricao.getText();
+            String valor = txtValor.getText();
+            LocalDate date = Configuracao.dateToLocalDate(jDataDivida.getDate());
+            Mes mes = Mes.getMesComDigito(comboMes.getSelectedIndex());
+            CategoriaDivida categoria = CategoriaDivida.get(comboCategoria.getSelectedIndex());
+            novaDivida = new Divida(descricao,
+                    "".equals(valor) ? null : Double.valueOf(valor),
+                    date,
+                    mes,
+                    categoria);
+        }
     }
 
     public void setModel(ModeloTabelaDivida model) {
         this.model = model;
+    }
+
+    public void setEstaEmEdicao(boolean estaEmEdicao) {
+        this.estaEmEdicao = estaEmEdicao;
     }
 
 }

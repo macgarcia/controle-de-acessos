@@ -326,6 +326,7 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                 TelaCadastroDivida tela = FactoryTela.criarTela(TelaCadastroDivida.class, desktop);
                 tela.mostrarDados(dividaSelecionada);
                 tela.setModel(model);
+                tela.setEstaEmEdicao(true);
             }
         }
     }
@@ -345,6 +346,7 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                 model.excluirDivida(dividaSelecionada.getId());
                 reconstruirTabelaDividas();
                 dividaSelecionada = null;
+                FactoryMensagem.mensagemOk("Registro excluido com sucesso.");
             }
         }
     }
