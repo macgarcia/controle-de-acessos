@@ -13,9 +13,10 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
@@ -152,7 +153,7 @@ public class Configuracao {
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
     }
-    
+
     /* Configuração de combo box de categoria */
     public static void startComboCategoria(final JComboBox combo) {
         combo.removeAllItems();
@@ -162,7 +163,7 @@ public class Configuracao {
         }
         combo.setSelectedIndex(0);
     }
-    
+
     /* Configuração do combo box de mes */
     public static void startComboMes(final JComboBox combo) {
         combo.removeAllItems();
@@ -173,7 +174,7 @@ public class Configuracao {
         final int digitoMesAtual = localDate.getMonthValue();
         combo.setSelectedIndex(digitoMesAtual - 1);
     }
-    
+
     public static LocalDate dateToLocalDate(final Date date) {
         if (Objects.isNull(date)) {
             return null;
@@ -182,9 +183,15 @@ public class Configuracao {
         var localDateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime();
         return localDateTime.toLocalDate();
     }
-    
+
     public static Date localDateToDate(LocalDate localDate) {
         LocalDateTime localDateTime = localDate.atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static boolean validarSeHaApenasNumeros(String texto) {
+        Pattern pattern = Pattern.compile("^[0-9]+(\\.[0-9]+)?$");
+        Matcher matcher = pattern.matcher(texto);
+        return matcher.matches();
     }
 }

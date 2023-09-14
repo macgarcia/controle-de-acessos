@@ -8,16 +8,12 @@ import com.github.macgarcia.access.control.desktop.enuns.Mes;
 import com.github.macgarcia.access.control.desktop.model.financeiro.Divida;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
  * @author macgarcia
  */
 public class TelaCadastroDivida extends javax.swing.JInternalFrame {
-
-    private final String REGRA_MOEDA = "^[0-9]+(\\.[0-9]+)?$";
     
     private Divida dividaSelecionada;
     private Divida novaDivida;
@@ -188,9 +184,7 @@ public class TelaCadastroDivida extends javax.swing.JInternalFrame {
             FactoryMensagem.mensagemAlerta("Descrição não pode ser nulo.");
             return false;
         }
-        Pattern pattern = Pattern.compile(REGRA_MOEDA);
-        Matcher matcher = pattern.matcher(txtValor.getText());
-        if (!matcher.matches()) {
+        if (!Configuracao.validarSeHaApenasNumeros(txtValor.getText())) {
             FactoryMensagem.mensagemAlerta("Digite apenas numeros no campo valor.");
             return false;
         }

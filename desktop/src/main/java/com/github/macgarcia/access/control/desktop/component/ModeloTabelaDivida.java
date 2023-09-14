@@ -7,7 +7,6 @@ import com.github.macgarcia.access.control.desktop.repository.DividaRepository;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import org.eclipse.persistence.internal.helper.JavaSEPlatform;
 
 /**
  *

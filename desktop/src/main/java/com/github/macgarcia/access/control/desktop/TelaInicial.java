@@ -12,6 +12,7 @@ import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaConfig
 import com.github.macgarcia.access.control.desktop.view.configuracoes.TelaDeLogs;
 import com.github.macgarcia.access.control.desktop.view.editor.TelaEditorTexto;
 import com.github.macgarcia.access.control.desktop.view.financeiro.TelaContaDoMes;
+import com.github.macgarcia.access.control.desktop.view.financeiro.TelaFechamentoMensal;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaDeExportacaoDados;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoJson;
 import com.github.macgarcia.access.control.desktop.view.integracoes.TelaIntegracaoTxt;
@@ -77,6 +78,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuRelatorioNotas = new javax.swing.JMenuItem();
         btnMenuFinanceiro = new javax.swing.JMenu();
         btnItemMenuFinanceiroContasMes = new javax.swing.JMenuItem();
+        btnItemMenuFinanceiroFechamentoMensal = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,6 +151,9 @@ public class TelaInicial extends javax.swing.JFrame {
         btnItemMenuFinanceiroContasMes.setText("Contas do mês");
         btnMenuFinanceiro.add(btnItemMenuFinanceiroContasMes);
 
+        btnItemMenuFinanceiroFechamentoMensal.setText("Fechamento mensal");
+        btnMenuFinanceiro.add(btnItemMenuFinanceiroFechamentoMensal);
+
         jMenuBar1.add(btnMenuFinanceiro);
 
         setJMenuBar(jMenuBar1);
@@ -207,6 +212,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnItemMenuConfigurarIntegracao;
     private javax.swing.JMenuItem btnItemMenuExportarDadosTxt;
     private javax.swing.JMenuItem btnItemMenuFinanceiroContasMes;
+    private javax.swing.JMenuItem btnItemMenuFinanceiroFechamentoMensal;
     private javax.swing.JMenuItem btnItemMenuImportarDocumentoTxt;
     private javax.swing.JMenuItem btnItemMenuLogs;
     private javax.swing.JMenuItem btnItemMenuNovaNota;
@@ -341,6 +347,14 @@ public class TelaInicial extends javax.swing.JFrame {
             } else {
                 final TelaContaDoMes tela = FactoryTela.criarTela(TelaContaDoMes.class, desktopPanel);
                 tela.setDesktop(desktopPanel);
+            }
+        });
+        
+        this.btnItemMenuFinanceiroFechamentoMensal.addActionListener(ev -> {
+            if (Configuracao.verificarJanelaAberta(desktopPanel, TelaFechamentoMensal.class)) {
+                FactoryMensagem.mensagemAlerta(MENSAGEM_DE_TELA_ABERTA);
+            } else {
+                FactoryTela.criarTela(TelaFechamentoMensal.class, desktopPanel);
             }
         });
     }

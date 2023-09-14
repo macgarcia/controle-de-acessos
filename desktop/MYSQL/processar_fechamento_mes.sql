@@ -3,13 +3,14 @@ drop procedure if exists processar_fechamento_mes;
 delimiter //
 
 create procedure processar_fechamento_mes(in mes_selecionado_p varchar(10), in valor_saldo_mensal_p double)
-begin
+start_processo: begin
     --
     declare done int default false;
     declare vn_valor_resultante double;
     declare vn_valor_total_divida double;
     declare vn_valor_temp double;
     declare vn_id_calculo_mensal int;
+    declare vn_fechamento_existente int;
     --
     declare dividas cursor for
         select d.valor
@@ -19,6 +20,18 @@ begin
     --
     set vn_valor_total_divida = 0;
     set vn_valor_resultante = 0;
+    --
+    -- Verificação se o mes ja esta fechado --
+    select count(*)
+      into vn_fechamento_existente
+      from calculo_mensal c
+     where c.mes = upper(mes_selecionado_p);
+    --
+    if vn_fechamento_existente = 1 then
+        --
+        signal sqlstate '45000' set message_text = 'Mês selecionado já esta fechado';
+        --
+    end if;
     --
     -- Somando todos os valores das dividas --
     open dividas;

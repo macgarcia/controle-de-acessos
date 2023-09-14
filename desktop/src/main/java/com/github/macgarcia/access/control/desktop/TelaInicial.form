@@ -104,6 +104,11 @@
                 <Property name="text" type="java.lang.String" value="Contas do m&#xea;s"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnItemMenuFinanceiroFechamentoMensal">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Fechamento mensal"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>
