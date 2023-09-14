@@ -4,11 +4,18 @@ import com.github.macgarcia.access.control.desktop.component.ModeloTabelaDivida;
 import com.github.macgarcia.access.control.desktop.configuration.Configuracao;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.configuration.FactoryTela;
+import com.github.macgarcia.access.control.desktop.enuns.CategoriaDivida;
+import com.github.macgarcia.access.control.desktop.enuns.Mes;
+import com.github.macgarcia.access.control.desktop.model.financeiro.CalculoMensal;
 import com.github.macgarcia.access.control.desktop.model.financeiro.Divida;
+import com.github.macgarcia.access.control.desktop.repository.CalculoMensalRepository;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -18,10 +25,14 @@ import javax.swing.event.InternalFrameEvent;
  */
 public class TelaContaDoMes extends javax.swing.JInternalFrame {
 
+    private final String MENSAGEM_MES_FINALIZADO = "Mês finalizado pelo usuário, desprocesse o período para realizar edições.";
+
     private ModeloTabelaDivida model = new ModeloTabelaDivida();
     private JDesktopPane desktop;
     private Divida dividaSelecionada;
-    
+    private CalculoMensalRepository calculoMensalRepository;
+    private CalculoMensal calculoMensal;
+
     /* Quando houver uma ação de inserção e atualização de dados */
     private boolean precisaRecarregarATabela = false;
 
@@ -34,8 +45,10 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         startComboMes();
         startComboCategoria();
         construirTabelaDividas();
+        setValorTotalDivida();
         acoesDosBotoes();
         eventosDaTela();
+        verificarFechamento();
     }
 
     /**
@@ -55,12 +68,8 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         tabelaDividas = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel4 = new javax.swing.JLabel();
-        txtValorSaldoMensal = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtValorTotalDeDividas = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtValorResultante = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         btnNovaDivida = new javax.swing.JButton();
         btnAtualizarDivida = new javax.swing.JButton();
@@ -95,14 +104,8 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Lista de dividas");
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel4.setText("Valor saldo mensal");
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Valor total de dividas");
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel6.setText("Valor resultante");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Menus");
@@ -133,14 +136,8 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtValorResultante, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                .addComponent(txtValorTotalDeDividas, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtValorSaldoMensal, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(txtValorTotalDeDividas, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(126, 126, 126)
@@ -148,16 +145,19 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                                 .addGap(188, 188, 188)
                                 .addComponent(jLabel7))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(comboMes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel3))
                                 .addGap(82, 82, 82)
                                 .addComponent(btnNovaDivida)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnAtualizarDivida)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnExcluirDivida)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 231, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -177,23 +177,15 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
                     .addComponent(btnExcluirDivida))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(15, 15, 15)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtValorSaldoMensal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtValorTotalDeDividas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtValorResultante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -208,21 +200,18 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable tabelaDividas;
-    private javax.swing.JTextField txtValorResultante;
-    private javax.swing.JTextField txtValorSaldoMensal;
     private javax.swing.JTextField txtValorTotalDeDividas;
     // End of variables declaration//GEN-END:variables
 
     private void configurarJanela() {
         this.setTitle("Contas do mês");
         this.setResizable(false);
+        txtValorTotalDeDividas.setEditable(false);
     }
 
     private void startComboMes() {
@@ -237,17 +226,22 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         this.tabelaDividas.setModel(model);
         this.tabelaDividas.getTableHeader().setReorderingAllowed(false);
     }
+    
+    private void setValorTotalDivida() {
+        txtValorTotalDeDividas.setText(model.getValorTotalDivida().toString());
+    }
 
     private void reconstruirTabelaDividas() {
-        model = new ModeloTabelaDivida();
-        construirTabelaDividas();
+        Mes mesAtual = Mes.getMesComDigito(comboMes.getSelectedIndex());
+        CategoriaDivida categoria = CategoriaDivida.get(comboCategoria.getSelectedIndex());
+        model.reconstruirTabela(mesAtual, categoria);
+        model.fireTableDataChanged();
     }
 
     private void acoesDosBotoes() {
         this.btnNovaDivida.addActionListener(ev -> abrirTelaDeCadastroDivida());
         this.btnAtualizarDivida.addActionListener(ev -> abrirTelaDeEditarDivida());
-        this.btnExcluirDivida.addActionListener(ev -> {
-        });
+        this.btnExcluirDivida.addActionListener(ev -> excluirDivida());
     }
 
     private void eventosDaTela() {
@@ -261,20 +255,49 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
             }
         });
 
+        /* Evento de foco na janela, irá atualizar quando houver alguma mudança */
         this.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameActivated(InternalFrameEvent e) {
                 if (precisaRecarregarATabela) {
                     reconstruirTabelaDividas();
+                    setValorTotalDivida();
                     precisaRecarregarATabela = false;
                 }
             }
+        });
 
+        comboMes.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    verificarFechamento();
+                    reconstruirTabelaDividas();
+                    setValorTotalDivida();
+                }
+            }
+        });
+
+        comboCategoria.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    reconstruirTabelaDividas();
+                    setValorTotalDivida();
+                }
+            }
         });
     }
 
     /* Abre a tela de cadastro em formato primario */
     private void abrirTelaDeCadastroDivida() {
+
+        /* Verifica se o mes ja foi processado */
+        if (!Objects.isNull(calculoMensal)) {
+            FactoryMensagem.mensagemErro(MENSAGEM_MES_FINALIZADO);
+            return;
+        }
+
         precisaRecarregarATabela = true;
         if (Configuracao.verificarJanelaAberta(this.desktop, TelaCadastroDivida.class)) {
             FactoryMensagem.mensagemAlerta("Tela de cadastro esta aberta em sua area de trabalho.");
@@ -286,6 +309,13 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
 
     /* Abre a tela de cadastro em formato secundário - edição */
     private void abrirTelaDeEditarDivida() {
+
+        /* Verifica se o mes ja foi processado */
+        if (!Objects.isNull(calculoMensal)) {
+            FactoryMensagem.mensagemErro(MENSAGEM_MES_FINALIZADO);
+            return;
+        }
+
         precisaRecarregarATabela = true;
         if (Configuracao.verificarJanelaAberta(this.desktop, TelaCadastroDivida.class)) {
             FactoryMensagem.mensagemAlerta("Tela de cadastro esta aberta em sua area de trabalho.");
@@ -300,8 +330,39 @@ public class TelaContaDoMes extends javax.swing.JInternalFrame {
         }
     }
 
+    private void excluirDivida() {
+
+        /* Verifica se o mes ja foi processado */
+        if (!Objects.isNull(calculoMensal)) {
+            FactoryMensagem.mensagemErro(MENSAGEM_MES_FINALIZADO);
+            return;
+        }
+
+        if (Objects.isNull(dividaSelecionada)) {
+            FactoryMensagem.mensagemAlerta("Selecione um registro.");
+        } else {
+            if (FactoryMensagem.mensagemConfirmacao() == JOptionPane.YES_OPTION) {
+                model.excluirDivida(dividaSelecionada.getId());
+                reconstruirTabelaDividas();
+                dividaSelecionada = null;
+            }
+        }
+    }
+
+    private void verificarFechamento() {
+        Mes mesAtual = Mes.getMesComDigito(comboMes.getSelectedIndex());
+        calculoMensal = getCalculoMensalRepository().existeCalculoMensal(mesAtual);
+    }
+
     public void setDesktop(JDesktopPane desktopPanel) {
         this.desktop = desktopPanel;
     }
 
+    private CalculoMensalRepository getCalculoMensalRepository() {
+        if (calculoMensalRepository == null) {
+            calculoMensalRepository = new CalculoMensalRepository();
+        }
+        return calculoMensalRepository;
+    }
+    
 }

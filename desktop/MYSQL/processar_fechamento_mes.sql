@@ -40,14 +40,15 @@ begin
     --
     set vn_valor_resultante = valor_saldo_mensal_p - vn_valor_total_divida;
     --
-    insert into calculo_mensal(mes, valor_saldo_mensal, valor_resultante, valor_total_divida)
-    values(upper(mes_selecionado_p), valor_saldo_mensal_p, format(vn_valor_resultante, 2), vn_valor_total_divida);
+    insert into calculo_mensal(mes, valor_saldo_mensal, valor_resultante, valor_total_divida, situacao, ano)
+    values(upper(mes_selecionado_p), valor_saldo_mensal_p, format(vn_valor_resultante, 2), vn_valor_total_divida, 'FECHADO', year(now()));
     --
     -- Recuperando o id gerado do fechamento mensal --
     select last_insert_id() into vn_id_calculo_mensal;
     --
     update divida d set d.calculo_mensal_id = vn_id_calculo_mensal
-    where d.mes_divida = upper(mes_selecionado_p);
+    where d.mes_divida = upper(mes_selecionado_p)
+    and d.ano = year(now());
     --
     commit;
     --

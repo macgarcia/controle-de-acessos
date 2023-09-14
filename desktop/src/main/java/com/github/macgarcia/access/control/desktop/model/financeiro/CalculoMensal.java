@@ -1,7 +1,10 @@
 package com.github.macgarcia.access.control.desktop.model.financeiro;
 
 import com.github.macgarcia.access.control.desktop.enuns.Mes;
+import com.github.macgarcia.access.control.desktop.enuns.Situacao;
+import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,28 +24,36 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "calculo_mensal")
-public class CalculoMensal implements Serializable{
-    
+public class CalculoMensal implements Serializable, EntidadeBase {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    
+
     @Column(name = "valor_saldo_mensal", nullable = false)
     private Double valorSaldoMensal;
-    
+
     @Column(name = "mes")
     @Enumerated(EnumType.STRING)
     private Mes mes;
-    
+
     @Column(name = "valor_total_divida")
     private Double valorTotalDividas;
-    
+
     @Column(name = "valor_resultante")
     private Double valorResultante;
+
+    @Column(name = "situacao")
+    @Enumerated(EnumType.STRING)
+    private Situacao situacao;
     
+    @Column(name = "ano")
+    private Integer ano;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "calculoMensal", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Divida> dividas;
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -90,5 +101,21 @@ public class CalculoMensal implements Serializable{
     public void setValorResultante(Double valorResultante) {
         this.valorResultante = valorResultante;
     }
-    
+
+    public Situacao getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Situacao situacao) {
+        this.situacao = situacao;
+    }
+
+    public Integer getAno() {
+        return ano;
+    }
+
+    public void setAno(Integer ano) {
+        this.ano = ano;
+    }
+
 }

@@ -1,11 +1,13 @@
 package com.github.macgarcia.access.control.desktop.component;
 
+import com.github.macgarcia.access.control.desktop.enuns.CategoriaDivida;
 import com.github.macgarcia.access.control.desktop.enuns.Mes;
 import com.github.macgarcia.access.control.desktop.model.financeiro.Divida;
 import com.github.macgarcia.access.control.desktop.repository.DividaRepository;
 import java.time.LocalDate;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import org.eclipse.persistence.internal.helper.JavaSEPlatform;
 
 /**
  *
@@ -22,6 +24,10 @@ public class ModeloTabelaDivida extends AbstractTableModel {
         int digitoMesAtual = LocalDate.now().getMonthValue();
         Mes mesAtual = Mes.getMesComDigito(digitoMesAtual - 1);
         this.dividas = getDividaRepository().todasAsDividas(mesAtual);
+    }
+    
+    public void reconstruirTabela(Mes mes, CategoriaDivida categoria) {
+        this.dividas = getDividaRepository().todasAsDividasPorMesECategoria(mes, categoria);
     }
     
     @Override
@@ -57,6 +63,12 @@ public class ModeloTabelaDivida extends AbstractTableModel {
         };
     }
     
+    public Double getValorTotalDivida() {
+        return dividas.stream()
+                .mapToDouble(Divida::getValor)
+                .sum();
+    }
+    
     public Divida getDivida(final int linha) {
         return dividas.get(linha);
     }
@@ -71,6 +83,10 @@ public class ModeloTabelaDivida extends AbstractTableModel {
     /* Processos de trabalho com o banco de dados */
     public void salvarDivida(final Divida divida) {
         this.dividaRepository.salvarEntidade(divida);
+    }
+    
+    public void excluirDivida(final Integer idDivida) {
+        this.dividaRepository.apagarEntidade(Divida.class, idDivida);
     }
     
 }

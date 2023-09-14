@@ -45,6 +45,9 @@ public class Divida implements Serializable, EntidadeBase {
     @Enumerated(EnumType.STRING)
     private CategoriaDivida categoria;
     
+    @Column(name = "ano")
+    private Integer ano = LocalDate.now().getYear();
+    
     @ManyToOne
     @JoinColumn(name = "calculo_mensal_id")
     private CalculoMensal calculoMensal;
