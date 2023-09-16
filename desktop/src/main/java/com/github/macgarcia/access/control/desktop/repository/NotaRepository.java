@@ -15,23 +15,10 @@ public class NotaRepository extends JPARepository<Nota> {
 
     private final int RESULTATO_MAXIMO = 10;
 
-    private final String TODAS_AS_NOTAS = "select n from Nota n";
-
-    private final String NOTA_COM_HISTORICO = "select n from Nota n join fetch n.historico h where n.id = :idNota";
-
-    private final String NOTAS_POR_PESQUISA = "select n from Nota n where lower(n.titulo) like lower(:chave) or lower(n.descricao) like lower(:chave)";
-
-    private final String NOTAS_PARA_EXPORTACAO = "select distinct n from Nota n left join fetch n.historico h"
-            + " where n.dataCriacao between :dataInicial and :dataFinal"
-            + " or n.dataAtualizacao between :dataInicial and :dataFinal"
-            + " order by n.dataCriacao desc";
-
-    private final String NOTAS_PARA_INTEGRACAO = "select n from Nota n left join fetch n.historico where n.flagIntegrado = :flagIntegrado";
-
     public Nota getNotaComHistorico(final Integer idNota) {
         final EntityManager manager = getEntityManager();
         try {
-            TypedQuery<Nota> query = manager.createQuery(NOTA_COM_HISTORICO, Nota.class);
+            TypedQuery<Nota> query = manager.createNamedQuery("Nota.notaComHistorico", Nota.class);
             query.setParameter("idNota", idNota);
             return query.getSingleResult();
         } finally {
@@ -43,7 +30,7 @@ public class NotaRepository extends JPARepository<Nota> {
     public List<Nota> getTodasNotas() {
         final EntityManager manager = getEntityManager();
         try {
-            TypedQuery<Nota> query = manager.createQuery(TODAS_AS_NOTAS, Nota.class);
+            TypedQuery<Nota> query = manager.createNamedQuery("Nota.todasAsNotas", Nota.class);
             return query.getResultList();
         } finally {
             manager.clear();
@@ -54,7 +41,7 @@ public class NotaRepository extends JPARepository<Nota> {
     public List<Nota> getTodasNotasPaginado(final int pagina) {
         final EntityManager manager = getEntityManager();
         try {
-            TypedQuery<Nota> query = manager.createQuery(TODAS_AS_NOTAS, Nota.class);
+            TypedQuery<Nota> query = manager.createNamedQuery("Nota.todasAsNotas", Nota.class);
             query.setFirstResult((pagina - 1) * RESULTATO_MAXIMO)
                     .setMaxResults(RESULTATO_MAXIMO);
             return query.getResultList();
@@ -67,7 +54,7 @@ public class NotaRepository extends JPARepository<Nota> {
     public List<Nota> getNotasPorPesquisa(final String chave, final int pagina) {
         final EntityManager manager = getEntityManager();
         try {
-            TypedQuery<Nota> query = manager.createQuery(NOTAS_POR_PESQUISA, Nota.class);
+            TypedQuery<Nota> query = manager.createNamedQuery("Nota.notaPorPesquisa", Nota.class);
             query.setParameter("chave", "%" + chave + "%");
             query.setFirstResult((pagina - 1) * RESULTATO_MAXIMO)
                     .setMaxResults(RESULTATO_MAXIMO);
@@ -81,7 +68,7 @@ public class NotaRepository extends JPARepository<Nota> {
     public List<Nota> getNotasParaExportacao(final PojoDadosExportacao filtro) {
         final EntityManager manager = getEntityManager();
         try {
-            TypedQuery<Nota> query = manager.createQuery(NOTAS_PARA_EXPORTACAO, Nota.class);
+            TypedQuery<Nota> query = manager.createNamedQuery("Nota.notasParaExportacao", Nota.class);
             query.setParameter("dataInicial", filtro.getDataInicial())
                     .setParameter("dataFinal", filtro.getDataFinal());
             return query.getResultList();
@@ -94,7 +81,7 @@ public class NotaRepository extends JPARepository<Nota> {
     public List<Nota> notasParaIntegrar() {
         final EntityManager manager = getEntityManager();
         try {
-            final TypedQuery<Nota> query = manager.createQuery(NOTAS_PARA_INTEGRACAO, Nota.class);
+            final TypedQuery<Nota> query = manager.createNamedQuery("Nota.notasParaExportacao", Nota.class);
             query.setParameter("flagIntegrado", FlagIntegracao.LIGADO);
             query.setMaxResults(10);
             return query.getResultList();

@@ -17,6 +17,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +28,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "nota")
+@NamedQueries({
+    @NamedQuery(name = "Nota.todasAsNotas", query = "select n from Nota n"),
+    @NamedQuery(name = "Nota.notaComHistorico", query = "select n from Nota n join fetch n.historico h where n.id = :idNota"),
+    @NamedQuery(name = "Nota.notaPorPesquisa", query = "select n from Nota n where lower(n.titulo) like lower(:chave) or lower(n.descricao) like lower(:chave)"),
+    @NamedQuery(name = "Nota.notasParaExportacao", query = "select distinct n from Nota n left join fetch n.historico h"
+            + " where n.dataCriacao between :dataInicial and :dataFinal"
+            + " or n.dataAtualizacao between :dataInicial and :dataFinal"
+            + " order by n.dataCriacao desc"),
+    @NamedQuery(name = "Nota.notasParaIntegracao", query = "select n from Nota n left join fetch n.historico where n.flagIntegrado = :flagIntegrado")
+})
 public class Nota implements Serializable, EntidadeBase {
     
     private static final Logger LOGGER = FactoryLog.getLog();

@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -21,6 +23,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "historico_nota")
+@NamedQueries({
+    @NamedQuery(name = "HistoricoNota.todoOHistoricoDeUmaNota", query = "select h from HistoricoNota h where h.nota.id = :idNota order by h.numeroAtualizacao desc")
+})
 public class HistoricoNota implements Serializable, EntidadeBase {
 
     private static final Logger LOGGER = FactoryLog.getLog();

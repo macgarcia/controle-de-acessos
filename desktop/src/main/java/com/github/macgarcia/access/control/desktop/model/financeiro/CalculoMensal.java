@@ -4,7 +4,6 @@ import com.github.macgarcia.access.control.desktop.enuns.Mes;
 import com.github.macgarcia.access.control.desktop.enuns.Situacao;
 import com.github.macgarcia.access.control.desktop.repository.EntidadeBase;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,6 +25,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "calculo_mensal")
+@NamedQueries({
+    @NamedQuery(name = "CalculoMensal.todosOsCalculos", query = "select c from CalculoMensal c"),
+    @NamedQuery(name = "CalculoMensal.existeCalculoMensal", query = "select c from CalculoMensal c where c.mes = :mes and c.ano = :ano and c.situacao = :situacao")
+})
 public class CalculoMensal implements Serializable, EntidadeBase {
 
     @Id

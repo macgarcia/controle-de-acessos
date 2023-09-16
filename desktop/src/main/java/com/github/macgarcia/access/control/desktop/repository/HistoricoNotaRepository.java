@@ -11,12 +11,10 @@ import javax.persistence.TypedQuery;
  */
 public class HistoricoNotaRepository extends JPARepository<HistoricoNota> {
 
-    private final String TODO_O_HISTORICO_DE_UMA_NOTA = "select h from HistoricoNota h where h.nota.id = :idNota order by h.numeroAtualizacao desc";
-
     public List<HistoricoNota> getTodohistoricoDaNota(final Integer idNota) {
         final EntityManager manager = getEntityManager();
         try {
-            final TypedQuery<HistoricoNota> query = manager.createQuery(TODO_O_HISTORICO_DE_UMA_NOTA, HistoricoNota.class);
+            final TypedQuery<HistoricoNota> query = manager.createNamedQuery("HistoricoNota.todoOHistoricoDeUmaNota", HistoricoNota.class);
             query.setParameter("idNota", idNota);
             return query.getResultList();
         } finally {
