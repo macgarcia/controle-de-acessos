@@ -35,17 +35,17 @@ public class CalculoMensal implements Serializable, EntidadeBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "valor_saldo_mensal", nullable = false)
+    @Column(name = "valor_saldo_mensal", nullable = false, precision = 10, scale = 2)
     private Double valorSaldoMensal;
 
     @Column(name = "mes")
     @Enumerated(EnumType.STRING)
     private Mes mes;
 
-    @Column(name = "valor_total_divida")
+    @Column(name = "valor_total_divida", nullable = false,precision = 10, scale = 2)
     private Double valorTotalDividas;
 
-    @Column(name = "valor_resultante")
+    @Column(name = "valor_resultante", nullable = false, precision = 10, scale = 2)
     private Double valorResultante;
 
     @Column(name = "situacao")

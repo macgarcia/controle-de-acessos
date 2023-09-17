@@ -46,7 +46,13 @@ public class CalculoMensalRepository extends JPARepository<CalculoMensal> {
             manager.close();
         }
     }
-
+    
+    /***
+     * <p> Processo generico para executar procedures armazenadas no banco de dados.</p>
+     * @param procedure Recebe o enum respectivo para a procedure.
+     * @param parametros Mapa com os nomes dos parametros para a procedure e seus respectivos valores.
+     * @return true se o processo foi executado sem erro. False se o processo não foi executado.
+     */
     public boolean executeProcedure(ProcessosArmazenados procedure, Map<String, Object> parametros) {
         final EntityManager manager = getEntityManager();
         try {
