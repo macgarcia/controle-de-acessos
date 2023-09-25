@@ -2,7 +2,7 @@ drop procedure if exists processar_fechamento_mes;
 
 delimiter //
 
-create procedure processar_fechamento_mes(in mes_selecionado_p varchar(10), in valor_saldo_mensal_p double)
+create procedure processar_fechamento_mes(in mes_selecionado_p varchar(10), in valor_saldo_mensal_p Double)
 start_processo: begin
     --
     declare done int default false;

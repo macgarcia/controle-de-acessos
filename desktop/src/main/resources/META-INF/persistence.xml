@@ -8,6 +8,7 @@
     <class>com.github.macgarcia.access.control.desktop.model.ConfiguracaoIntegracao</class>
     <class>com.github.macgarcia.access.control.desktop.model.financeiro.Divida</class>
     <class>com.github.macgarcia.access.control.desktop.model.financeiro.CalculoMensal</class>
+    <class>com.github.macgarcia.access.control.desktop.model.financeiro.DividaJson</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/anotacoes"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

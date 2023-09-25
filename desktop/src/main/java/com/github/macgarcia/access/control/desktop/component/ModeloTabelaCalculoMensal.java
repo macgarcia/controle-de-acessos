@@ -2,9 +2,11 @@ package com.github.macgarcia.access.control.desktop.component;
 
 import com.github.macgarcia.access.control.desktop.configuration.FactoryMensagem;
 import com.github.macgarcia.access.control.desktop.enuns.Mes;
+import com.github.macgarcia.access.control.desktop.enuns.ProcessosArmazenados;
 import com.github.macgarcia.access.control.desktop.model.financeiro.CalculoMensal;
 import com.github.macgarcia.access.control.desktop.repository.CalculoMensalRepository;
 import java.util.List;
+import java.util.Map;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -64,7 +66,8 @@ public class ModeloTabelaCalculoMensal extends AbstractTableModel {
     }
     
     public void processarFechamentoMensal(Mes mes, Double valorMensalInformado) {
-        boolean processou = calculoMensalRepository.processar(mes, valorMensalInformado);
+        Map<String, Object> parameters = Map.of("mes_selecionado_p", mes.name(), "valor_saldo_mensal_p", valorMensalInformado.doubleValue());
+        boolean processou = calculoMensalRepository.executeProcedure(ProcessosArmazenados.PROCEDURE_PROCESSAR_FECHAMENTO_MES, parameters);
         if (processou) {
             FactoryMensagem.mensagemOk("Mês fechado com sucesso");
         } else {
@@ -73,7 +76,8 @@ public class ModeloTabelaCalculoMensal extends AbstractTableModel {
     }
     
     public void desfazerFechamentoMensal(Integer id) {
-        boolean desfez = calculoMensalRepository.desfazer(id);
+        Map<String, Object> parameters = Map.of("id_calculo_mensal_p", id.intValue());
+        boolean desfez = calculoMensalRepository.executeProcedure(ProcessosArmazenados.PROCEDURE_DESFAZER_FECHAMENTO_MES, parameters);
         if (desfez) {
             FactoryMensagem.mensagemOk("Processo realizado com sucesso, mês aberto para fechamento.");
         } else {

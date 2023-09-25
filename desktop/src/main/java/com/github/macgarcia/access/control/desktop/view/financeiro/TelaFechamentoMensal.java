@@ -187,6 +187,7 @@ public class TelaFechamentoMensal extends javax.swing.JInternalFrame {
                     Double valor = Double.valueOf(txtValorMensalRecebido.getText());
                     model.processarFechamentoMensal(mesSelecionado, valor);
                     reconstruirTabelaDeCalculos();
+                    this.txtValorMensalRecebido.setText(null);
                 } else {
                     FactoryMensagem.mensagemAlerta("Informe apenas numeros no campo valor mensal recebido.");
                 }
@@ -199,6 +200,7 @@ public class TelaFechamentoMensal extends javax.swing.JInternalFrame {
                 if (mensagemConfirmacao == JOptionPane.YES_OPTION) {
                     model.desfazerFechamentoMensal(calculoMensalSelecionado.getId());
                     reconstruirTabelaDeCalculos();
+                    this.txtValorMensalRecebido.setText(null);
                 }
             } else {
                 FactoryMensagem.mensagemAlerta("Selecione um registro da desfazer...");
