@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceException;
-import javax.persistence.StoredProcedureQuery;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -56,14 +55,16 @@ public class CalculoMensalRepository extends JPARepository<CalculoMensal> {
     public boolean executeProcedure(ProcessosArmazenados procedure, Map<String, Object> parametros) {
         final EntityManager manager = getEntityManager();
         try {
-            StoredProcedureQuery callProcedure = manager.createStoredProcedureQuery(procedure.getNomeProcedure());
+            final Query callProcedure = manager.createNativeQuery(procedure.getChamadaNativaProcesso());
             for (Map.Entry<String, Object> entry : parametros.entrySet()) {
-                callProcedure.registerStoredProcedureParameter(entry.getKey(), entry.getValue().getClass(), ParameterMode.IN);
                 callProcedure.setParameter(entry.getKey(), entry.getValue());
             }
-            callProcedure.execute();
+            manager.getTransaction().begin();
+            callProcedure.executeUpdate();
+            manager.getTransaction().commit();
             return true;
         } catch (PersistenceException e) { 
+            manager.getTransaction().rollback();
             return false;
         } finally {
             manager.clear();
