@@ -6,7 +6,7 @@ package com.github.macgarcia.access.control.desktop.enuns;
  */
 public enum CategoriaDivida {
 
-    CARTAO_CREDITO, ESTUDO, CASA, SAUDE, DIVERSOS;
+    TODAS, CARTAO_CREDITO, ESTUDO, CASA, SAUDE, DIVERSOS;
     
     public static CategoriaDivida get(int index) {
         return switch (index) {

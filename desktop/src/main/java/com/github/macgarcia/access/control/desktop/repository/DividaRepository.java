@@ -1,11 +1,8 @@
 package com.github.macgarcia.access.control.desktop.repository;
 
-import com.github.macgarcia.access.control.desktop.enuns.CategoriaDivida;
-import com.github.macgarcia.access.control.desktop.enuns.Mes;
 import com.github.macgarcia.access.control.desktop.model.financeiro.Divida;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -13,42 +10,76 @@ import javax.persistence.TypedQuery;
  *
  * @author macgarcia
  */
-public class DividaRepository extends JPARepository<Divida> {
+public class DividaRepository extends JPARepository<Divida> implements RegraDeConsulta<DividaRepository> {
+    
+    private final String SELECT = " select d from Divida d ";
+    private final String WHERE = " where ";
+    private final String AND = " and ";
+    private final String OR = " or ";
 
-    private final String TODAS_AS_DIVIDAS = "select d from Divida d where d.mes = :mes and d.ano = :ano";
-    private final String DIVIDAS_POR_MES_CATEGORIA = "select d from Divida d where d.mes = :mes and d.ano = :ano and d.categoria = :categoria";
+    private StringBuilder jpql;
+    private Map<String, Object> parametros;
 
-    public List<Divida> todasAsDividas(final Mes mes) {
-        final EntityManager manager = getEntityManager();
-        try {
-            TypedQuery<Divida> query = manager.createQuery(TODAS_AS_DIVIDAS, Divida.class);
-            query.setParameter("mes", mes)
-                    .setParameter("ano", LocalDate.now().getYear());
-            return query.getResultList();
-        } finally {
-            manager.clear();
-            manager.close();
-        }
+    @Override
+    public DividaRepository selecionarRegistros() {
+        this.jpql = new StringBuilder();
+        jpql.append(SELECT);
+        return this;
+    }
+    
+    @Override
+    public DividaRepository where() {
+        jpql.append(WHERE);
+        return this;
     }
 
-    public List<Divida> todasAsDividasPorMesECategoria(Mes mes, CategoriaDivida categoria) {
+    @Override
+    public DividaRepository and() {
+        jpql.append(AND);
+        return this;
+    }
+
+    @Override
+    public DividaRepository or() {
+        jpql.append(OR);
+        return this;
+    }
+
+    public DividaRepository mesIgualAoMesAtual() {
+        jpql.append(" d.mes = :mes ");
+        return this;
+    }
+
+    public DividaRepository categoriaIgualACategoria() {
+        jpql.append(" d.categoria = :categoria ");
+        return this;
+    }
+
+    public DividaRepository anoIgualAno() {
+        jpql.append(" d.ano = :ano ");
+        return this;
+    }
+
+    @Override
+    public DividaRepository parametros(Map<String, Object> parametros) {
+        this.parametros = parametros;
+        return this;
+    }
+
+    @Override
+    public List<Divida> executarConsulta() {
         final EntityManager manager = getEntityManager();
         try {
-            final String sql = categoria == null ? TODAS_AS_DIVIDAS : DIVIDAS_POR_MES_CATEGORIA;
-            
-            TypedQuery<Divida> query = manager.createQuery(sql, Divida.class);
-            query.setParameter("mes", mes)
-                    .setParameter("ano", LocalDate.now().getYear());
-            
-            if (!Objects.isNull(categoria)) {
-                query.setParameter("categoria", categoria);
+            TypedQuery<Divida> query = manager.createQuery(jpql.toString(), Divida.class);
+            for (String p : parametros.keySet()) {
+                query.setParameter(p, parametros.get(p));
             }
-            
             return query.getResultList();
         } finally {
             manager.clear();
             manager.close();
         }
+
     }
 
 }

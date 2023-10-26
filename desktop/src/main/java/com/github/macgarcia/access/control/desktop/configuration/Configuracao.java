@@ -157,7 +157,7 @@ public class Configuracao {
     /* Configuração de combo box de categoria */
     public static void startComboCategoria(final JComboBox combo) {
         combo.removeAllItems();
-        combo.addItem("TODAS");
+        //combo.addItem("TODAS");
         for (CategoriaDivida cat : CategoriaDivida.values()) {
             combo.addItem(cat.name());
         }
